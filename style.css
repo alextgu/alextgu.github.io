@@ -1,0 +1,31 @@
+
+
+body{
+    font-family: 'Raleway', sans-serif;
+}
+
+.heading{
+    position: relative;
+    text-align: center;
+    top: 20vh;
+}
+
+.website_choice{
+    position: relative;
+    text-align: center;
+    top: 35vh;
+}
+
+.button1{
+    position: relative;
+    float: left;
+    left: 450px;
+    padding: 20px;
+}
+
+.button2{
+    position: relative;
+    float: right;
+    right: 450px;
+    padding: 20px;
+}
