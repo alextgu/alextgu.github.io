@@ -1,0 +1,13 @@
+.social-link {
+    text-decoration: none;        /* no underline by default */
+  }
+  
+  /* Hover effect: squiggly underline + color change */
+  .social-link:hover {
+    text-decoration-line: underline;
+    text-decoration-style: wavy;
+    text-decoration-color: var(--underline-color);
+    text-decoration-thickness: 1px; /* thin squiggly */
+    color: black;                  /* text turns black on hover */
+  }
+  
