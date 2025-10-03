@@ -13,6 +13,9 @@ export default {
       fontWeight: {
         thin: '300',
       },
+      screens: {
+        mid: '2200px', 
+      },
     },
   },
   plugins: [],

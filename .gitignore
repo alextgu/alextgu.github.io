@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+
+# Mobile Screen Center the nav bar. Make vertical space gap bigger
