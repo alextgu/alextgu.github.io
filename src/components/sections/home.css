@@ -1,0 +1,111 @@
+.highlight-word {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    transition: transform 0.1s ease;
+  }
+  
+  .highlight-word::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 0;
+    width: 0;
+    height: 4px;
+    z-index: -1;
+    opacity: 0.5;
+    filter: blur(1px);
+  }
+  
+  .highlight-word:hover {
+    transform: scale(1.01);
+  }
+  
+  .highlight-word:hover::after {
+    width: 100%;
+  }
+  
+  .highlight-purple::after {
+    background-color: #7838b3;
+    box-shadow: 0 0 3px #7838b3;
+  }
+  
+  .highlight-green::after {
+    background-color: #028A0F;
+    box-shadow: 0 0 3px #028A0F;
+  }
+  
+  .highlight-rose::after {
+    background-color: #e11d48;
+    box-shadow: 0 0 3px #e11d48;
+  }
+  
+  .highlight-yellow::after {
+    background-color: #FFD700;
+    box-shadow: 0 0 3px #FFD700;
+  }
+
+  /* Alex special hover effect */
+  @keyframes dash {
+    to {
+      background-position: 15px 0, -15px 100%, 0 -15px, 100% 15px;
+    }
+  }
+
+  .alex-interactive {
+    position: relative;
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    font-family: inherit;
+    font-size: 1.1em;
+    background: linear-gradient(90deg, rgba(128, 128, 128, 0.5) 50%, transparent 50%),
+                linear-gradient(90deg, rgba(128, 128, 128, 0.5) 50%, transparent 50%),
+                linear-gradient(0deg, rgba(128, 128, 128, 0.5) 50%, transparent 50%),
+                linear-gradient(0deg, rgba(128, 128, 128, 0.5) 50%, transparent 50%);
+    background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
+    background-size: 15px 2px, 15px 2px, 2px 15px, 2px 15px;
+    background-position: 0 0, 0 100%, 0 0, 100% 0;
+    animation: dash 2s linear infinite;
+  }
+
+  .alex-interactive.font-1 {
+    font-family: 'Comic Sans MS', cursive;
+  }
+
+  .alex-interactive.font-2 {
+    font-family: 'Papyrus', fantasy;
+  }
+
+  .alex-interactive.font-3 {
+    font-family: 'Brush Script MT', cursive;
+  }
+
+  .alex-interactive.font-4 {
+    font-family: 'Lucida Handwriting', cursive;
+  }
+
+  .alex-interactive.font-5 {
+    font-family: 'Chalkduster', fantasy;
+  }
+
+  .alex-interactive.font-6 {
+    font-family: 'Bradley Hand', cursive;
+  }
+
+  .alex-interactive.font-7 {
+    font-family: 'Marker Felt', fantasy;
+  }
+
+  .alex-interactive.font-8 {
+    font-family: 'Trebuchet MS', sans-serif;
+  }
+
+  .alex-interactive.font-9 {
+    font-family: 'Impact', fantasy;
+  }
+
+  .alex-interactive:hover {
+    transform: scale(1.05);
+  }

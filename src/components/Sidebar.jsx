@@ -6,7 +6,7 @@ function Sidebar() {
   const [activeSection, setActiveSection] = useState('Home');
 
   const navItems = [
-    { name: 'Home', href: '/' },
+    { name: 'Alex', href: '/' },
     { name: 'Projects', href: '/projects' },
     { name: 'Hobbies', href: '/hobbies' },
     { name: 'Bucket List', href: '/bucket-list' },

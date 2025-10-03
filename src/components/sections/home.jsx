@@ -1,18 +1,50 @@
+import { useState, useEffect, useRef } from 'react';
+import './home.css';
+
 function Home() {
+  const [alexFont, setAlexFont] = useState(0);
+  const [isHovering, setIsHovering] = useState(false);
+  const intervalRef = useRef(null);
+  
+  const fonts = ['', 'font-1', 'font-2', 'font-3', 'font-4', 'font-5', 'font-6', 'font-7', 'font-8', 'font-9'];
+  
+  useEffect(() => {
+    if (isHovering) {
+      intervalRef.current = setInterval(() => {
+        setAlexFont((prev) => (prev + 1) % fonts.length);
+      }, 500);
+    } else {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    }
+    
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [isHovering]);
+
   return (
     <section id="home" className="min-h-screen pt-20 md:pt-24">
       <div className="grid md:grid-cols-2 gap-12 items-start w-full">
         {/* Left: Text Content */}
         <div className="space-y-12 pl-12 md:pl-20 lg:pl-20">
           <h1 className="text-3xl sm:text-4xl lg:text-[32px] font-normal text-gray-400 dark:text-zinc-500 leading-loose">
-          Hi, I'm <span className="text-gray-900 dark:text-white">Alex</span> 👋 Welcome to my personal website! I'm currently helping organize the first <span className="text-gray-900 dark:text-white">Chinese Canadian Film Festival.</span>
-        </h1>
-        <p className="text-3xl sm:text-4xl lg:text-[32px] font-normal text-gray-400 dark:text-zinc-500 leading-loose">
-        I love playing <span className="text-gray-900 dark:text-white">sports,</span> exploring <span className="text-gray-900 dark:text-white"> films,</span> <span className="text-gray-900 dark:text-white">mango pudding</span> and building stupid projects. One day, I will <span className="text-gray-900 dark:text-white">throw out the first pitch</span> at an MLB game.
-        </p>
-        <p className="text-3xl sm:text-4xl lg:text-[32px] font-normal text-gray-400 dark:text-zinc-500 leading-relaxed">
-        This site will tell you a bit about me. To learn more, please <span className="text-gray-900 dark:text-white">contact me!</span> 
-        </p>
+            Hi, I'm <span 
+              className={`alex-interactive text-gray-900 dark:text-white ${fonts[alexFont]}`}
+              onMouseEnter={() => setIsHovering(true)}
+              onMouseLeave={() => setIsHovering(false)}
+            >Alex</span> 👋 Welcome to my personal website! I'm currently helping organize the first <span className="highlight-word highlight-purple text-gray-900 dark:text-white">Chinese Canadian Film Festival.</span>
+          </h1>
+          <p className="text-3xl sm:text-4xl lg:text-[32px] font-normal text-gray-400 dark:text-zinc-500 leading-loose">
+            I love playing <span className="highlight-word highlight-green text-gray-900 dark:text-white">sports,</span> exploring <span className="highlight-word highlight-green text-gray-900 dark:text-white">films,</span> <span className="text-gray-900 dark:text-white">mango pudding</span> and building stupid projects. One day, I will <span className="highlight-word highlight-rose text-gray-900 dark:text-white">throw out the first pitch</span> at an MLB game.
+          </p>
+          <p className="text-3xl sm:text-4xl lg:text-[32px] font-normal text-gray-400 dark:text-zinc-500 leading-loose">
+            This site will tell you a bit about me. To learn more, please <span className="highlight-word highlight-yellow text-gray-900 dark:text-white">contact me!</span>
+          </p>
+          
           {/* Work Section */}
           <div className="space-y-0.5">
             <h2 className="text-lg font-normal text-gray-900 dark:text-white">Work</h2>
