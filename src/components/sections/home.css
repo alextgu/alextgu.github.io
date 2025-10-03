@@ -86,23 +86,20 @@
     font-family: 'Lucida Handwriting', cursive;
   }
 
+  
   .alex-interactive.font-5 {
-    font-family: 'Chalkduster', fantasy;
-  }
-
-  .alex-interactive.font-6 {
     font-family: 'Bradley Hand', cursive;
   }
 
-  .alex-interactive.font-7 {
+  .alex-interactive.font-6 {
     font-family: 'Marker Felt', fantasy;
   }
 
-  .alex-interactive.font-8 {
+  .alex-interactive.font-7 {
     font-family: 'Trebuchet MS', sans-serif;
   }
 
-  .alex-interactive.font-9 {
+  .alex-interactive.font-8 {
     font-family: 'Impact', fantasy;
   }
 
