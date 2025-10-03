@@ -12,7 +12,7 @@ function SocialBar() {
 
   useEffect(() => {
     const handleScroll = () => {
-        if (window.scrollY > 0) {  // any scroll at all
+        if (window.scrollY > 10) {  // any scroll at all
           setShow(false);
         } else {
           setShow(true);
