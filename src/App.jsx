@@ -1,11 +1,10 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Sidebar from './components/Sidebar'
-import SocialBar from './components/SocialBar'
-import Home from './components/sections/home'
-import Projects from './components/sections/projects'
-import Hobbies from './components/sections/hobbies'
-import BucketList from './components/sections/bucketlist'
-
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
+import Sidebar from './components/Sidebar';
+import SocialBar from './components/SocialBar';
+import Home from './components/sections/home';
+import Projects from './components/sections/projects';
+import Hobbies from './components/sections/hobbies';
+import BucketList from './components/sections/bucketlist';
 
 function App() {
   return (
@@ -23,4 +22,4 @@ function App() {
   );
 }
 
-export default App
+export default App;

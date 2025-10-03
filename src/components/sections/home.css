@@ -45,6 +45,11 @@
     box-shadow: 0 0 3px #FFD700;
   }
 
+  .highlight-blue::after {
+    background-color: #0F52BA;
+    box-shadow: 0 0 3px #0F52BA;
+  }
+
   /* Alex special hover effect */
   @keyframes dash {
     to {
@@ -103,6 +108,14 @@
     font-family: 'Impact', fantasy;
   }
 
+  .alex-interactive.font-9 {
+    font-family: 'Bit Count Grid', monospace;
+  }
+  
+  .alex-interactive.font-10 {
+    font-family: 'Double Ink', cursive;
+  }
+  
   .alex-interactive:hover {
     transform: scale(1.05);
   }
