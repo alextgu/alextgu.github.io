@@ -67,15 +67,15 @@ function Home() {
                 </span>
               </span>
             </Link>{' '}
-            exploring{' '}
+            exploring & creating{' '}
             <Link to="/hobbies">
               <span className="highlight-word highlight-green text-gray-900 dark:text-white">films,</span>
             </Link>{' '}
             eating{' '}
             <Link to="/hobbies">
-              <span className="highlight-word highlight-green text-gray-900 dark:text-white">mango pudding</span>
+              <span className="highlight-word highlight-green text-gray-900 dark:text-white">noodles 🍜</span>
             </Link>{' '}
-            🥭 and building "
+            and building "
         
             <span className="interactive-word-wrapper cursor-pointer" onClick={handleWordClick}>
               <span className="rotating-word">{rotatingWords[wordIndex]}</span>
