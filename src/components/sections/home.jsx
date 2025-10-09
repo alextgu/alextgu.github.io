@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import './home.css';
 import { Link } from 'react-router-dom';
+import NatureWindow from '../NatureWindow';
+
 
 function Home() {
   // --------------------------
@@ -104,6 +106,45 @@ function Home() {
   }, [typedText, isDeleting, currentWord]);
 
   // --------------------------
+  // Website age calculation
+  // --------------------------
+  const [websiteAge, setWebsiteAge] = useState('');
+
+  useEffect(() => {
+    const calculateAge = () => {
+      const startDate = new Date('2025-10-02');
+      const now = new Date();
+      
+      const diffTime = Math.abs(now - startDate);
+      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+      const diffYears = Math.floor(diffDays / 365);
+      const remainingDays = diffDays % 365;
+      const diffMonths = Math.floor(remainingDays / 30);
+      const finalDays = remainingDays % 30;
+      
+      let ageString = '';
+      if (diffYears > 0) {
+        ageString += `${diffYears} year${diffYears > 1 ? 's' : ''}`;
+      }
+      if (diffMonths > 0) {
+        if (ageString) ageString += ', ';
+        ageString += `${diffMonths} month${diffMonths > 1 ? 's' : ''}`;
+      }
+      if (finalDays > 0 || ageString === '') {
+        if (ageString) ageString += ', and ';
+        ageString += `${finalDays} day${finalDays !== 1 ? 's' : ''}`;
+      }
+      
+      setWebsiteAge(ageString + ' old');
+    };
+
+    calculateAge();
+    const interval = setInterval(calculateAge, 1000 * 60 * 60); // Update every hour
+    
+    return () => clearInterval(interval);
+  }, []);
+
+  // --------------------------
   // Hand wave emoji on page load
   // --------------------------
   const [wave, setWave] = useState(true);
@@ -205,42 +246,52 @@ function Home() {
             <span className="any-reason">(for any reason)</span> reach out, please{' '}
             <span className="relative inline-block group">
               <span className="highlight-word highlight-yellow text-gray-900 dark:text-white cursor-pointer">
-                contact me 📩!
+                contact me!
               </span>
-              <span className="absolute top-full left-1/2 transform -translate-x-1/2 mt-1 opacity-0 w-max px-2 py-1 text-sm text-gray-900 bg-white border border-gray-300 rounded-md pointer-events-none shadow-md transition-opacity duration-300 delay-400 group-hover:opacity-100">
+              <span className="absolute top-full left-1/2 -translate-x-1/2 mt-1 opacity-0 w-max px-2 py-1 text-sm text-gray-900 bg-white border border-gray-300 rounded-md pointer-events-none shadow-md transition-opacity duration-300 delay-400 group-hover:opacity-100">
                 I need friends
               </span>
             </span>
+            {' '}📩
           </p>
-
-          {/* Work Section */}
-          <div className="space-y-0.5">
-            <h2 className="text-lg font-normal text-gray-900 dark:text-white">Work</h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-lg leading-loose">
-              What you do professionally... nothing
-            </p>
-          </div>
-
-          {/* Contact Section */}
-          <div className="space-y-0.5">
-            <h2 className="text-lg font-normal text-gray-900 dark:text-white">Contact</h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-lg leading-relaxed">
-              your.email@example.com
-            </p>
-          </div>
-
-          {/* Website Description */}
-          <div className="space-y-0.5">
-            <h2 className="text-lg font-normal text-gray-900 dark:text-white">This Site</h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-lg leading-relaxed">
-              A collection of my work, hobbies, and dreams...
-            </p>
-          </div>
         </div>
 
-        {/* Right: Placeholder for 3D animation */}
-        <div className="h-96 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900 dark:to-purple-900 rounded-lg flex items-center justify-center border border-gray-200 dark:border-gray-700 mt-8 md:mt-0">
-          <p className="text-gray-400 dark:text-gray-500">This website is in progress</p>
+        {/* Right: Nature Window */}
+        <div className="h-96 mt-8 md:mt-0">
+          <NatureWindow season="spring" time="day" />
+        </div>
+      </div>
+
+      {/* Additional Sections Below */}
+      <div className="mt-48 px-4 sm:px-6 md:px-20 lg:px-20 space-y-12">
+        {/* Work Section */}
+        <div className="space-y-0.5">
+          <h2 className="text-lg font-normal text-gray-900 dark:text-white">Work</h2>
+          <p className="text-lg text-gray-600 dark:text-gray-400 leading-loose">
+            Work will be here!
+            <lis>
+            <p>My work history</p>
+            <p>Additional Involvements/Clubs/Volunteering</p>
+            <p>What I want to do in future</p>
+            </lis>
+          </p>
+        </div>
+
+        {/* Contact Section */}
+        <div className="space-y-0.5">
+          <h2 className="text-lg font-normal text-gray-900 dark:text-white">Contact</h2>
+          <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
+            alexnopost.gu@mail.utoronto.ca
+          </p>
+          I want to make videos....
+        </div>
+
+        {/* Website Description */}
+        <div className="space-y-0.5">
+          <h2 className="text-lg font-normal text-gray-900 dark:text-white">This Site</h2>
+          <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
+            The first draft of this website is not made yet, but this website is technically <span className="font-medium text-gray-900 dark:text-white">{websiteAge}</span>.
+          </p>
         </div>
       </div>
     </section>

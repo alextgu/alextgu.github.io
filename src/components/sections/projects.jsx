@@ -1,99 +1,70 @@
+import React from 'react';
+import './projects.css';
+
+const projectsData = [
+  {
+    id: 1,
+    name: 'Project One',
+    description: 'Blah Blah',
+    tech: ['React', 'TypeScript'],
+    year: 2024,
+  },
+  {
+    id: 2,
+    name: 'Project Two',
+    description: 'Blah Blah',
+    tech: ['Python', 'Flask'],
+    year: 2023,
+  },
+  // Add more projects here
+];
+
 function Projects() {
-    const projects = [
-      {
-        id: 1,
-        title: 'Project Name 1',
-        description: 'A brief description of what this project does and the problem it solves.',
-        technologies: ['React', 'Node.js', 'MongoDB'],
-        image: '/images/project1.jpg',
-        github: 'https://github.com/alextgu/project1',
-        demo: 'https://project1-demo.com',
-      },
-      {
-        id: 2,
-        title: 'Project Name 2',
-        description: 'Another cool project with some interesting features and functionality.',
-        technologies: ['Python', 'Flask', 'PostgreSQL'],
-        image: '/images/project2.jpg',
-        github: 'https://github.com/alextgu/project2',
-        demo: 'https://project2-demo.com',
-      },
-      {
-        id: 3,
-        title: 'Project Name 3',
-        description: 'A third amazing project that showcases your skills and creativity.',
-        technologies: ['Vue.js', 'Firebase', 'Tailwind'],
-        image: '/images/project3.jpg',
-        github: 'https://github.com/alextgu/project3',
-        demo: 'https://project3-demo.com',
-      },
-    ]
-  
-    return (
-      <section id="projects" className="min-h-screen py-20">
-        <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">Projects</h2>
-        <p className="text-gray-600 dark:text-gray-400 mb-12">
-          A collection of things I've built
-        </p>
-  
-        {/* Projects Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((project) => (
-            <div
-              key={project.id}
-              className="group border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden hover:shadow-xl transition-all duration-300"
-            >
-              {/* Project Image Placeholder */}
-              <div className="aspect-video bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900 dark:to-purple-900 flex items-center justify-center">
-                <span className="text-gray-400 dark:text-gray-500">Project Image</span>
-              </div>
-  
-              {/* Project Info */}
-              <div className="p-6">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                  {project.title}
-                </h3>
-                <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">
-                  {project.description}
-                </p>
-  
-                {/* Technologies */}
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {project.technologies.map((tech) => (
-                    <span
-                      key={tech}
-                      className="text-xs bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-2 py-1 rounded"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-  
-                {/* Links */}
-                <div className="flex gap-4">
-                  <a
-                    href={project.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
-                  >
-                    GitHub →
-                  </a>
-                  <a
-                    href={project.demo}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
-                  >
-                    Live Demo →
-                  </a>
-                </div>
-              </div>
+  return (
+    <section className="min-h-screen pt-20 md:pt-24 lg:pt-32 xl:pt-[7.7rem] px-4 sm:px-6 md:px-20 lg:px-20">
+      {/* Header */}
+      <div className="max-w-4xl mb-16">
+        <h1 className="text-5xl sm:text-6xl lg:text-7xl font-normal mb-3">
+          Projects
+        </h1>
+        <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 font-light mt-6 leading-relaxed whitespace-pre-line">
+  I love building! Here’s pretty much everything I’ve made, whether it’s completely useless or serves a real purpose.<br/>
+  I am trying my very best to not use AI for projects with the purpose of learning!
+</p>
+      </div>
+
+      {/* Projects Grid */}
+      <div className="max-w-6xl grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+        {projectsData.map((project) => (
+          <div
+            key={project.id}
+            id={`project-${project.id}`}                 // unique DOM ID
+            data-name={project.name}                     // for sorting/filtering
+            data-year={project.year}                     // for sorting/filtering
+            data-tech={project.tech.join(',')}           // for sorting/filtering
+            className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6 shadow-sm hover:shadow-lg transition-shadow duration-300"
+          >
+            <h2 className="text-2xl sm:text-3xl font-normal mb-3">
+              {project.name}
+            </h2>
+            <p className="text-sm sm:text-base text-gray-400 dark:text-zinc-500 mb-4 leading-relaxed">
+              {project.description}
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {project.tech.map((t, i) => (
+                <span
+                  key={i}
+                  className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 border border-gray-300 dark:border-gray-700 rounded-full px-2 py-1"
+                >
+                  {t}
+                </span>
+              ))}
             </div>
-          ))}
-        </div>
-      </section>
-    )
-  }
-  
-  export default Projects
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+export default Projects;

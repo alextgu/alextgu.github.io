@@ -1,165 +1,54 @@
-import { useState } from 'react'
+import React from 'react';
+import './hobbies.css';
 
 function Hobbies() {
-  const [sortBy, setSortBy] = useState('default')
-
-  const hobbies = [
-    {
-      id: 1,
-      title: 'Photography',
-      category: 'creative',
-      description: 'Capturing moments and telling stories through images.',
-      startedYear: 2020,
-      emoji: '📸',
-    },
-    {
-      id: 2,
-      title: 'Rock Climbing',
-      category: 'sports',
-      description: 'Pushing my limits both physically and mentally.',
-      startedYear: 2019,
-      emoji: '🧗',
-    },
-    {
-      id: 3,
-      title: 'Cooking',
-      category: 'creative',
-      description: 'Experimenting with new recipes and cuisines.',
-      startedYear: 2021,
-      emoji: '🍳',
-    },
-    {
-      id: 4,
-      title: 'Gaming',
-      category: 'entertainment',
-      description: 'Strategy games and storytelling adventures.',
-      startedYear: 2015,
-      emoji: '🎮',
-    },
-    {
-      id: 5,
-      title: 'Reading',
-      category: 'learning',
-      description: 'Sci-fi, fantasy, and non-fiction about technology.',
-      startedYear: 2018,
-      emoji: '📚',
-    },
-    {
-      id: 6,
-      title: 'Hiking',
-      category: 'sports',
-      description: 'Exploring nature trails and enjoying the outdoors.',
-      startedYear: 2020,
-      emoji: '🥾',
-    },
-  ]
-
-  // Sort hobbies based on selected option
-  const getSortedHobbies = () => {
-    const hobbiesCopy = [...hobbies]
-
-    switch (sortBy) {
-      case 'category':
-        return hobbiesCopy.sort((a, b) => a.category.localeCompare(b.category))
-      case 'year':
-        return hobbiesCopy.sort((a, b) => b.startedYear - a.startedYear)
-      case 'alphabetical':
-        return hobbiesCopy.sort((a, b) => a.title.localeCompare(b.title))
-      default:
-        return hobbiesCopy
-    }
-  }
-
-  const sortedHobbies = getSortedHobbies()
-
   return (
-    <section id="hobbies" className="min-h-screen py-20">
-      {/* Header with Sort Controls */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-4">
-        <div>
-          <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">Hobbies</h2>
-          <p className="text-gray-600 dark:text-gray-400">
-            Things I love doing in my free time
+    <section className="min-h-screen pt-20 md:pt-24 lg:pt-32 xl:pt-[7.7rem] px-4 sm:px-6 md:px-20 lg:px-20">
+      {/* Header Section */}
+      <div className="max-w-4xl mb-16">
+        <h1 className="text-5xl sm:text-6xl lg:text-7xl font-normal mb-3">
+          Hobbies
+        </h1>
+        <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 font-light mt-4 leading-relaxed whitespace-pre-line">
+          Things I do for fun when I'm not coding or studying.<br />
+          I love sharing them so people can learn more about me!
+        </p>
+      </div>
+
+      {/* Hobbies Grid/List */}
+      <div className="max-w-6xl space-y-8">
+        {/* Hobby Item Template */}
+        <div className="border-t border-gray-200 dark:border-gray-800 pt-8">
+          <h2 className="text-2xl sm:text-3xl font-normal text-gray-900 dark:text-white mb-3">
+            Sports
+          </h2>
+          <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 mb-4 leading-relaxed">
+            Baseball, basketball, volleyball, ultimate frisbee, badminton, and more. I love staying active and competing.
           </p>
         </div>
 
-        {/* Sort Buttons */}
-        <div className="flex gap-2 flex-wrap">
-          <button
-            onClick={() => setSortBy('default')}
-            className={`px-4 py-2 rounded-lg text-sm transition-colors ${
-              sortBy === 'default'
-                ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900'
-                : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
-            }`}
-          >
-            Default
-          </button>
-          <button
-            onClick={() => setSortBy('category')}
-            className={`px-4 py-2 rounded-lg text-sm transition-colors ${
-              sortBy === 'category'
-                ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900'
-                : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
-            }`}
-          >
-            Category
-          </button>
-          <button
-            onClick={() => setSortBy('year')}
-            className={`px-4 py-2 rounded-lg text-sm transition-colors ${
-              sortBy === 'year'
-                ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900'
-                : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
-            }`}
-          >
-            Year
-          </button>
-          <button
-            onClick={() => setSortBy('alphabetical')}
-            className={`px-4 py-2 rounded-lg text-sm transition-colors ${
-              sortBy === 'alphabetical'
-                ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900'
-                : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
-            }`}
-          >
-            A-Z
-          </button>
+        <div className="border-t border-gray-200 dark:border-gray-800 pt-8">
+          <h2 className="text-2xl sm:text-3xl font-normal text-gray-900 dark:text-white mb-3">
+            Cinematography
+          </h2>
+          <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 mb-4 leading-relaxed">
+            Experimenting with cameras, lighting, and storytelling through video.
+          </p>
         </div>
-      </div>
 
-      {/* Hobbies Grid */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {sortedHobbies.map((hobby) => (
-          <div
-            key={hobby.id}
-            className="border border-gray-200 dark:border-gray-700 rounded-lg p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-          >
-            {/* Emoji Icon */}
-            <div className="text-4xl mb-4">{hobby.emoji}</div>
+        <div className="border-t border-gray-200 dark:border-gray-800 pt-8">
+          <h2 className="text-2xl sm:text-3xl font-normal text-gray-900 dark:text-white mb-3">
+            Noodles 🍜
+          </h2>
+          <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 mb-4 leading-relaxed">
+            Exploring different types of noodles and the best noodle spots around the city.
+          </p>
+        </div>
 
-            {/* Category and Year */}
-            <div className="flex items-center gap-2 mb-3">
-              <span className="text-xs bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 px-2 py-1 rounded">
-                {hobby.category}
-              </span>
-              <span className="text-xs text-gray-400 dark:text-gray-500">
-                Since {hobby.startedYear}
-              </span>
-            </div>
-
-            {/* Title and Description */}
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-              {hobby.title}
-            </h3>
-            <p className="text-gray-600 dark:text-gray-300 text-sm">
-              {hobby.description}
-            </p>
-          </div>
-        ))}
+        {/* Add more hobby items here */}
       </div>
     </section>
-  )
+  );
 }
 
-export default Hobbies
+export default Hobbies;
