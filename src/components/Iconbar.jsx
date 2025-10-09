@@ -62,20 +62,6 @@ function IconBar() {
 </span>
 <span className="relative inline-block group">
   <button 
-    onClick={() => handleIconClick(() => setIsMusicOn(!isMusicOn))}
-    className="text-gray-400 dark:text-zinc-500 transition-colors px-2 py-1 rounded-md hover:bg-gray-300/80 dark:hover:bg-zinc-700/80 relative overflow-hidden"
-  >
-    {isMusicOn ? <Volume2 size={20} /> : <VolumeX size={20} />}
-    {isAnimating && (
-      <span className="absolute inset-0 bg-black/10 animate-[slideDown_1s_ease-out]" />
-    )}
-  </button>
-  <span className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 opacity-0 w-max px-1.5 py-0.5 text-xs text-gray-500 dark:text-zinc-400 bg-white border border-gray-300 rounded-md pointer-events-none shadow-md transition-opacity duration-300 delay-400 group-hover:opacity-100">
-    Music On/Off
-  </span>
-</span>
-<span className="relative inline-block group">
-  <button 
     onClick={() => handleIconClick(() => setSeason((season + 1) % 4))}
     className="text-gray-400 dark:text-zinc-500 transition-colors px-2 py-1 rounded-md hover:bg-gray-300/80 dark:hover:bg-zinc-700/80 relative overflow-hidden"
   >
@@ -86,6 +72,20 @@ function IconBar() {
   </button>
   <span className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 opacity-0 w-max px-1.5 py-0.5 text-xs text-gray-500 dark:text-zinc-400 bg-white border border-gray-300 rounded-md pointer-events-none shadow-md transition-opacity duration-300 delay-400 group-hover:opacity-100">
     Change Season
+  </span>
+</span>
+<span className="relative inline-block group">
+  <button 
+    onClick={() => handleIconClick(() => setIsMusicOn(!isMusicOn))}
+    className="text-gray-400 dark:text-zinc-500 transition-colors px-2 py-1 rounded-md hover:bg-gray-300/80 dark:hover:bg-zinc-700/80 relative overflow-hidden"
+  >
+    {isMusicOn ? <Volume2 size={20} /> : <VolumeX size={20} />}
+    {isAnimating && (
+      <span className="absolute inset-0 bg-black/10 animate-[slideDown_1s_ease-out]" />
+    )}
+  </button>
+  <span className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 opacity-0 w-max px-1.5 py-0.5 text-xs text-gray-500 dark:text-zinc-400 bg-white border border-gray-300 rounded-md pointer-events-none shadow-md transition-opacity duration-300 delay-400 group-hover:opacity-100">
+    Music On/Off
   </span>
 </span>
       </div>
