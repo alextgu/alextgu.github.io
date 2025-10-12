@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import './home.css';
 import { Link } from 'react-router-dom';
-import NatureWindow from '../NatureWindow';
+import Computer from '../computer/Computer';
 
 
 function Home() {
@@ -255,45 +255,13 @@ function Home() {
             {' '}📩
           </p>
         </div>
+      
 
-        {/* Right: Nature Window */}
-        <div className="h-96 mt-8 md:mt-0">
-          <NatureWindow season="spring" time="day" />
-        </div>
-      </div>
-
-      {/* Additional Sections Below */}
-      <div className="mt-48 px-4 sm:px-6 md:px-20 lg:px-20 space-y-12">
-        {/* Work Section */}
-        <div className="space-y-0.5">
-          <h2 className="text-lg font-normal text-gray-900 dark:text-white">Work</h2>
-          <p className="text-lg text-gray-600 dark:text-gray-400 leading-loose">
-            Work will be here!
-            <lis>
-            <p>My work history</p>
-            <p>Additional Involvements/Clubs/Volunteering</p>
-            <p>What I want to do in future</p>
-            </lis>
-          </p>
-        </div>
-
-        {/* Contact Section */}
-        <div className="space-y-0.5">
-          <h2 className="text-lg font-normal text-gray-900 dark:text-white">Contact</h2>
-          <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
-            alexnopost.gu@mail.utoronto.ca
-          </p>
-          I want to make videos....
-        </div>
-
-        {/* Website Description */}
-        <div className="space-y-0.5">
-          <h2 className="text-lg font-normal text-gray-900 dark:text-white">This Site</h2>
-          <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
-            The first draft of this website is not made yet, but this website is technically <span className="font-medium text-gray-900 dark:text-white">{websiteAge}</span>.
-          </p>
-        </div>
-      </div>
+  {/* Right: Temporary Computer */}
+  <div className="flex justify-center items-start">
+      <Computer />
+    </div>
+    </div>
     </section>
   );
 }

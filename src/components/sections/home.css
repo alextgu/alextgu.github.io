@@ -137,3 +137,9 @@
   color: inherit;                         
   transition: color 0.3s ease;
 }
+
+/* ===================== Scrolling stuff ===================== */
+.no-scroll {
+  overflow: hidden; /* disables scroll */
+  height: 100vh;
+}

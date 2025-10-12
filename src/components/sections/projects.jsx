@@ -29,7 +29,7 @@ function Projects() {
         </h1>
         <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 font-light mt-6 leading-relaxed whitespace-pre-line">
   I love building! Here’s pretty much everything I’ve made, whether it’s completely useless or serves a real purpose.<br/>
-  I am trying my very best to not use AI for projects with the purpose of learning!
+  I am currently polishing up Dynamic PP and DisasteRisk.
 </p>
       </div>
 
