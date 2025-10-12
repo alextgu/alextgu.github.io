@@ -110,40 +110,6 @@ function Home() {
   // --------------------------
   const [websiteAge, setWebsiteAge] = useState('');
 
-  useEffect(() => {
-    const calculateAge = () => {
-      const startDate = new Date('2025-10-02');
-      const now = new Date();
-      
-      const diffTime = Math.abs(now - startDate);
-      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-      const diffYears = Math.floor(diffDays / 365);
-      const remainingDays = diffDays % 365;
-      const diffMonths = Math.floor(remainingDays / 30);
-      const finalDays = remainingDays % 30;
-      
-      let ageString = '';
-      if (diffYears > 0) {
-        ageString += `${diffYears} year${diffYears > 1 ? 's' : ''}`;
-      }
-      if (diffMonths > 0) {
-        if (ageString) ageString += ', ';
-        ageString += `${diffMonths} month${diffMonths > 1 ? 's' : ''}`;
-      }
-      if (finalDays > 0 || ageString === '') {
-        if (ageString) ageString += ', and ';
-        ageString += `${finalDays} day${finalDays !== 1 ? 's' : ''}`;
-      }
-      
-      setWebsiteAge(ageString + ' old');
-    };
-
-    calculateAge();
-    const interval = setInterval(calculateAge, 1000 * 60 * 60); // Update every hour
-    
-    return () => clearInterval(interval);
-  }, []);
-
   // --------------------------
   // Hand wave emoji on page load
   // --------------------------
