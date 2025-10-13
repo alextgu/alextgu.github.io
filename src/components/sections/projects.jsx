@@ -1,64 +1,107 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './projects.css';
 
 const projectsData = [
-  {
-    id: 1,
-    name: 'Project One',
-    description: 'Blah Blah',
-    tech: ['React', 'TypeScript'],
-    year: 2024,
-  },
-  {
-    id: 2,
-    name: 'Project Two',
-    description: 'Blah Blah',
-    tech: ['Python', 'Flask'],
-    year: 2023,
-  },
-  // Add more projects here
+  { id: 1, name: 'Project One', thumbnail: '/images/placeholder.png', year: 2024, expandable: true, link: '/projects/1' },
+  { id: 2, name: 'Project Two', thumbnail: '/images/placeholder.png', year: 2023, expandable: false, link: '/projects/2' },
+  { id: 3, name: 'Project Three', thumbnail: '/images/placeholder.png', year: 2022, expandable: true, link: '/projects/3' },
+  { id: 4, name: 'Project Four', thumbnail: '/images/placeholder.png', year: 2021, expandable: false, link: '/projects/4' },
 ];
 
 function Projects() {
+  const [slideIndex, setSlideIndex] = useState(0);
+  const visibleCount = 2; // number of cards visible at once
+  const total = projectsData.length;
+
+  const prevSlide = () => {
+    setSlideIndex((prev) => (prev - 1 + total) % total);
+  };
+
+  const nextSlide = () => {
+    setSlideIndex((prev) => (prev + 1) % total);
+  };
+
+  // Circular carousel logic: create a slice that wraps around
+  const getVisibleProjects = () => {
+    const result = [];
+    for (let i = 0; i < visibleCount; i++) {
+      result.push(projectsData[(slideIndex + i) % total]);
+    }
+    return result;
+  };
+
+  const visibleProjects = getVisibleProjects();
+
   return (
-    <section className="min-h-screen pt-20 md:pt-24 lg:pt-32 xl:pt-[7.7rem] px-4 sm:px-6 md:px-20 lg:px-20">
-      {/* Header */}
+    <section className="min-h-screen pt-20 md:pt-24 lg:pt-32 px-4 sm:px-6 md:px-20 lg:px-20">
       <div className="max-w-4xl mb-16">
-        <h1 className="text-5xl sm:text-6xl lg:text-7xl font-normal mb-3">
-          Projects
-        </h1>
+        <h1 className="text-5xl sm:text-6xl lg:text-7xl font-normal mb-3">Projects</h1>
         <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 font-light mt-6 leading-relaxed whitespace-pre-line">
-  I love building! Here’s pretty much everything I’ve made, whether it’s completely useless or serves a real purpose.<br/>
-  I am currently polishing up Dynamic PP and DisasteRisk.
-</p>
+          I love building! Here’s pretty much everything I’ve made, whether it’s completely useless or serves a real purpose.<br/>
+          I am currently polishing up Dynamic PP and DisasteRisk.
+        </p>
       </div>
 
+      {/* Featured Projects Carousel */}
+      <section className="mb-16 relative">
+        <h2 className="text-3xl mb-6">Featured Projects</h2>
+        <div className="relative flex items-center">
+          <button
+            onClick={prevSlide}
+            className="absolute left-0 z-10 bg-gray-200 dark:bg-gray-700 p-3 rounded-full shadow-lg"
+          >
+            ◀
+          </button>
+
+          <div className="flex gap-4 overflow-hidden w-full justify-center">
+            {visibleProjects.map((project) => (
+              <div
+                key={project.id}
+                className="bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg flex flex-col overflow-hidden aspect-video transform hover:scale-105 transition-transform duration-300 w-[45%]"
+              >
+                <div className="flex justify-between items-start px-4 pt-4">
+                  <span className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 font-medium">
+                    {project.name}
+                  </span>
+                </div>
+                <div className="flex-grow m-4 rounded-lg overflow-hidden shadow-inner">
+                  <img
+                    src={project.thumbnail}
+                    alt={project.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <button
+            onClick={nextSlide}
+            className="absolute right-0 z-10 bg-gray-200 dark:bg-gray-700 p-3 rounded-full shadow-lg"
+          >
+            ▶
+          </button>
+        </div>
+      </section>
+
       {/* Projects Grid */}
-      <div className="max-w-6xl grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+      <div className="max-w-6xl mx-auto grid gap-8 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2">
         {projectsData.map((project) => (
           <div
             key={project.id}
-            id={`project-${project.id}`}                 // unique DOM ID
-            data-name={project.name}                     // for sorting/filtering
-            data-year={project.year}                     // for sorting/filtering
-            data-tech={project.tech.join(',')}           // for sorting/filtering
-            className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6 shadow-sm hover:shadow-lg transition-shadow duration-300"
+            className="bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg flex flex-col overflow-hidden aspect-video hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200"
           >
-            <h2 className="text-2xl sm:text-3xl font-normal mb-3">
-              {project.name}
-            </h2>
-            <p className="text-sm sm:text-base text-gray-400 dark:text-zinc-500 mb-4 leading-relaxed">
-              {project.description}
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {project.tech.map((t, i) => (
-                <span
-                  key={i}
-                  className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 border border-gray-300 dark:border-gray-700 rounded-full px-2 py-1"
-                >
-                  {t}
-                </span>
-              ))}
+            <div className="flex justify-between items-start px-4 pt-4">
+              <span className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 font-medium">
+                {project.name}
+              </span>
+            </div>
+            <div className="flex-grow m-4 rounded-lg overflow-hidden shadow-inner">
+              <img
+                src={project.thumbnail}
+                alt={project.name}
+                className="w-full h-full object-cover"
+              />
             </div>
           </div>
         ))}

@@ -21,8 +21,7 @@ const bucketListData = [
   {
     id: 3,
     title: "Create a film 🎬",
-    description:
-      "Write, direct, and produce a complete short film from start to finish.",
+    description: "Write, direct, and produce a complete short film from start to finish.",
     rules: "Film must be fully edited and published or submitted to a festival.",
     status: "Not Yet",
     image: "/images/film.jpg",
@@ -30,8 +29,7 @@ const bucketListData = [
   {
     id: 4,
     title: "Dunk a basketball 🏀",
-    description:
-      "I am a 5 foot 8 asian with an average wingspan. I can barely spike a volleyball.",
+    description: "I am a 5 foot 8 Asian with an average wingspan. I can barely spike a volleyball.",
     rules: "Dunk on regulation hoop with solid ground and no accessories (no trampolines, jetpacks etc)",
     status: "Not Yet",
     image: "/images/film.jpg",
@@ -51,7 +49,8 @@ export default function BucketList() {
         <h1 className="text-5xl sm:text-6xl lg:text-7xl font-normal mb-3">
           Bucket List
         </h1>
-        <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 font-light mt-4 leading-relaxed whitespace-pre-line">
+        <hr className="border-gray-300 dark:border-gray-700 mb-4" />
+        <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 font-light leading-relaxed whitespace-pre-line">
           Dreams, goals, and experiences I want to achieve in my lifetime.<br />
           Writing them here helps keep me accountable.
         </p>
@@ -65,7 +64,6 @@ export default function BucketList() {
             className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg hover:shadow-2xl transition-transform transform hover:-translate-y-1 cursor-pointer overflow-hidden"
             onClick={() => handleOpen(item)}
           >
-            {/* Image */}
             {item.image && (
               <img
                 src={item.image}
@@ -73,8 +71,6 @@ export default function BucketList() {
                 className="w-full h-48 object-cover"
               />
             )}
-
-            {/* Content */}
             <div className="p-4">
               <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-white mb-2">
                 {item.title}
@@ -87,7 +83,6 @@ export default function BucketList() {
                   ⚡ Rules: {item.rules}
                 </p>
               )}
-
               <span
                 className={`inline-block text-sm px-3 py-1 rounded-full mt-3 ${
                   item.status === "In Progress"
@@ -112,7 +107,6 @@ export default function BucketList() {
             className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 rounded-2xl max-w-lg w-full shadow-xl p-6 relative"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Close Button */}
             <button
               onClick={handleClose}
               className="absolute top-3 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 text-lg"
@@ -120,7 +114,6 @@ export default function BucketList() {
               ✕
             </button>
 
-            {/* Image */}
             {selected.image && (
               <img
                 src={selected.image}
@@ -129,15 +122,10 @@ export default function BucketList() {
               />
             )}
 
-            {/* Content */}
             <h3 className="text-2xl font-semibold mb-2">{selected.title}</h3>
-            <p className="text-gray-600 dark:text-gray-400 mb-4">
-              {selected.description}
-            </p>
+            <p className="text-gray-600 dark:text-gray-400 mb-4">{selected.description}</p>
             {selected.rules && (
-              <p className="text-sm text-gray-500 dark:text-gray-500 mb-4 italic">
-                ⚡ {selected.rules}
-              </p>
+              <p className="text-sm text-gray-500 dark:text-gray-500 mb-4 italic">⚡ {selected.rules}</p>
             )}
             <span
               className={`inline-block text-sm px-3 py-1 rounded-full ${

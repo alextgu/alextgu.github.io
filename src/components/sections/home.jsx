@@ -59,7 +59,7 @@ function Home() {
   // --------------------------
   // Typing subtitle animation with random emoji
   // --------------------------
-  const subtitleWords = ['website', 'blog', 'digital garden', 'webpage'];
+  const subtitleWords = ['website', 'blog', 'digital garden', 'webpage', 'yapsite'];
   const emojis = [' 🥭']; // emoji pool
   const [typedText, setTypedText] = useState('');
   const [currentWord, setCurrentWord] = useState(0);
