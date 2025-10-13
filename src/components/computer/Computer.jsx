@@ -22,7 +22,8 @@ function Computer() {
           className="w-64 h-48 bg-gray-900 rounded-xl shadow-xl cursor-pointer flex items-center justify-center"
           onClick={() => setOpen(true)}
         >
-          <p className="text-white font-bold">Click to open the "computer"</p>
+          <p className="text-white font-bold">Click to open the "computer" This website is under construction still</p>
+          
         </div>
       )}
 

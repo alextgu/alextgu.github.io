@@ -15,38 +15,6 @@ function Hobbies() {
         </p>
       </div>
 
-      {/* Hobbies Grid/List */}
-      <div className="max-w-6xl space-y-8">
-        {/* Hobby Item Template */}
-        <div className="border-t border-gray-200 dark:border-gray-800 pt-8">
-          <h2 className="text-2xl sm:text-3xl font-normal text-gray-900 dark:text-white mb-3">
-            Sports
-          </h2>
-          <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 mb-4 leading-relaxed">
-            Baseball, basketball, volleyball, ultimate frisbee, badminton, and more. I love staying active and competing.
-          </p>
-        </div>
-
-        <div className="border-t border-gray-200 dark:border-gray-800 pt-8">
-          <h2 className="text-2xl sm:text-3xl font-normal text-gray-900 dark:text-white mb-3">
-            Cinematography
-          </h2>
-          <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 mb-4 leading-relaxed">
-            Experimenting with cameras, lighting, and storytelling through video.
-          </p>
-        </div>
-
-        <div className="border-t border-gray-200 dark:border-gray-800 pt-8">
-          <h2 className="text-2xl sm:text-3xl font-normal text-gray-900 dark:text-white mb-3">
-            Noodles 🍜
-          </h2>
-          <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 mb-4 leading-relaxed">
-            Exploring different types of noodles and the best noodle spots around the city.
-          </p>
-        </div>
-
-        {/* Add more hobby items here */}
-      </div>
     </section>
   );
 }
