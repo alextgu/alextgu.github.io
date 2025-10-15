@@ -24,7 +24,6 @@ function Home() {
     'font-9',
     'font-10',
   ];
-
   // --------------------------
   // Rotating words in quotes
   // --------------------------
@@ -198,11 +197,7 @@ function Home() {
 
           {/* Chinese Canadian Film Festival */}
           <p className="text-3xl sm:text-4xl lg:text-[32px] font-normal text-gray-400 dark:text-zinc-500 leading-loose">
-            <a
-              href="https://tccff.ca"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <a>
               I'm currently helping organize the first{' '}
               <span className="highlight-word highlight-purple text-gray-900 dark:text-white">
                 Chinese Canadian Film Festival.
@@ -223,11 +218,17 @@ function Home() {
         </div>
       
 
-  {/* Right: Temporary Computer */}
-  <div className="flex justify-center items-start">
-      <Computer />
-    </div>
-    </div>
+       {/* Right: Clickable Laptop Image */}
+<div className="flex justify-center items-start">
+  <Link to="/computer">
+    <img 
+      src="/home/laptop.png" 
+      alt="Laptop" 
+      className="transform scale-x-[-1] cursor-pointer hover:opacity-90 transition-opacity"
+    />
+  </Link>
+</div>
+      </div>
     </section>
   );
 }

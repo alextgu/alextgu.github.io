@@ -1,11 +1,12 @@
-// Computer.jsx
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Work from "./apps/Work";
 import Website from "./apps/Website";
 import Contact from "./apps/Contact";
 
 function Computer() {
-  const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+  const [open, setOpen] = useState(true);
   const [activeApp, setActiveApp] = useState(null);
 
   const apps = [
@@ -16,17 +17,6 @@ function Computer() {
 
   return (
     <>
-      {/* Small computer on home page */}
-      {!open && (
-        <div
-          className="w-64 h-48 bg-gray-900 rounded-xl shadow-xl cursor-pointer flex items-center justify-center"
-          onClick={() => setOpen(true)}
-        >
-          <p className="text-white font-bold">Click to open the "computer" This website is under construction still</p>
-          
-        </div>
-      )}
-
       {/* Fullscreen overlay */}
       {open && (
         <div className="fixed inset-0 bg-black bg-opacity-80 z-50 flex flex-col items-center justify-center p-4">
@@ -35,7 +25,7 @@ function Computer() {
             {/* Close button */}
             <button
               className="absolute top-4 right-4 text-black dark:text-white font-bold text-xl"
-              onClick={() => setOpen(false)}
+              onClick={() => navigate('/')}
             >
               X
             </button>

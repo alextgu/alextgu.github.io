@@ -13,7 +13,7 @@ function Sidebar() {
   ];
 
   return (
-    <nav className="fixed top-4 left-10 z-50">
+    <nav className="fixed top-4 left-20 z-50">
       <div className="bg-white/70 dark:bg-zinc-900/70 backdrop-blur-md border border-gray-300/70 dark:border-zinc-700/70 rounded-lg px-2 py-1 shadow-md">
         <div className="flex items-center gap-0.5 whitespace-nowrap">
           {navItems.map((item) => {

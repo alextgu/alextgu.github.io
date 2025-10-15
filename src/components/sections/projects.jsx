@@ -8,9 +8,9 @@ const projectsData = [
   { id: 1, name: 'Dynamic PP', year: 2024, description: 'BLAHBLAHBABSDBSADSA with dynamic difficulty scaling', tags: ['Web App', 'Tool'], icon: '/images/dynamic-pp-icon.png', image: '/images/dynamic-pp-screenshot.png', links: { github: 'https://github.com/username/dynamic-pp', demo: 'https://dynamic-pp.com' }},
   { id: 2, name: 'DisasteRisk', year: 2024, description: 'Real-time disaster monitoring and risk assessment platform', tags: ['Web App', 'API'], icon: '/images/disasterisk-icon.png', image: '/images/disasterisk-screenshot.png', links: { github: 'https://github.com/username/disasterisk', devpost: 'https://devpost.com/software/disasterisk' }},
   { id: 3, name: 'Portfolio Website', year: 2023, description: 'Personal portfolio showcasing projects and experience', tags: ['Website'], icon: '/images/portfolio-icon.png', image: '/images/portfolio-screenshot.png', links: { github: 'https://github.com/username/portfolio', demo: 'https://yourportfolio.com' }},
-  { id: 4, name: 'Task Manager', year: 2023, description: 'Minimalist task management application with drag and drop', tags: ['Web App', 'Tool'], icon: '/images/task-manager-icon.png', image: '/images/task-manager-screenshot.png', links: { github: 'https://github.com/username/task-manager' }},
-  { id: 5, name: 'Weather Dashboard', year: 2022, description: 'Beautiful weather forecast dashboard with interactive charts', tags: ['Web App', 'API'], icon: '/images/weather-icon.png', image: '/images/weather-screenshot.png', links: { github: 'https://github.com/username/weather-dashboard', demo: 'https://weather-dashboard.com' }},
-  { id: 6, name: 'Recipe Finder', year: 2022, description: 'Find recipes based on ingredients you have at home', tags: ['Web App'], icon: '/images/recipe-icon.png', image: '/images/recipe-screenshot.png', links: { demo: 'https://recipe-finder.com' }},
+  { id: 4, name: 'Outcognito Mode', year: 2023, description: 'Minimalist task management application with drag and drop', tags: ['Web App', 'Tool'], icon: '/images/task-manager-icon.png', image: '/images/task-manager-screenshot.png', links: { github: 'https://github.com/username/task-manager' }},
+  { id: 5, name: 'True Count', year: 2022, description: 'Beautiful weather forecast dashboard with interactive charts', tags: ['Web App', 'API'], icon: '/images/weather-icon.png', image: '/images/weather-screenshot.png', links: { github: 'https://github.com/username/weather-dashboard', demo: 'https://weather-dashboard.com' }},
+  { id: 6, name: 'Future Project Placeholder', year: 2022, description: 'Something I will build in the future, this website is too empty without it', tags: ['Web App'], icon: '/images/recipe-icon.png', image: '/images/recipe-screenshot.png', links: { demo: 'https://recipe-finder.com' }},
 ];
 
 function Projects() {
@@ -83,13 +83,13 @@ function Projects() {
         <div className="max-w-4xl mb-12">
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-normal mb-3">Projects</h1>
           <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 font-light mt-4 leading-relaxed whitespace-pre-line">
-          I build things. Some work, some break, some I forgot about.{'\n'}
+          I build things. Most suck, but here are some of the better ones.{'\n'}
          Currently perfecting {' '}
   <a 
     href="" 
     className="font-semibold text-gray-700 dark:text-gray-300 hover:text-gray-600 dark:hover:text-gray-400 transition-colors underline decoration-transparent hover:decoration-gray-600 dark:hover:decoration-gray-400 underline-offset-2"
   >
-    Alextgu.github.io.
+    alextgu.github.io.
   </a>
           </p>
         </div>
@@ -149,7 +149,7 @@ function Projects() {
                 </div>
 
                 <div className="mt-4 flex items-center text-sm text-gray-500 dark:text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <span className="relative inline-block animate-bounce-horizontal">View more →</span>
+                  <span className="relative inline-block animate-bounce-horizontal">View more</span>
                 </div>
 
                 {project.icon && (

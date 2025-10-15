@@ -11,7 +11,7 @@ function Hobbies() {
             Hobbies
           </h1>
           <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 font-light mt-6 leading-relaxed whitespace-pre-line">
-            Things I do for fun when I'm not coding or studying.{'\n'}I love sharing them so people can learn more about me!
+            Things I do for fun and in my spare time (NOT CODING). {'\n'} Learn more about me.
           </p>
         </div>
       </div>

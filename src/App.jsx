@@ -6,6 +6,7 @@ import Home from './components/sections/home';
 import Projects from './components/sections/Projects';
 import Hobbies from './components/sections/Hobbies';
 import BucketList from './components/sections/BucketList';
+import Computer from './components/computer/Computer';
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
         <Route path="/projects" element={<Projects />} />
         <Route path="/hobbies" element={<Hobbies />} />
         <Route path="/bucket-list" element={<BucketList />} />
+        <Route path="/computer" element={<Computer />} />
       </Routes>
     </Router>
   );
