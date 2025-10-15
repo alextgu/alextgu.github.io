@@ -89,7 +89,7 @@ function Projects() {
     href="" 
     className="font-semibold text-gray-700 dark:text-gray-300 hover:text-gray-600 dark:hover:text-gray-400 transition-colors underline decoration-transparent hover:decoration-gray-600 dark:hover:decoration-gray-400 underline-offset-2"
   >
-    Alextgu.github.io
+    Alextgu.github.io.
   </a>
           </p>
         </div>
