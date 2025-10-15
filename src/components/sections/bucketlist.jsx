@@ -43,58 +43,58 @@ export default function BucketList() {
   const handleClose = () => setSelected(null);
 
   return (
-    <section className="min-h-screen pt-20 md:pt-24 lg:pt-32 xl:pt-[7.7rem] px-4 sm:px-6 md:px-20 lg:px-20 relative">
-      {/* Header Section */}
-      <div className="max-w-4xl mb-16">
-        <h1 className="text-5xl sm:text-6xl lg:text-7xl font-normal mb-3">
-          Bucket List
-        </h1>
-        <hr className="border-gray-300 dark:border-gray-700 mb-4" />
-        <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 font-light leading-relaxed whitespace-pre-line">
-          Dreams, goals, and experiences I want to achieve in my lifetime.<br />
-          Writing them here helps keep me accountable.
-        </p>
-      </div>
+    <section className="min-h-screen pt-20 md:pt-24 lg:pt-32 px-4 sm:px-6 md:px-20 lg:px-20 relative">
+      <div className="max-w-6xl mx-auto">
+        {/* Header Section */}
+        <div className="max-w-4xl mb-16">
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-normal mb-3">
+            Bucket List
+          </h1>
+          <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 font-light mt-6 leading-relaxed whitespace-pre-line">
+            Dreams, goals, and experiences I want to achieve in my lifetime.{'\n'}Writing them here helps keep me accountable.
+          </p>
+        </div>
 
-      {/* Bucket List Items as Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {bucketListData.map((item) => (
-          <div
-            key={item.id}
-            className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg hover:shadow-2xl transition-transform transform hover:-translate-y-1 cursor-pointer overflow-hidden"
-            onClick={() => handleOpen(item)}
-          >
-            {item.image && (
-              <img
-                src={item.image}
-                alt={item.title}
-                className="w-full h-48 object-cover"
-              />
-            )}
-            <div className="p-4">
-              <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-white mb-2">
-                {item.title}
-              </h2>
-              <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 mb-2">
-                {item.description}
-              </p>
-              {item.rules && (
-                <p className="text-xs sm:text-sm text-gray-400 dark:text-gray-500 mb-3 italic">
-                  ⚡ Rules: {item.rules}
-                </p>
+        {/* Bucket List Items as Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {bucketListData.map((item) => (
+            <div
+              key={item.id}
+              className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg hover:shadow-2xl transition-transform transform hover:-translate-y-1 cursor-pointer overflow-hidden"
+              onClick={() => handleOpen(item)}
+            >
+              {item.image && (
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  className="w-full h-48 object-cover"
+                />
               )}
-              <span
-                className={`inline-block text-sm px-3 py-1 rounded-full mt-3 ${
-                  item.status === "In Progress"
-                    ? "bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300"
-                    : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300"
-                }`}
-              >
-                {item.status}
-              </span>
+              <div className="p-4">
+                <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-white mb-2">
+                  {item.title}
+                </h2>
+                <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 mb-2">
+                  {item.description}
+                </p>
+                {item.rules && (
+                  <p className="text-xs sm:text-sm text-gray-400 dark:text-gray-500 mb-3 italic">
+                    ⚡ Rules: {item.rules}
+                  </p>
+                )}
+                <span
+                  className={`inline-block text-sm px-3 py-1 rounded-full mt-3 ${
+                    item.status === "In Progress"
+                      ? "bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300"
+                      : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300"
+                  }`}
+                >
+                  {item.status}
+                </span>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
 
       {/* Popout Modal */}

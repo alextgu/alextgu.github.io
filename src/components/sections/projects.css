@@ -1,0 +1,25 @@
+@keyframes bounce-horizontal {
+          0%, 100% {
+            transform: translateX(0);
+          }
+          50% {
+            transform: translateX(4px);
+          }
+        }
+        
+        .animate-bounce-horizontal {
+          animation: bounce-horizontal 0.6s ease-in-out infinite;
+        }
+
+        @keyframes bounce-vertical {
+          0%, 100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-4px);
+          }
+        }
+        
+        .animate-bounce-vertical {
+          animation: bounce-vertical 0.6s ease-in-out infinite;
+        }
