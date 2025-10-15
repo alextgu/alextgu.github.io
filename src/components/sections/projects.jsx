@@ -83,8 +83,14 @@ function Projects() {
         <div className="max-w-4xl mb-12">
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-normal mb-3">Projects</h1>
           <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 font-light mt-4 leading-relaxed whitespace-pre-line">
-            I love building! Here's pretty much everything I've made, whether it's completely useless or serves a real purpose.{'\n'}
-            I am currently polishing up Dynamic PP and DisasteRisk.
+          I build things. Some work, some break, some I forgot about.{'\n'}
+         Currently perfecting {' '}
+  <a 
+    href="" 
+    className="font-semibold text-gray-700 dark:text-gray-300 hover:text-gray-600 dark:hover:text-gray-400 transition-colors underline decoration-transparent hover:decoration-gray-600 dark:hover:decoration-gray-400 underline-offset-2"
+  >
+    Alextgu.github.io
+  </a>
           </p>
         </div>
 
