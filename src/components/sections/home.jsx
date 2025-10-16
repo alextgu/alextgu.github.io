@@ -219,7 +219,10 @@ function Home() {
       
 
        {/* Right: Clickable Laptop Image */}
-<div className="flex justify-center items-start">
+       <div className="flex flex-col justify-center items-center text-center">
+  <h3 className="mb-4">
+    Click for work, website history and contact! A better design is being worked on!
+  </h3>
   <Link to="/computer">
     <img 
       src="/home/laptop.png" 
@@ -228,6 +231,7 @@ function Home() {
     />
   </Link>
 </div>
+
       </div>
     </section>
   );

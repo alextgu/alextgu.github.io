@@ -3,7 +3,7 @@ import './SocialBar.css';
 
 function SocialBar() {
   const [show, setShow] = useState(true);
-  
+
   const socialLinks = [
     { name: 'LinkedIn', href: 'https://linkedin.com/in/alextgu', color: '#0A66C2' },
     { name: 'GitHub', href: 'https://github.com/alextgu', color: '#181717' },
@@ -12,12 +12,12 @@ function SocialBar() {
 
   useEffect(() => {
     const handleScroll = () => {
-        if (window.scrollY > 10) {  // any scroll at all
-          setShow(false);
-        } else {
-          setShow(true);
-        }
-      };
+      if (window.scrollY > 10) {
+        setShow(false);
+      } else {
+        setShow(true);
+      }
+    };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -25,9 +25,10 @@ function SocialBar() {
 
   return (
     <div
-      className={`fixed top-6 right-12 flex gap-4 transition-opacity duration-500 ${
-        show ? 'opacity-100' : 'opacity-0 pointer-events-none'
-      }`}
+      className={`fixed top-6 right-12 flex gap-4 transition-opacity duration-500
+        ${show ? 'opacity-100' : 'opacity-0 pointer-events-none'}
+        hidden md:flex
+      `}
     >
       {socialLinks.map((item) => (
         <a
