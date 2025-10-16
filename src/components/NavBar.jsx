@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Sun, Moon, Volume2, VolumeX, ChevronRight } from 'lucide-react';
-import { motion } from 'framer-motion';
 import './NavBar.css';
 
 function NavBar() {
@@ -10,9 +9,16 @@ function NavBar() {
   const [showIcons, setShowIcons] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isMusicOn, setIsMusicOn] = useState(false);
+  const [cooldown, setCooldown] = useState(false);
 
-  const [darkCooldown, setDarkCooldown] = useState(false);
-  const [musicCooldown, setMusicCooldown] = useState(false);
+  // --------------------------
+  // NavBar fade-in slide-down
+  // --------------------------
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const timeout = setTimeout(() => setVisible(true), 50); // slight delay to trigger animation
+    return () => clearTimeout(timeout);
+  }, []);
 
   const navItems = [
     { name: 'Alex', href: '/' },
@@ -21,22 +27,15 @@ function NavBar() {
     { name: 'Bucket List', href: '/bucket-list' },
   ];
 
-  const iconVariants = {
-    idle: { scale: 1 },
-    pressed: { scale: 1.4, transition: { duration: 0.2 } },
-  };
-
   const handleIconClick = (type) => {
+    if (cooldown) return;
+    setCooldown(true);
+    setTimeout(() => setCooldown(false), 1000); // 1 second cooldown
+
     if (type === 'dark') {
-      if (darkCooldown) return;
       setIsDarkMode(!isDarkMode);
-      setDarkCooldown(true);
-      setTimeout(() => setDarkCooldown(false), 300);
     } else if (type === 'music') {
-      if (musicCooldown) return;
       setIsMusicOn(!isMusicOn);
-      setMusicCooldown(true);
-      setTimeout(() => setMusicCooldown(false), 300);
     }
   };
 
@@ -45,15 +44,16 @@ function NavBar() {
     const handleScroll = () => {
       if (showIcons) setShowIcons(false);
     };
-
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [showIcons]);
 
   return (
     <div
-      className="fixed top-4 left-20 z-50 flex items-center gap-0.5 h-10
-                 max-md:left-1/2 max-md:-translate-x-1/2 max-md:transform"
+      className={`fixed top-4 left-20 z-50 flex items-center gap-0.5 h-10
+        max-md:left-1/2 max-md:-translate-x-1/2 max-md:transform
+        transition-all duration-700 ease-out
+        ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-12'}`}
     >
       {/* Main nav container */}
       <div className="flex items-center gap-0.25 bg-white/70 dark:bg-zinc-900/70 backdrop-blur border border-gray-300/70 dark:border-zinc-700/70 rounded-md px-2 shadow-md text-sm h-full">
@@ -99,41 +99,38 @@ function NavBar() {
 
       {/* Icon container */}
       <div
-        className={`absolute top-0 left-[calc(100%+0.25rem)] flex gap-0.5 px-2 bg-white/70 dark:bg-zinc-900/70 backdrop-blur border border-gray-300/70 dark:border-zinc-700/70 shadow-md h-full items-center rounded-md transition-all duration-300 ease-in-out
+        className={`absolute top-0 left-full ml-1 flex gap-0.5 px-2 bg-white/70 dark:bg-zinc-900/70 backdrop-blur border border-gray-300/70 dark:border-zinc-700/70 shadow-md h-full items-center rounded-md transition-transform duration-300 ease-in-out
           ${showIcons
             ? 'translate-x-0 opacity-100 pointer-events-auto'
-            : '-translate-x-20 opacity-0 pointer-events-none'
+            : 'translate-x-[-4rem] opacity-0 pointer-events-none'
           }`}
         style={{ transformOrigin: 'left' }}
       >
-        <motion.button
-  onClick={() => handleIconClick('dark')}
-  variants={iconVariants}
-  animate={darkCooldown ? 'pressed' : 'idle'}
-  className={`p-0.5 rounded-md hover:bg-gray-300/60 dark:hover:bg-zinc-700/60 text-gray-400 dark:text-zinc-500 transition
-    ${darkCooldown ? 'cursor-not-allowed opacity-70' : 'cursor-pointer'}`}
->
-  {isDarkMode ? (
-    <Moon className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5" />
-  ) : (
-    <Sun className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5" />
-  )}
-</motion.button>
+        <button
+          onClick={() => handleIconClick('dark')}
+          disabled={cooldown}
+          className={`p-1.5 rounded-md hover:bg-gray-300/60 dark:hover:bg-zinc-700/60 transition text-gray-400 dark:text-zinc-500
+            ${cooldown ? 'cursor-not-allowed opacity-70' : 'cursor-pointer'}`}
+        >
+          {isDarkMode ? (
+            <Moon className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-4 md:h-4 xl:w-4.5 xl:h-4.5" />
+          ) : (
+            <Sun className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-4 md:h-4 xl:w-4.5 xl:h-4.5" />
+          )}
+        </button>
 
-<motion.button
-  onClick={() => handleIconClick('music')}
-  variants={iconVariants}
-  animate={musicCooldown ? 'pressed' : 'idle'}
-  className={`p-0.5 rounded-md hover:bg-gray-300/60 dark:hover:bg-zinc-700/60 text-gray-400 dark:text-zinc-500 transition
-    ${musicCooldown ? 'cursor-not-allowed opacity-70' : 'cursor-pointer'}`}
->
-  {isMusicOn ? (
-    <Volume2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5" />
-  ) : (
-    <VolumeX className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5" />
-  )}
-</motion.button>
-
+        <button
+          onClick={() => handleIconClick('music')}
+          disabled={cooldown}
+          className={`p-1.5 rounded-md hover:bg-gray-300/60 dark:hover:bg-zinc-700/60 transition text-gray-400 dark:text-zinc-500
+            ${cooldown ? 'cursor-not-allowed opacity-70' : 'cursor-pointer'}`}
+        >
+          {isMusicOn ? (
+            <Volume2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-4 md:h-4 xl:w-4.5 xl:h-4.5" />
+          ) : (
+            <VolumeX className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-4 md:h-4 xl:w-4.5 xl:h-4.5" />
+          )}
+        </button>
       </div>
     </div>
   );

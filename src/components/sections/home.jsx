@@ -56,6 +56,17 @@ function Home() {
   }, [isHovering]);
 
   // --------------------------
+  // Fade in animation
+  // --------------------------
+
+  const [visible, setVisible] = useState(false);
+
+useEffect(() => {
+  const timeout = setTimeout(() => setVisible(true), 50); // small delay to trigger animation
+  return () => clearTimeout(timeout);
+}, []);
+
+  // --------------------------
   // Typing subtitle animation with random emoji
   // --------------------------
   const subtitleWords = ['website', 'blog', 'digital garden', 'webpage', 'yapsite'];
@@ -119,7 +130,7 @@ function Home() {
   }, []);
 
   return (
-    <section id="home" className="min-h-screen pt-20 md:pt-24 lg:pt-40 xl:pt-[7.7rem]">
+    <section id="home" className="min-h-screen pt-24">
       {/* Grid: Left text + Right placeholder */}
       <div className="grid grid-cols-1 mid:grid-cols-2 lg:grid-cols-2 gap-12 items-start w-full">
         {/* Left: Text Content */}
