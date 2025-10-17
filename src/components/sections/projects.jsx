@@ -1,6 +1,5 @@
 import "./projects.css";
 import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUp, ArrowDown, Clock, Type, Star } from "lucide-react";
 
 const projectsData = [
@@ -17,20 +16,12 @@ function Projects() {
   const [sortDirection, setSortDirection] = useState("desc");
   const [sortedProjects, setSortedProjects] = useState([]);
   const [selectedProject, setSelectedProject] = useState(null);
-  const [isAnimating, setIsAnimating] = useState(false);
 
-  // ===== SORT FUNCTION =====
   const sortProjects = (option, direction) => {
     const sorted = [...projectsData];
-    if (option === "time") {
-      sorted.sort((a, b) => (direction === "asc" ? a.year - b.year : b.year - a.year));
-    } else if (option === "az") {
-      sorted.sort((a, b) =>
-        direction === "asc" ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name)
-      );
-    } else if (option === "professionalism") {
-      sorted.sort((a, b) => (direction === "asc" ? a.id - b.id : b.id - a.id));
-    }
+    if (option === "time") sorted.sort((a, b) => (direction === "asc" ? a.year - b.year : b.year - a.year));
+    else if (option === "az") sorted.sort((a, b) => (direction === "asc" ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name)));
+    else if (option === "professionalism") sorted.sort((a, b) => (direction === "asc" ? a.id - b.id : b.id - a.id));
     return sorted;
   };
 
@@ -38,50 +29,27 @@ function Projects() {
     setSortedProjects(sortProjects("time", "desc"));
   }, []);
 
-  // ===== HANDLE SORT BUTTON =====
   const handleSort = (option) => {
-    if (isAnimating) return;
-    setIsAnimating(true);
-
     let newOption = sortOption;
     let newDirection = sortDirection;
 
     if (sortOption === option) {
       newDirection = sortDirection === "asc" ? "desc" : "asc";
-      setSortDirection(newDirection);
     } else {
       newOption = option;
       newDirection = "desc";
-      setSortOption(newOption);
-      setSortDirection(newDirection);
     }
 
-    // Animate exit then re-enter smoothly
-    setSortedProjects([]);
-    setTimeout(() => {
-      setSortedProjects(sortProjects(newOption, newDirection));
-      setIsAnimating(false);
-    }, 500);
+    setSortOption(newOption);
+    setSortDirection(newDirection);
+    setSortedProjects(sortProjects(newOption, newDirection));
   };
 
-  // ===== BUTTON DATA =====
   const sortButtons = [
     { id: "time", label: "Time", icon: <Clock size={16} /> },
     { id: "az", label: "A–Z", icon: <Type size={16} /> },
     { id: "professionalism", label: "Professionalism", icon: <Star size={16} /> },
   ];
-
-  // ===== CONSISTENT CARD VARIANTS =====
-  const cardVariants = {
-    hidden: { opacity: 0, scale: 0.95, y: 15 },
-    visible: (i) => ({
-      opacity: 1,
-      scale: 1,
-      y: 0,
-      transition: { delay: i * 0.05, duration: 0.4, ease: "easeOut" },
-    }),
-    exit: { opacity: 0, scale: 0.95, y: -10, transition: { duration: 0.3, ease: "easeIn" } },
-  };
 
   return (
     <section className="min-h-screen pt-20 md:pt-24 lg:pt-32 px-4 sm:px-6 md:px-20 lg:px-20">
@@ -97,23 +65,21 @@ function Projects() {
               className="font-semibold text-gray-700 dark:text-gray-300 hover:text-gray-600 dark:hover:text-gray-400 transition-colors underline decoration-transparent hover:decoration-gray-600 dark:hover:decoration-gray-400 underline-offset-2"
             >
               alextgu.github.io
-            </a>
-            .
+            </a>.
           </p>
         </div>
 
-        {/* ===== SORT BAR ===== */}
+        {/* SORT BAR */}
         <div className="flex items-center justify-start gap-4 mb-8">
           {sortButtons.map((btn) => (
             <button
               key={btn.id}
               onClick={() => handleSort(btn.id)}
-              disabled={isAnimating}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-all duration-200 ${
                 sortOption === btn.id
                   ? "bg-gray-900 text-white dark:bg-white dark:text-gray-900 border-transparent"
                   : "bg-transparent border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-              } ${isAnimating ? "opacity-60 cursor-not-allowed" : ""}`}
+              }`}
             >
               {btn.icon}
               <span>{btn.label}</span>
@@ -123,71 +89,62 @@ function Projects() {
           ))}
         </div>
 
-        {/* ===== PROJECT GRID ===== */}
-        <motion.div
-          layout
-          className="grid gap-4 sm:gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3"
-        >
-          <AnimatePresence mode="popLayout">
-            {sortedProjects.map((project, i) => (
-              <motion.div
-                key={project.id}
-                custom={i}
-                variants={cardVariants}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-                layout
-                onClick={() => setSelectedProject(project)}
-                className="group bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-5 sm:p-6 hover:border-gray-400 dark:hover:border-gray-500 transition-all duration-300 hover:shadow-md cursor-pointer relative"
-              >
-                <div className="flex justify-between items-start mb-3">
-                  <h3 className="text-lg sm:text-xl font-medium group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors">
-                    {project.name}
-                  </h3>
-                  <span className="text-xs sm:text-sm text-gray-400 dark:text-gray-500 font-mono">
-                    {project.year}
+        {/* PROJECT GRID */}
+        <div className="grid gap-4 sm:gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
+          {sortedProjects.map((project) => (
+            <div
+              key={project.id}
+              onClick={() => setSelectedProject(project)}
+              className="group bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-5 sm:p-6 hover:border-gray-400 dark:hover:border-gray-500 transition-all duration-300 hover:shadow-md cursor-pointer relative min-h-[220px]"
+            >
+              <div className="flex justify-between items-start mb-3">
+                <h3 className="text-lg sm:text-xl font-medium group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors">
+                  {project.name}
+                </h3>
+                <span className="text-xs sm:text-sm text-gray-400 dark:text-gray-500 font-mono">
+                  {project.year}
+                </span>
+              </div>
+
+              <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">
+                {project.description}
+              </p>
+
+              <div className="flex flex-wrap gap-2">
+                {project.tags.map((tag, index) => (
+                  <span
+                    key={index}
+                    className="text-xs px-2.5 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full font-medium"
+                  >
+                    {tag}
                   </span>
-                </div>
+                ))}
+              </div>
 
-                <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">
-                  {project.description}
-                </p>
+             {/* "View more →" text */}
+<div className="mt-4 flex items-center text-sm text-gray-500 dark:text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity animate-bounce-horizontal">
+  <span>View more →</span>
+</div>
 
-                <div className="flex flex-wrap gap-2">
-                  {project.tags.map((tag, index) => (
-                    <span
-                      key={index}
-                      className="text-xs px-2.5 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full font-medium"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="mt-4 flex items-center text-sm text-gray-500 dark:text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <span>View more →</span>
-                </div>
-
-                {project.icon && (
-                  <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <img src={project.icon} alt={`${project.name} icon`} className="w-8 h-8" />
-                  </div>
-                )}
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </motion.div>
+{/* Project icon / thumbnail */}
+{project.icon && (
+  <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity animate-bounce-vertical">
+    <img src={project.icon} alt={`${project.name} icon`} className="w-8 h-8" />
+  </div>
+)}
+            </div>
+          ))}
+        </div>
       </div>
 
-      {/* ===== MODAL (unchanged) ===== */}
+      {/* MODAL */}
       {selectedProject && (
         <div
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in"
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4"
           onClick={() => setSelectedProject(null)}
         >
           <div
-            className="bg-white dark:bg-gray-800 rounded-2xl max-w-4xl w-full shadow-2xl overflow-hidden animate-scale-in"
+            className="bg-white dark:bg-gray-800 rounded-2xl max-w-4xl w-full shadow-2xl overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="relative bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 p-8">
