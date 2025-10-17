@@ -174,7 +174,7 @@ function Home() {
 
 
          {/* Left: Text Content */}
-         <div className="space-y-6 sm:space-y-12 px-6 sm:pl-6 md:pl-20 lg:pl-20">
+         <div className="space-y-6 sm:space-y-12 px-6 sm:pl-6 md:pl-20 lg:pl-15">
 
   <div>
     {/* Header */}
@@ -202,7 +202,7 @@ function Home() {
   </div>
 
   {/* Body text */}
-  <p className="text-lg sm:text-[27px] custom:text-[30px] xl:text-[32px] font-normal text-gray-400 dark:text-zinc-500 leading-relaxed custom:leading-snug">
+  <p className="text-lg sm:text-[27px] custom:text-[30px] xl:text-[30px] font-normal text-gray-400 dark:text-zinc-500 leading-relaxed custom:leading-snug">
     I love playing{' '}
     <Link to="/hobbies">
       <span className="relative inline-block group">
@@ -248,7 +248,7 @@ function Home() {
   </p>
 
   {/* Chinese Canadian Film Festival */}
-  <p className="text-lg sm:text-[27px] custom:text-[30px] xl:text-[32px] font-normal text-gray-400 dark:text-zinc-500 leading-relaxed custom:leading-snug">
+  <p className="text-lg sm:text-[27px] custom:text-[28px] xl:text-[30px] font-normal text-gray-400 dark:text-zinc-500 leading-relaxed custom:leading-snug">
     <a>
       I'm currently helping organize the first{' '}
       <span className="highlight-word highlight-purple text-gray-900 dark:text-white">
