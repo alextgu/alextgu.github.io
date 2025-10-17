@@ -80,7 +80,7 @@
 @media (max-width: 640px) {
   .alex-interactive {
     padding: 0px 6px;
-    font-size: 1.3em;
+    font-size: 1.2em;
   }
 }
 
@@ -88,7 +88,7 @@
 @media (min-width: 641px) and (max-width: 1099px) {
   .alex-interactive {
     padding: 5px 8px;
-    font-size: 1.2em;
+    font-size: 1.1em;
   }
 }
 
@@ -96,7 +96,7 @@
 @media (min-width: 1100px) and (max-width: 1279px) {
   .alex-interactive {
     padding: 8px 10px;
-    font-size: 1.2em;
+    font-size: 1.1em;
   }
 }
 
@@ -104,7 +104,7 @@
 @media (min-width: 1280px) {
   .alex-interactive {
     padding: 10px 12px;
-    font-size: 1.2em;
+    font-size: 1.1em;
   }
 }
 
