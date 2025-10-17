@@ -16,7 +16,7 @@ function NavBar() {
   // --------------------------
   const [visible, setVisible] = useState(false);
   useEffect(() => {
-    const timeout = setTimeout(() => setVisible(true), 50); // slight delay to trigger animation
+    const timeout = setTimeout(() => setVisible(true), 50);
     return () => clearTimeout(timeout);
   }, []);
 
@@ -30,7 +30,7 @@ function NavBar() {
   const handleIconClick = (type) => {
     if (cooldown) return;
     setCooldown(true);
-    setTimeout(() => setCooldown(false), 1000); // 1 second cooldown
+    setTimeout(() => setCooldown(false), 1000);
 
     if (type === 'dark') {
       setIsDarkMode(!isDarkMode);
@@ -66,9 +66,10 @@ function NavBar() {
               onClick={() => setActiveSection(item.name)}
               className={`px-2 py-1 rounded-md transition-colors hover:bg-gray-300/60 dark:hover:bg-zinc-700/60
                 text-xs md:text-sm
-                ${isActive
-                  ? 'text-gray-600 dark:text-zinc-300 font-semibold'
-                  : 'text-gray-400 dark:text-zinc-500'
+                ${
+                  isActive
+                    ? 'text-gray-600 dark:text-zinc-300 font-semibold'
+                    : 'text-gray-400 dark:text-zinc-500'
                 }`}
             >
               {item.name === 'Bucket List' ? (
@@ -97,15 +98,18 @@ function NavBar() {
         />
       </button>
 
-      {/* Icon container */}
+      {/* Icon container with faster blur animation */}
       <div
-        className={`absolute top-0 left-full ml-1 flex gap-0.5 px-2 bg-white/70 dark:bg-zinc-900/70 backdrop-blur border border-gray-300/70 dark:border-zinc-700/70 shadow-md h-full items-center rounded-md transition-transform duration-300 ease-in-out
-          ${showIcons
-            ? 'translate-x-0 opacity-100 pointer-events-auto'
-            : 'translate-x-[-4rem] opacity-0 pointer-events-none'
+        className={`absolute top-0 left-full ml-1 flex gap-0.5 px-2 bg-white/70 dark:bg-zinc-900/70 border border-gray-300/70 dark:border-zinc-700/70 shadow-md h-full items-center rounded-md 
+          transition-all duration-250 ease-out
+          ${
+            showIcons
+              ? 'translate-x-0 opacity-100 blur-0 backdrop-blur'
+              : 'translate-x-[-4rem] opacity-0 blur-sm'
           }`}
         style={{ transformOrigin: 'left' }}
       >
+        {/* Dark mode toggle */}
         <button
           onClick={() => handleIconClick('dark')}
           disabled={cooldown}
@@ -119,6 +123,7 @@ function NavBar() {
           )}
         </button>
 
+        {/* Music toggle */}
         <button
           onClick={() => handleIconClick('music')}
           disabled={cooldown}

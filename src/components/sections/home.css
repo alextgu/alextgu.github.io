@@ -61,11 +61,11 @@
 .alex-interactive {
   position: relative;
   display: inline-block;
-  padding: 12px 15px;
+  padding: 8px 10px;
   border-radius: 4px;
   transition: all 0.3s ease;
   font-family: inherit;
-  font-size: 1.1em;
+  font-size: 1em;
   background: linear-gradient(90deg, rgba(85, 85, 85, 0.5) 50%, transparent 50%),
               linear-gradient(90deg, rgba(128, 128, 128, 0.5) 50%, transparent 50%),
               linear-gradient(0deg, rgba(128, 128, 128, 0.5) 50%, transparent 50%),
@@ -74,6 +74,38 @@
   background-size: 15px 2px, 15px 2px, 2px 15px, 2px 15px;
   background-position: 0 0, 0 100%, 0 0, 100% 0;
   animation: dash 2s linear infinite;
+}
+
+/* Mobile-specific smaller box for Alex */
+@media (max-width: 640px) {
+  .alex-interactive {
+    padding: 0px 6px;
+    font-size: 1.3em;
+  }
+}
+
+/* Medium screens (640px to 1099px) */
+@media (min-width: 641px) and (max-width: 1099px) {
+  .alex-interactive {
+    padding: 5px 8px;
+    font-size: 1.2em;
+  }
+}
+
+/* Custom breakpoint (1100px to 1279px) */
+@media (min-width: 1100px) and (max-width: 1279px) {
+  .alex-interactive {
+    padding: 8px 10px;
+    font-size: 1.2em;
+  }
+}
+
+/* XL screens (1280px+) */
+@media (min-width: 1280px) {
+  .alex-interactive {
+    padding: 10px 12px;
+    font-size: 1.2em;
+  }
 }
 
 .alex-interactive.font-1 { font-family: 'Comic Sans MS', cursive; }
