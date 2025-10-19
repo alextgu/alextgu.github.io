@@ -34,6 +34,14 @@ const bucketListData = [
     status: "Not Yet",
     image: "/images/film.jpg",
   },
+  {
+    id: 5,
+    title: "Try 1000 different Noodle dishes",
+    description: "I'm Chinese and I never get tired of noodles. I literally like all types of noodles.",
+    rules: "1. Each dish must have a unique noodle type, sauce, or cooking style. 2. Different cuisines or signature flavors count; small topping changes don't. 3. Instant noodles count if the flavor or brand is distinct + Homemade dishes count if the recipe truly differs.",
+    status: "Not Yet",
+    image: "/images/noodle.jpg",
+  },
 ];
 
 export default function BucketList() {

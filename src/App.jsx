@@ -1,17 +1,17 @@
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
-import NavBar from './components/NavBar'; // ✅ Combined component
+import NavBar from './components/NavBar';
 import SocialBar from './components/SocialBar';
 import Home from './components/sections/home';
 import Projects from './components/sections/Projects';
 import Hobbies from './components/sections/Hobbies';
 import BucketList from './components/sections/BucketList';
 import Computer from './components/computer/Computer';
+import ProjectAWeek from './components/sections/ProjectAWeek'; // Add this
 
 function App() {
   return (
     <Router>
       <NavBar />
-      {/* SocialBar will only show on large screens and above */}
       <SocialBar className="hidden md:flex" />
 
       <Routes>
@@ -20,10 +20,10 @@ function App() {
         <Route path="/hobbies" element={<Hobbies />} />
         <Route path="/bucket-list" element={<BucketList />} />
         <Route path="/computer" element={<Computer />} />
+        <Route path="/projectaweek" element={<ProjectAWeek />} /> {/* Add this */}
       </Routes>
     </Router>
   );
 }
-
 
 export default App;

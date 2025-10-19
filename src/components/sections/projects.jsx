@@ -1,6 +1,6 @@
-import "./projects.css";
 import React, { useState, useEffect } from "react";
 import { ArrowUp, ArrowDown, Clock, Type, Star } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const projectsData = [
   { id: 1, name: 'Dynamic PP', year: 2024, description: 'BLAHBLAHBABSDBSADSA with dynamic difficulty scaling', tags: ['Web App', 'Tool'], icon: '/images/dynamic-pp-icon.png', image: '/images/dynamic-pp-screenshot.png' },
@@ -12,10 +12,16 @@ const projectsData = [
 ];
 
 function Projects() {
+  const navigate = useNavigate();
   const [sortOption, setSortOption] = useState("time");
   const [sortDirection, setSortDirection] = useState("desc");
   const [sortedProjects, setSortedProjects] = useState([]);
   const [selectedProject, setSelectedProject] = useState(null);
+  const [currentFeaturedIndex, setCurrentFeaturedIndex] = useState(0);
+
+  const featuredContent = [
+    { title: "Project a week challenge!", description: "Building and shipping a new project every week", link: "/projectaweek" }
+  ];
 
   const sortProjects = (option, direction) => {
     const sorted = [...projectsData];
@@ -54,19 +60,67 @@ function Projects() {
   return (
     <section className="min-h-screen pt-20 md:pt-24 lg:pt-32 px-4 sm:px-6 md:px-20 lg:px-20">
       <div className="max-w-6xl mx-auto">
-        <div className="max-w-4xl mb-12">
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-normal mb-3">Projects</h1>
-          <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 font-light mt-4 leading-relaxed">
-            I build things. Most suck, but here are some of the better ones.
-            <br />
-            Currently perfecting{" "}
-            <a
-              href=""
-              className="font-semibold text-gray-700 dark:text-gray-300 hover:text-gray-600 dark:hover:text-gray-400 transition-colors underline decoration-transparent hover:decoration-gray-600 dark:hover:decoration-gray-400 underline-offset-2"
+        <div className="flex flex-col md:flex-row md:items-start gap-8 mb-12">
+          <div className="flex-1">
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-normal mb-3">Projects</h1>
+            <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 font-light mt-4 leading-relaxed">
+              I build things. Most suck, but here are some of the better ones.
+              <br />
+              Currently perfecting{" "}
+              <a
+                href=""
+                className="font-semibold text-gray-700 dark:text-gray-300 hover:text-gray-600 dark:hover:text-gray-400 transition-colors underline decoration-transparent hover:decoration-gray-600 dark:hover:decoration-gray-400 underline-offset-2"
+              >
+                alextgu.github.io
+              </a>.
+            </p>
+          </div>
+
+          <div className="flex-1 md:flex md:flex-col md:justify-center">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-normal mb-4 text-gray-900 dark:text-white">Featured</h2>
+            <div 
+              onClick={() => navigate(featuredContent[currentFeaturedIndex].link)}
+              className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6 hover:border-gray-400 dark:hover:border-gray-500 transition-all duration-300 hover:shadow-md max-w-[280px] relative cursor-pointer"
             >
-              alextgu.github.io
-            </a>.
-          </p>
+              {featuredContent.length > 1 && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setCurrentFeaturedIndex((prev) => (prev + 1) % featuredContent.length);
+                  }}
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 p-1 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors z-10"
+                  aria-label="Next featured item"
+                >
+                  <ArrowDown size={16} className="transform rotate-[-90deg]" />
+                </button>
+              )}
+              <h3 className="text-lg font-medium mb-2 text-gray-900 dark:text-white">
+                {featuredContent[currentFeaturedIndex].title}
+              </h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                {featuredContent[currentFeaturedIndex].description}
+              </p>
+              <div className="flex items-center justify-center gap-3">
+                <div className="flex gap-1">
+                  {featuredContent.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setCurrentFeaturedIndex(index);
+                      }}
+                      className={`w-2 h-2 rounded-full transition-all ${
+                        index === currentFeaturedIndex
+                          ? "bg-gray-900 dark:bg-white w-6"
+                          : "bg-gray-300 dark:bg-gray-600"
+                      }`}
+                      aria-label={`Go to featured item ${index + 1}`}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* SORT BAR */}
@@ -121,17 +175,15 @@ function Projects() {
                 ))}
               </div>
 
-             {/* "View more →" text */}
-<div className="mt-4 flex items-center text-sm text-gray-500 dark:text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity animate-bounce-horizontal">
-  <span>View more →</span>
-</div>
+              <div className="mt-4 flex items-center text-sm text-gray-500 dark:text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                <span>View more →</span>
+              </div>
 
-{/* Project icon / thumbnail */}
-{project.icon && (
-  <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity animate-bounce-vertical">
-    <img src={project.icon} alt={`${project.name} icon`} className="w-8 h-8" />
-  </div>
-)}
+              {project.icon && (
+                <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <img src={project.icon} alt={`${project.name} icon`} className="w-8 h-8" />
+                </div>
+              )}
             </div>
           ))}
         </div>
