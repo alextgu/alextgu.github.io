@@ -123,7 +123,7 @@ function Projects() {
       // Sort by date string (YYYY-MM format)
       sorted.sort((a, b) => (direction === "asc" ? a.date.localeCompare(b.date) : b.date.localeCompare(a.date)));
     } else if (option === "az") {
-      sorted.sort((a, b) => (direction === "asc" ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name)));
+      sorted.sort((b, a) => (direction === "asc" ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name)));
     } else if (option === "professionalism") {
       // Sort by professionalism score (0-100)
       sorted.sort((a, b) => (direction === "asc" ? a.professionalism - b.professionalism : b.professionalism - a.professionalism));
