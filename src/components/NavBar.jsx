@@ -88,7 +88,7 @@ function NavBar() {
       {/* Arrow toggle button */}
       <button
         onClick={() => setShowIcons(!showIcons)}
-        className="ml-0.5 px-2 bg-white/70 dark:bg-zinc-900/70 border border-gray-300/70 dark:border-zinc-700/70 shadow-md hover:bg-gray-200/70 dark:hover:bg-zinc-800/70 transition flex items-center h-full rounded-md relative z-20"
+        className="ml-0.5 px-2 bg-white/70 dark:bg-zinc-900/70 border border-gray-300/70 dark:border-zinc-700/70 shadow-md hover:bg-gray-200/70 dark:hover:bg-zinc-800/70 transition flex items-center h-full rounded-md relative z-20 max-md:hidden"
       >
         <ChevronRight
           size={16}
@@ -101,7 +101,7 @@ function NavBar() {
       {/* Icon container with faster blur animation */}
       <div
         className={`absolute top-0 left-full ml-1 flex gap-0.5 px-2 bg-white/70 dark:bg-zinc-900/70 border border-gray-300/70 dark:border-zinc-700/70 shadow-md h-full items-center rounded-md 
-          transition-all duration-250 ease-out
+          transition-all duration-250 ease-out max-md:hidden
           ${
             showIcons
               ? 'translate-x-0 opacity-100 blur-0 backdrop-blur'
@@ -141,4 +141,4 @@ function NavBar() {
   );
 }
 
-export default NavBar;
+export default NavBar

@@ -1,3 +1,6 @@
+This is my personal website! It is a work in progress, but check it out if you're interested!
+alextgu.github.io
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
