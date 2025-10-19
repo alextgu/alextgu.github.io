@@ -265,7 +265,7 @@ function Home() {
         I need friends
       </span>
     </span>{' '}
-    📩 THIS WEBSITE IS NOT DONE
+    📩 
   </p>
 </div>
 

@@ -24,7 +24,7 @@ const projectsData = [
     description: 'Control your mouse by moving your iPhone around the room using motion sensors and click by elevation',
     longDescription: 'This project uses React Native to capture iPhone motion data and transmits it via WebSocket to control your computer cursor. The elevation changes allow you to click, making it a hands-free pointing device. Built during a hackathon in 24 hours.',
     tags: ['React Native', 'WebSocket', 'Hackathon'], 
-    icon: '/images/dynamic-pp-icon.png', 
+    icon: '/projects/stupid.jpg', 
     image: '/images/dynamic-pp-screenshot.png',
     screenshots: [
       '/images/dynamic-pp-screenshot.png',
@@ -47,6 +47,7 @@ const projectsData = [
     displayDate: '10/5/25',
     professionalism: 93,
     description: 'Draw regions on a 3D globe to analyze disaster impact on populations and infrastructure, with AI-powered insights', 
+    longDescription: 'DisasteRisk is an interactive web app that visualizes and assesses disaster impact zones worldwide. Users can explore a 3D globe, draw custom regions, and analyze key data to identify vulnerable areas and populations. By combining population, infrastructure, and risk data from multiple APIs, DisasteRisk generates fast, actionable insights for both real and simulated disasters. It helps first responders and relief teams quickly locate high-risk zones, allocate resources efficiently, and make data-driven decisions during emergencies. Was really bummed this one didn’t win, but I think in the end the project use significance wasn’t strong enough. I still believe it has lots of potential.',
     tags: ['React', 'API', 'Hackathon'], 
     icon: 'projects/htv.png', 
     image: 'projects/htv-ex.jpg', 
@@ -55,7 +56,8 @@ const projectsData = [
     lucideIcon: 'AlertTriangle',
     links: {
       github: 'https://github.com/alextgu/disasteRisk',
-      devpost: 'https://devpost.com/software/disasterisk'
+      devpost: 'https://devpost.com/software/disasterisk',
+      demo: 'https://www.youtube.com/watch?time_continue=1&v=5T6N-Y1boDg&embeds_referring_euri=https%3A%2F%2Fdevpost.com%2F&source_ve_path=Mjg2NjY'
     }
   },
   { 
@@ -83,10 +85,11 @@ const projectsData = [
     date: '2025-10-12',
     displayDate: '10/12/25',
     professionalism: 2,
-    description: 'Automatically posts your Google searches to Twitter in real-time as a statement on digital privacy', 
+    description: 'Automatically posts your Google searches to X (Twitter) in real-time for literally no reason at all', 
+    longDescription: 'Outcognito Mode is a live transparency bot that posts your Google searches to Twitter/X in real time. The bot monitors your active Chrome session and automatically posts batches of up to ten recent Google searches every 30 seconds. It only tracks searches while it’s running, so it won’t dig into your old history (thankfully). This is a Python remake of Harold Cooper’s 2017 Chrome extension of the same concept, which no longer exists on the Chrome Web Store. I really like making these "stupid" projects because it doesn’t feel like there are limitations :). My next "stupid" project will be even crazier and unique.',
     tags: ['Python', 'Twitter API'], 
     icon: '/projects/outcognito.png', 
-    image: '/projects/outcognito.png', 
+    image: '/projects/outcognito-ex.png', 
     gradientColor: 'from-slate-500/20 to-gray-500/20', 
     iconBg: 'from-slate-500 to-gray-500', 
     lucideIcon: 'Eye',
@@ -101,7 +104,7 @@ const projectsData = [
     displayDate: '01/3/25',
     professionalism: 20,
     description: 'Transform any image into "beautiful" ASCII art 😱',
-    longDescription: 'This was my first actual project! This was a very simple project that took me way too long and I am pretty sure I just ended up AIing it because it was too hard to understand. However, it taught me how to properly install stuff for my projects (I installed python library Pillow in a virtual environment!). I wanted a contrast of bad and good projects and since this is my very first I want to keep it here.',
+    longDescription: 'This was my first real project! It was a simple one, but it took me way longer than it should have and I’m pretty sure I ended up using AI to finish it because it was too hard to figure out at the time. Still, it taught me how to properly set up my environment and install dependencies (I installed the Python library Pillow in a virtual environment!). I wanted to show a contrast between my early and more polished projects, so I’m keeping this one here as a reminder of where I started.',
     tags: ['Python', 'Pillow'], 
     icon: '/projects/ascii.png', 
     image: '/projects/ascii.png', 
@@ -119,10 +122,10 @@ const projectsData = [
     displayDate: '02/15/25',
     professionalism: 90,
     description: 'AI course advisor that scrapes UofT course catalog and recommends personalized courses based on your interests',
-    longDescription: '',
+    longDescription: 'Pathway is a project that scrapes the UofT course list website and collects information from users about their interests. Using that data, the AI recommends the most suitable courses based on each user’s preferences. This was my first hackathon, and honestly, it set me back a bit in my coding journey. I missed the planning phase and got thrown into a project without even knowing the basics of Git! Despite contributing very little, I still slept less than two hours. In the end the experience humbled me and taught me how crucial proper planning is before jumping into a project.',
     tags: ['Next.js', 'OpenAI', 'Hackathon'], 
     icon: '/projects/dh.png', 
-    image: '/projects/dh.png', 
+    image: '', 
     gradientColor: 'from-indigo-500/20 to-blue-500/20', 
     iconBg: 'from-indigo-500 to-blue-500', 
     lucideIcon: 'GraduationCap',
