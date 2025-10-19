@@ -9,27 +9,42 @@ import { useNavigate } from "react-router-dom";
 // - date: Format as YYYY-MM for proper sorting
 // - displayDate: Format as MM/YY for display
 // - professionalism: Score 0-100 for professionalism meter
+// - description: Short description for card view
+// - longDescription: (OPTIONAL) Detailed description for modal
+// - screenshots: (OPTIONAL) Array of image URLs for gallery
+// - links: Add github, devpost, demo URLs (optional)
 const projectsData = [
   { 
     id: 1, 
     name: 'Dynamic PP', 
-    date: '2025-09',
-    displayDate: '09/25',
+    date: '2025-09-27',
+    displayDate: '09/27/25',
     professionalism: 9,
     hackathonWinner: true,
-    description: 'Control your mouse by moving your iPhone around the room using motion sensors and click by elevation', 
+    description: 'Control your mouse by moving your iPhone around the room using motion sensors and click by elevation',
+    longDescription: 'This project uses React Native to capture iPhone motion data and transmits it via WebSocket to control your computer cursor. The elevation changes allow you to click, making it a hands-free pointing device. Built during a hackathon in 24 hours.',
     tags: ['React Native', 'WebSocket', 'Hackathon'], 
     icon: '/images/dynamic-pp-icon.png', 
-    image: '/images/dynamic-pp-screenshot.png', 
+    image: '/images/dynamic-pp-screenshot.png',
+    screenshots: [
+      '/images/dynamic-pp-screenshot.png',
+      '/images/dynamic-pp-demo.png',
+      '/images/dynamic-pp-setup.png'
+    ],
     gradientColor: 'from-blue-500/20 to-cyan-500/20', 
     iconBg: 'from-blue-500 to-cyan-500', 
-    lucideIcon: 'Smartphone' 
+    lucideIcon: 'Smartphone',
+    links: {
+      github: 'https://github.com/alextgu/stupid_hacks',
+      devpost: 'https://devpost.com/software/dynamic-pp-positional-pointer',
+      demo: 'https://yourdemolink.com'
+    }
   },
   { 
     id: 2, 
     name: 'DisasteRisk*', 
-    date: '2025-10',
-    displayDate: '10/25',
+    date: '2025-10-05',
+    displayDate: '10/5/25',
     professionalism: 93,
     description: 'Draw regions on a 3D globe to analyze disaster impact on populations and infrastructure, with AI-powered insights', 
     tags: ['React', 'API', 'Hackathon'], 
@@ -37,13 +52,17 @@ const projectsData = [
     image: 'projects/htv-ex.jpg', 
     gradientColor: 'from-red-500/20 to-orange-500/20', 
     iconBg: 'from-red-500 to-orange-500', 
-    lucideIcon: 'AlertTriangle' 
+    lucideIcon: 'AlertTriangle',
+    links: {
+      github: 'https://github.com/alextgu/disasteRisk',
+      devpost: 'https://devpost.com/software/disasterisk'
+    }
   },
   { 
     id: 3, 
     name: 'TrueCount', 
-    date: '2025-09',
-    displayDate: '09/25',
+    date: '2025-09-14',
+    displayDate: '09/14/25',
     professionalism: 94,
     hackathonWinner: true,
     description: 'Privacy-first voting system where votes are cryptographically hidden, then revealed and locked on-chain forever', 
@@ -52,13 +71,17 @@ const projectsData = [
     image: '/public/projects/htn.jpeg', 
     gradientColor: 'from-purple-500/20 to-pink-500/20', 
     iconBg: 'from-purple-500 to-pink-500', 
-    lucideIcon: 'Vote' 
+    lucideIcon: 'Vote',
+    links: {
+      github: 'https://github.com/MartinPatr/TrueCount',
+      devpost: 'https://devpost.com/software/truecount',
+    }
   },
   { 
     id: 4, 
     name: 'Outcognito Mode', 
-    date: '2025-10',
-    displayDate: '10/25',
+    date: '2025-10-12',
+    displayDate: '10/12/25',
     professionalism: 2,
     description: 'Automatically posts your Google searches to Twitter in real-time as a statement on digital privacy', 
     tags: ['Python', 'Twitter API'], 
@@ -66,35 +89,47 @@ const projectsData = [
     image: '/projects/outcognito.png', 
     gradientColor: 'from-slate-500/20 to-gray-500/20', 
     iconBg: 'from-slate-500 to-gray-500', 
-    lucideIcon: 'Eye' 
+    lucideIcon: 'Eye',
+    links: {
+      github: 'https://github.com/alextgu/outcognito'
+    }
   },
   { 
     id: 5, 
     name: 'ASCII Art Converter', 
-    date: '2025-01',
-    displayDate: '01/25',
+    date: '2025-01-03',
+    displayDate: '01/3/25',
     professionalism: 20,
-    description: 'Transform any image into beautiful ASCII art with customizable character sets', 
+    description: 'Transform any image into "beautiful" ASCII art 😱',
+    longDescription: 'This was my first actual project! This was a very simple project that took me way too long and I am pretty sure I just ended up AIing it because it was too hard to understand. However, it taught me how to properly install stuff for my projects (I installed python library Pillow in a virtual environment!). I wanted a contrast of bad and good projects and since this is my very first I want to keep it here.',
     tags: ['Python', 'Pillow'], 
     icon: '/projects/ascii.png', 
     image: '/projects/ascii.png', 
     gradientColor: 'from-green-500/20 to-emerald-500/20', 
     iconBg: 'from-green-500 to-emerald-500', 
-    lucideIcon: 'Image' 
+    lucideIcon: 'Image',
+    links: {
+      github: 'https://github.com/alextgu/ASCII-Art-Converter'
+    }
   },
   { 
     id: 6, 
     name: 'Pathway', 
-    date: '2025-02',
-    displayDate: '02/25',
+    date: '2025-02-15',
+    displayDate: '02/15/25',
     professionalism: 90,
-    description: 'AI course advisor that scrapes UofT course catalog and recommends personalized courses based on your interests', 
+    description: 'AI course advisor that scrapes UofT course catalog and recommends personalized courses based on your interests',
+    longDescription: '',
     tags: ['Next.js', 'OpenAI', 'Hackathon'], 
     icon: '/projects/dh.png', 
     image: '/projects/dh.png', 
     gradientColor: 'from-indigo-500/20 to-blue-500/20', 
     iconBg: 'from-indigo-500 to-blue-500', 
-    lucideIcon: 'GraduationCap' 
+    lucideIcon: 'GraduationCap',
+    links: {
+      github: 'https://github.com/alextgu/Pathway_App',
+      devpost: 'https://devpost.com/software/pathway-9ne2sq'
+    }
   },
 ];
 
@@ -164,7 +199,7 @@ function Projects() {
           <div className="flex-1">
             <h1 className="text-5xl sm:text-6xl lg:text-7xl font-normal mb-3">Projects</h1>
             <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 font-light mt-4 leading-relaxed">
-              I build things. Most suck, here is a random batch of my projects.
+              I build things. Most suck, here are some of them.
               <br />
               Currently perfecting{" "}
               <a
@@ -356,8 +391,8 @@ function Projects() {
                       );
                     })}
                   </div>
-
-                  {/* FOOTER WITH IMAGE ICON AND EXPLORE BUTTON */}
+                
+{/* FOOTER WITH IMAGE ICON AND EXPLORE BUTTON */}
                   <div className="flex items-center justify-between mt-4">
                     {/* LEFT: Project image icon */}
                     {project.icon && (
@@ -386,7 +421,7 @@ function Projects() {
           onClick={() => setSelectedProject(null)}
         >
           <div
-            className="bg-white dark:bg-gray-800 rounded-2xl max-w-4xl w-full shadow-2xl overflow-hidden"
+            className="bg-white dark:bg-gray-800 rounded-2xl max-w-4xl w-full shadow-2xl overflow-hidden max-h-[90vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="relative bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 p-8">
@@ -409,9 +444,80 @@ function Projects() {
                   />
                 </div>
               )}
-              <p className="text-base text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
-                {selectedProject.description}
-              </p>
+              
+              <div className="mb-6">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">About</h3>
+                <p className="text-base text-gray-600 dark:text-gray-300 leading-relaxed">
+                  {selectedProject.longDescription || selectedProject.description}
+                </p>
+              </div>
+
+              {selectedProject.links && Object.keys(selectedProject.links).length > 0 && (
+                <div className="mb-6">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Links</h3>
+                  <div className="flex flex-wrap gap-3">
+                    {selectedProject.links.github && (
+                      <a
+                        href={selectedProject.links.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 px-4 py-2 bg-gray-900 dark:bg-gray-700 text-white rounded-lg hover:bg-gray-800 dark:hover:bg-gray-600 transition-colors font-medium"
+                      >
+                        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                          <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" />
+                        </svg>
+                        GitHub
+                      </a>
+                    )}
+                    {selectedProject.links.devpost && (
+                      <a
+                        href={selectedProject.links.devpost}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 px-4 py-2 bg-blue-600 dark:bg-blue-700 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors font-medium"
+                      >
+                        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M6.002 1.61L0 12.004 6.002 22.39h11.996L24 12.004 17.998 1.61H6.002zm1.593 4.084h3.947c3.605 0 6.276 1.695 6.276 6.31 0 4.436-3.21 6.302-6.456 6.302H7.595V5.694zm2.517 2.449v7.714h1.241c2.646 0 3.862-1.55 3.862-3.861.009-2.569-1.096-3.853-3.767-3.853H10.112z"/>
+                        </svg>
+                        Devpost
+                      </a>
+                    )}
+                    {selectedProject.links.demo && (
+                      <a
+                        href={selectedProject.links.demo}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 px-4 py-2 bg-green-600 dark:bg-green-700 text-white rounded-lg hover:bg-green-700 dark:hover:bg-green-600 transition-colors font-medium"
+                      >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                        Live Demo
+                      </a>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              <div className="flex flex-wrap gap-2 mb-6">
+                {selectedProject.tags.map((tag, index) => {
+                  const isHackathon = tag === 'Hackathon' && selectedProject.hackathonWinner;
+                  return (
+                    <span
+                      key={index}
+                      className={`text-sm px-3 py-1.5 rounded-full font-medium ${
+                        isHackathon 
+                          ? 'bg-gradient-to-r from-yellow-400 to-orange-400 text-gray-900 font-semibold'
+                          : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+                      }`}
+                    >
+                      {isHackathon && <Trophy size={14} className="inline-block mr-1 mb-0.5" />}
+                      {isHackathon ? `${tag} Winner` : tag}
+                    </span>
+                  );
+                })}
+              </div>
+
               <button
                 onClick={() => setSelectedProject(null)}
                 className="w-full mt-3 px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors font-medium"
