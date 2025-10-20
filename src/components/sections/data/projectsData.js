@@ -13,16 +13,16 @@ export const projectsData = [
       your computer cursor. The elevation changes allow you to click, making it a hands-free pointing device. Built during a hackathon in 24 hours.',
       tags: ['React Native', 'WebSocket', 'Hackathon'], 
       icon: '/projects/stupid.jpg', 
-      image: '/images/dynamic-pp-screenshot.png',
-      screenshots: [],
-      screenshotCaptions: [],
+      image: '',
+      screenshots: ["/projects/stupid1.jpeg"],
+      screenshotCaptions: ["Me with: Satyam Singh"],
       gradientColor: 'from-blue-500/20 to-cyan-500/20', 
       iconBg: 'from-blue-500 to-cyan-500', 
       lucideIcon: 'Smartphone',
       links: {
         github: 'https://github.com/alextgu/stupid_hacks',
         devpost: 'https://devpost.com/software/dynamic-pp-positional-pointer',
-        demo: 'https://yourdemolink.com'
+        demo: 'https://www.youtube.com/watch?time_continue=1&v=2xY7A5fn3Zw&embeds_referring_euri=https%3A%2F%2Fdevpost.com%2F&source_ve_path=Mjg2NjY'
       },
       alexScale: 94,
     },
@@ -62,17 +62,24 @@ export const projectsData = [
       professionalism: 94,
       hackathonWinner: true,
       description: 'Privacy-first voting system where votes are cryptographically hidden, then revealed and locked on-chain forever', 
+      longDescription: 'TrueCount is a decentralized, phase-based voting system that ensures fair and transparent elections by replacing \
+      human moderators with verifiable smart contracts. Built on Ethereum, it uses a commit–reveal–finalize process where votes are first \
+      hidden with a cryptographic hash, then revealed and permanently recorded on-chain. This design guarantees privacy, integrity, and \
+      transparency—every vote is private during the commit phase, mathematically verified during reveal, and forever auditable after finalization.\
+      This was one of the best events I’ve been to. I was easily one of the least experienced people at the event, but the even thaught me so much about tech, jobs \
+      and even building my self confidence to speak and network. Met a lot of amazing people and got so much free swag.',
       tags: ['Blockchain', 'Ethereum', 'Hackathon'], 
       icon: 'projects/htn.jpeg', 
-      image: '/projects/htn.jpeg', 
+      image: 'projects/htnimage.jpg', 
       gradientColor: 'from-purple-500/20 to-pink-500/20', 
       iconBg: 'from-purple-500 to-pink-500', 
       lucideIcon: 'Vote',
-      screenshots: ["/projects/htn1.JPG"],
-      screenshotCaptions: ["Team"],
+      screenshots: ["/projects/htn1.JPG", "/projects/htn2.jpeg"],
+      screenshotCaptions: ["Team", "Lettuce eating compeitition (I placed second out of ~20)"],
       links: {
         github: 'https://github.com/MartinPatr/TrueCount',
         devpost: 'https://devpost.com/software/truecount',
+        demo: 'https://www.youtube.com/watch?v=DhhBWVDUrU4',
       },
       alexScale: 96,
     },
@@ -91,7 +98,7 @@ export const projectsData = [
          will be even crazier and unique.',
       tags: ['Python', 'Twitter API'], 
       icon: '/projects/outcognito.png', 
-      image: '/projects/outcognito-ex.png', 
+      image: '', 
       gradientColor: 'from-slate-500/20 to-gray-500/20', 
       iconBg: 'from-slate-500 to-gray-500', 
       lucideIcon: 'Eye',

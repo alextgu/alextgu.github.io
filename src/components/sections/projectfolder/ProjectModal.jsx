@@ -68,29 +68,35 @@ function ProjectModal({ project, onClose }) {
           </div>
 
           {/* SCREENSHOTS GALLERY */}
-          {project.screenshots && project.screenshots.length > 0 && (
-            <div className="mb-6">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Images</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {project.screenshots.map((screenshot, index) => (
-                  <div key={index} className="relative rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 group">
-                    <img
-                      src={screenshot}
-                      alt={`${project.name} screenshot ${index + 1}`}
-                      className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                      <span className="text-white text-sm font-medium px-4 py-2 bg-black/40 rounded-lg backdrop-blur-sm">
-                        {project.screenshotCaptions && project.screenshotCaptions[index] 
-                          ? project.screenshotCaptions[index] 
-                          : 'Click to enlarge'}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+{project.screenshots && project.screenshots.length > 0 && (
+  <div className="mb-6">
+    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+      Images
+    </h3>
+    <div className="flex flex-wrap justify-center gap-4">
+      {project.screenshots.map((screenshot, index) => (
+        <div
+          key={index}
+          className="relative rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 group"
+          style={{ maxWidth: '100%' }}
+        >
+          <img
+            src={screenshot}
+            alt={`${project.name} screenshot ${index + 1}`}
+            className="object-contain max-w-full h-auto rounded-lg"
+          />
+          <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+            <span className="text-white text-sm font-medium px-4 py-2 bg-black/40 rounded-lg backdrop-blur-sm">
+              {project.screenshotCaptions && project.screenshotCaptions[index]
+                ? project.screenshotCaptions[index]
+                : 'Click to enlarge'}
+            </span>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+)}
 
           {/* LINKS */}
           {project.links && Object.keys(project.links).length > 0 && (
@@ -133,7 +139,7 @@ function ProjectModal({ project, onClose }) {
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                     </svg>
-                    Live Demo
+                    Demo
                   </a>
                 )}
               </div>
