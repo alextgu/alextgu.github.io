@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { toast } from 'react-hot-toast';
 import { Link, useLocation } from 'react-router-dom';
 import { Sun, Moon, Volume2, VolumeX, ChevronRight } from 'lucide-react';
 import './NavBar.css';
@@ -27,6 +28,9 @@ function NavBar() {
     { name: 'Bucket List', href: '/bucket-list' },
   ];
 
+  // --------------------------
+  // Handle icon clicks
+  // --------------------------
   const handleIconClick = (type) => {
     if (cooldown) return;
     setCooldown(true);
@@ -34,8 +38,20 @@ function NavBar() {
 
     if (type === 'dark') {
       setIsDarkMode(!isDarkMode);
+      toast(
+        <div className="flex items-center gap-2">
+          {isDarkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+          <span>{isDarkMode ? 'Dark mode disabled' : 'Dark mode enabled'}</span>
+        </div>
+      );
     } else if (type === 'music') {
       setIsMusicOn(!isMusicOn);
+      toast(
+        <div className="flex items-center gap-2">
+          {!isMusicOn ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
+          <span>{!isMusicOn ? 'Music turned on' : 'Music turned off'}</span>
+        </div>
+      );
     }
   };
 
@@ -93,12 +109,12 @@ function NavBar() {
         <ChevronRight
           size={16}
           className={`text-gray-400 dark:text-zinc-500 transition-transform duration-150 ${
-            showIcons ? 'rotate-90' : 'rotate-0'
+            showIcons ? 'rotate-180' : 'rotate-0'
           }`}
         />
       </button>
 
-      {/* Icon container with faster blur animation */}
+      {/* Icon container */}
       <div
         className={`absolute top-0 left-full ml-1 flex gap-0.5 px-2 bg-white/70 dark:bg-zinc-900/70 border border-gray-300/70 dark:border-zinc-700/70 shadow-md h-full items-center rounded-md 
           transition-all duration-250 ease-out max-md:hidden
@@ -141,4 +157,4 @@ function NavBar() {
   );
 }
 
-export default NavBar
+export default NavBar;
