@@ -55,7 +55,11 @@ function Home() {
   // Rotating words
   // --------------------------
   const rotatingWords = [
-    '"cool"', '"dumb"', '"poopy"', '"sigma"', '"goofy"', '"epic"', '"wild"', '🥭'
+    '"cool"', '"dumb"', '"poopy"', '"sigma"', '"goofy"', '"epic"', '"wild"', '"cool"', '"dumb"', '"poopy"', '"sigma"', '"goofy"', '"epic"', '"wild"',
+    '"cool"', '"dumb"', '"poopy"', '"sigma"', '"goofy"', '"epic"', '"wild"','"cool"', '"dumb"', '"poopy"', '"sigma"', '"goofy"', '"epic"', '"wild"',
+    '"cool"', '"dumb"', '"poopy"', '"sigma"', '"goofy"', '"epic"', '"wild"','"cool"', '"dumb"', '"poopy"', '"sigma"', '"goofy"', '"epic"', '"wild"',
+    '"cool"', '"dumb"', '"poopy"', '"sigma"', '"goofy"', '"epic"', '"wild"','"cool"', '"dumb"', '"poopy"', '"sigma"', '"goofy"', '"epic"', '"wild"',
+    '"cool"', '"dumb"', '"poopy"', '"sigma"', '"goofy"', '"epic"', '"wild"','"cool"', '"dumb"', '"poopy"', '"sigma"', '"goofy"', '"epic"', '"wild"','🥭'
   ];
   const [wordIndex, setWordIndex] = useState(0);
 

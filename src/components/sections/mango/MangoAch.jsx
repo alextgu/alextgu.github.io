@@ -10,9 +10,8 @@ export default function MangoAchievements({ onClose }) {
     { id: 'intro', title: 'First Bite', description: 'Find your first hidden mango!', icon: '/mango1.png', difficulty: 'easy' },
     { id: 'explorer', title: 'Explorer', description: 'Discover 3 mangoes across the site.', icon: '/mango2.png', difficulty: 'medium' },
     { id: 'collector', title: 'Collector', description: 'Collect all available mangoes!', icon: '/mango3.png', difficulty: 'hard' },
-    { id: 'hidden-paths', title: 'Hidden Paths', description: 'Find mangoes in secret sections.', icon: '/mango4.png', difficulty: 'medium' },
-    { id: 'dedicated', title: 'Dedicated Seeker', description: 'Return to check achievements multiple times.', icon: '/mango5.png', difficulty: 'easy' },
-    { id: 'master', title: 'Mango Master', description: 'Achieve 100% mango completion.', icon: '/mango6.png', difficulty: 'hard' },
+    { id: 'hidden-paths', title: 'Lucky Mango', description: 'A lucky mango might appear at home', icon: '/mango4.png', difficulty: 'easy' },
+    { id: 'dedicated', title: 'Mango Clicker', description: 'Click around and mangoes might appear.', icon: '/mango5.png', difficulty: 'easy' },
   ];
 
   const getDifficultyColor = (difficulty) => {
