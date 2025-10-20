@@ -55,19 +55,25 @@ function Home() {
   // Rotating words
   // --------------------------
   const rotatingWords = [
-    '"cool"', '"dumb"', '"poopy"', '"sigma"', '"goofy"', '"epic"', '"wild"', '"cool"', '"dumb"', '"poopy"', '"sigma"', '"goofy"', '"epic"', '"wild"',
-    '"cool"', '"dumb"', '"poopy"', '"sigma"', '"goofy"', '"epic"', '"wild"','"cool"', '"dumb"', '"poopy"', '"sigma"', '"goofy"', '"epic"', '"wild"',
-    '"cool"', '"dumb"', '"poopy"', '"sigma"', '"goofy"', '"epic"', '"wild"','"cool"', '"dumb"', '"poopy"', '"sigma"', '"goofy"', '"epic"', '"wild"',
-    '"cool"', '"dumb"', '"poopy"', '"sigma"', '"goofy"', '"epic"', '"wild"','"cool"', '"dumb"', '"poopy"', '"sigma"', '"goofy"', '"epic"', '"wild"',
-    '"cool"', '"dumb"', '"poopy"', '"sigma"', '"goofy"', '"epic"', '"wild"','"cool"', '"dumb"', '"poopy"', '"sigma"', '"goofy"', '"epic"', '"wild"','🥭'
+    '"cool" ', '"dumb" ', '"poopy" ', '"sigma" ', '"goofy" ', '"epic" ', '"wild" ', '"cool" ', '"dumb" ', '"poopy" ', '"sigma" ', '"goofy" ', '"epic" ', '"wild" ',
+    '"cool" ', '"dumb" ', '"poopy" ', '"sigma" ', '"goofy" ', '"epic" ', '"wild" ','"cool" ', '"dumb" ', '"poopy" ', '"sigma" ', '"goofy" ', '"epic" ', '"wild" ',
+    '"cool" ', '"dumb" ', '"poopy" ', '"sigma" ', '"goofy" ', '"epic" ', '"wild" ','"cool" ', '"dumb" ', '"poopy" ', '"sigma" ', '"goofy" ', '"epic" ', '"wild" ',
+    '"cool" ', '"dumb" ', '"poopy" ', '"sigma" ', '"goofy" ', '"epic" ', '"wild" ','"cool" ', '"dumb" ', '"poopy" ', '"sigma" ', '"goofy" ', '"epic" ', '"wild" ',
+    '🥭 '
   ];
   const [wordIndex, setWordIndex] = useState(0);
 
   // 🥭 Secret #2: click counter for mango unlock
   const [clickCount, setClickCount] = useState(0);
   const handleWordClick = () => {
-    setWordIndex((prev) => (prev + 1) % rotatingWords.length);
+    const nextIndex = (wordIndex + 1) % rotatingWords.length;
+    setWordIndex(nextIndex);
     setClickCount((prev) => prev + 1);
+  
+    // If the current word is the mango, collect it
+    if (rotatingWords[wordIndex] === '🥭' && !isCollected('word-mango')) {
+      collectMango('word-mango');
+    }
   };
 
   useEffect(() => {
@@ -250,11 +256,17 @@ function Home() {
               </Link>{' '}
               and building{' '}
               <span
-                className="interactive-word-wrapper cursor-pointer"
-                onClick={handleWordClick}
-              >
-                {rotatingWords[wordIndex]}
-              </span>{' '}
+  className="interactive-word-wrapper cursor-pointer"
+  onClick={() => {
+    handleWordClick();
+    if (clickCount + 1 === 7 && !isCollected('word-mango')) {
+      collectMango('word-mango');
+    }
+  }}
+>
+  {rotatingWords[wordIndex]}
+</span>
+
               <Link to="/projects">
                 <span className="highlight-word highlight-blue text-gray-900 dark:text-white">
                   projects.
@@ -305,17 +317,18 @@ function Home() {
           </div>
         </div>
 
-        {/* 🥭 Secret Mango #1 - Random */}
-        {showRandomMango && (
-          <motion.div
-            className="absolute bottom-24 right-16 text-3xl cursor-pointer select-none"
-            whileHover={{ scale: 1.2, rotate: 15 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={() => collectMango('random-mango')}
-          >
-            🥭
-          </motion.div>
-        )}
+      {/* 🥭 Secret Mango #1 - Random (clickable only) */}
+{!isCollected('random-mango') && showRandomMango && (
+  <motion.div
+    className="absolute bottom-24 right-16 text-3xl cursor-pointer select-none"
+    whileHover={{ scale: 1.2, rotate: 15 }}
+    whileTap={{ scale: 0.9 }}
+    onClick={() => collectMango('random-mango')}
+  >
+    🥭
+  </motion.div>
+)}
+
       </section>
     </>
   );

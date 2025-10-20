@@ -34,7 +34,7 @@ export function MangoProvider({ children }) {
         collectMango,
         isCollected,
         showMangoModal,
-        setShowMangoModal, // allow global control
+        setShowMangoModal,
       }}
     >
       {children}
