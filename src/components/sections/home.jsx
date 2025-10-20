@@ -2,11 +2,14 @@ import { useState, useEffect, useRef } from 'react';
 import './styles/home.css';
 import { Link } from 'react-router-dom';
 import Computer from '../computer/Computer';
+import { useMango } from '@/context/MangoContext';
+import { motion } from 'framer-motion';
+import Mango from '@/components/sections/Mango/mango';
+
 
 function Home() {
-  // --------------------------
-  // ✅ Show mobile popup only first time
-  // --------------------------
+  const { collectMango, isCollected } = useMango();
+
   const [showMobileWarning, setShowMobileWarning] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -15,7 +18,6 @@ function Home() {
     checkMobile();
     window.addEventListener('resize', checkMobile);
 
-    // Check localStorage for first-time popup
     const hasSeenPopup = localStorage.getItem('hasSeenMobileWarning');
     if (!hasSeenPopup && window.innerWidth < 768) {
       setShowMobileWarning(true);
@@ -56,8 +58,19 @@ function Home() {
     '"cool"', '"dumb"', '"poopy"', '"sigma"', '"goofy"', '"epic"', '"wild"', '🥭'
   ];
   const [wordIndex, setWordIndex] = useState(0);
-  const handleWordClick = () =>
+
+  // 🥭 Secret #2: click counter for mango unlock
+  const [clickCount, setClickCount] = useState(0);
+  const handleWordClick = () => {
     setWordIndex((prev) => (prev + 1) % rotatingWords.length);
+    setClickCount((prev) => prev + 1);
+  };
+
+  useEffect(() => {
+    if (clickCount === 7 && !isCollected('word-mango')) {
+      collectMango('word-mango');
+    }
+  }, [clickCount, collectMango, isCollected]);
 
   // --------------------------
   // Alex hover font cycling
@@ -138,6 +151,20 @@ function Home() {
     return () => clearTimeout(timeout);
   }, []);
 
+  // 🥭 Secret #1: Randomly appearing mango
+  const [showRandomMango, setShowRandomMango] = useState(false);
+  useEffect(() => {
+    if (!isCollected('random-mango')) {
+      const chance = Math.random();
+      if (chance < 0.15) {
+        // 15% chance to appear on load
+        setShowRandomMango(true);
+        const timer = setTimeout(() => setShowRandomMango(false), 10000);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [isCollected]);
+
   return (
     <>
       {/* Mobile Warning Popup */}
@@ -169,108 +196,97 @@ function Home() {
       )}
 
       {/* Main Section */}
-      <section id="home" className="min-h-screen pt-24">
-      <div className="grid grid-cols-1 custom:grid-cols-2 lg:grid-cols-2 gap-12 items-start w-full">
+      <section id="home" className="min-h-screen pt-24 relative">
+        <div className="grid grid-cols-1 custom:grid-cols-2 lg:grid-cols-2 gap-12 items-start w-full">
 
+          {/* Left: Text Content */}
+          <div className="space-y-6 sm:space-y-12 px-6 sm:pl-6 md:pl-20 lg:pl-15">
 
-         {/* Left: Text Content */}
-         <div className="space-y-6 sm:space-y-12 px-6 sm:pl-6 md:pl-20 lg:pl-15">
+            <div>
+              <h1 className="text-3xl sm:text-[48px] custom:text-[60px] xl:text-[68px] font-normal text-gray-400 dark:text-zinc-500 leading-tight sm:leading-[5rem]">
+                Hi, I'm{' '}
+                <span
+                  className={`alex-interactive text-gray-900 dark:text-white ${fonts[alexFont]} inline-block`}
+                  onMouseEnter={() => setIsHovering(true)}
+                  onMouseLeave={() => setIsHovering(false)}
+                >
+                  Alex
+                </span>{' '}
+                <span className={wave ? 'hand-wave' : ''}>👋</span>
+              </h1>
 
-  <div>
-    {/* Header */}
-    <h1 className="text-3xl sm:text-[48px] custom:text-[60px] xl:text-[68px] font-normal text-gray-400 dark:text-zinc-500 leading-tight sm:leading-[5rem]">
-      Hi, I'm{' '}
-      <span
-        className={`alex-interactive text-gray-900 dark:text-white ${fonts[alexFont]} inline-block`}
-        onMouseEnter={() => setIsHovering(true)}
-        onMouseLeave={() => setIsHovering(false)}
-      >
-        Alex
-      </span>{' '}
-      <span className={wave ? 'hand-wave' : ''}>👋</span>
-    </h1>
+              <p className="text-base sm:text-[20px] custom:text-[22px] xl:text-2xl font-light text-gray-700 dark:text-zinc-300 mt-1 sm:mt-2 tracking-tight leading-relaxed sm:leading-normal">
+                Welcome to my personal{' '}
+                <span className="font-medium text-gray-900 dark:text-white border-b border-dotted border-gray-400">
+                  {typedText}
+                  {emoji}
+                  <span className="typing-cursor">|</span>
+                </span>
+              </p>
+            </div>
 
-    {/* Typing subtitle */}
-    <p className="text-base sm:text-[20px] custom:text-[22px] xl:text-2xl font-light text-gray-700 dark:text-zinc-300 mt-1 sm:mt-2 tracking-tight leading-relaxed sm:leading-normal">
-      Welcome to my personal{' '}
-      <span className="font-medium text-gray-900 dark:text-white border-b border-dotted border-gray-400">
-        {typedText}
-        {emoji}
-        <span className="typing-cursor">|</span>
-      </span>
-    </p>
-  </div>
+            <p className="text-lg sm:text-[27px] custom:text-[30px] xl:text-[30px] font-normal text-gray-400 dark:text-zinc-500 leading-relaxed custom:leading-snug">
+              I love playing{' '}
+              <Link to="/hobbies">
+                <span className="highlight-word highlight-green text-gray-900 dark:text-white cursor-pointer">
+                  sports,
+                </span>
+              </Link>{' '}
+              experimenting with{' '}
+              <Link to="/hobbies">
+                <span className="highlight-word highlight-green text-gray-900 dark:text-white">
+                  cinematography,
+                </span>
+              </Link>{' '}
+              eating{' '}
+              <Link to="/hobbies">
+                <span className="highlight-word highlight-green text-gray-900 dark:text-white">
+                  noodles 🍜
+                </span>
+              </Link>{' '}
+              and building{' '}
+              <span
+                className="interactive-word-wrapper cursor-pointer"
+                onClick={handleWordClick}
+              >
+                {rotatingWords[wordIndex]}
+              </span>{' '}
+              <Link to="/projects">
+                <span className="highlight-word highlight-blue text-gray-900 dark:text-white">
+                  projects.
+                </span>
+              </Link>{' '}
+              One day, I will throw out the{' '}
+              <Link to="/bucket-list">
+                <span className="highlight-word highlight-rose text-gray-900 dark:text-white">
+                  first pitch
+                </span>
+              </Link>{' '}
+              at an MLB game.
+            </p>
 
-  {/* Body text */}
-  <p className="text-lg sm:text-[27px] custom:text-[30px] xl:text-[30px] font-normal text-gray-400 dark:text-zinc-500 leading-relaxed custom:leading-snug">
-    I love playing{' '}
-    <Link to="/hobbies">
-      <span className="relative inline-block group">
-        <span className="highlight-word highlight-green text-gray-900 dark:text-white cursor-pointer">
-          sports,
-        </span>
-        <span className="hidden sm:block absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 opacity-0 w-max px-2 py-1 text-sm text-gray-900 bg-white border border-gray-300 rounded-md pointer-events-none shadow-md transition-opacity duration-300 delay-400 group-hover:opacity-100">
-          Baseball, Basketball, Volleyball, Ultimate Frisbee, Badminton etc
-        </span>
-      </span>
-    </Link>{' '}
-    experimenting with{' '}
-    <Link to="/hobbies">
-      <span className="highlight-word highlight-green text-gray-900 dark:text-white">
-        cinematography,
-      </span>
-    </Link>{' '}
-    eating{' '}
-    <Link to="/hobbies">
-      <span className="highlight-word highlight-green text-gray-900 dark:text-white">
-        noodles 🍜
-      </span>
-    </Link>{' '}
-    and building{' '}
-    <span
-      className="interactive-word-wrapper cursor-pointer"
-      onClick={handleWordClick}
-    >
-      {rotatingWords[wordIndex]}
-    </span>{' '}
-    <Link to="/projects">
-      <span className="highlight-word highlight-blue text-gray-900 dark:text-white">
-        projects.
-      </span>
-    </Link>{' '}
-    One day, I will throw out the{' '}
-    <Link to="/bucket-list">
-      <span className="highlight-word highlight-rose text-gray-900 dark:text-white">
-        first pitch
-      </span>
-    </Link>{' '}
-    at an MLB game.
-  </p>
+            <p className="text-lg sm:text-[27px] custom:text-[28px] xl:text-[30px] font-normal text-gray-400 dark:text-zinc-500 leading-relaxed custom:leading-snug">
+              <a>
+                I'm currently helping organize the first{' '}
+                <span className="highlight-word highlight-purple text-gray-900 dark:text-white">
+                  Chinese Canadian Film Festival.
+                </span>
+              </a>{' '}
+              If you want to{' '}
+              <span className="any-reason">(for any reason)</span> reach out, please{' '}
+              <span className="relative inline-block group">
+                <span className="highlight-word highlight-yellow text-gray-900 dark:text-white cursor-pointer">
+                  contact me!
+                </span>
+                <span className="absolute top-full left-1/2 -translate-x-1/2 mt-1 opacity-0 w-max px-2 py-1 text-sm text-gray-900 bg-white border border-gray-300 rounded-md pointer-events-none shadow-md transition-opacity duration-300 delay-400 group-hover:opacity-100">
+                  I need friends
+                </span>
+              </span>{' '}
+              📩
+            </p>
+          </div>
 
-  {/* Chinese Canadian Film Festival */}
-  <p className="text-lg sm:text-[27px] custom:text-[28px] xl:text-[30px] font-normal text-gray-400 dark:text-zinc-500 leading-relaxed custom:leading-snug">
-    <a>
-      I'm currently helping organize the first{' '}
-      <span className="highlight-word highlight-purple text-gray-900 dark:text-white">
-        Chinese Canadian Film Festival.
-      </span>
-    </a>{' '}
-    If you want to{' '}
-    <span className="any-reason">(for any reason)</span> reach out, please{' '}
-    <span className="relative inline-block group">
-      <span className="highlight-word highlight-yellow text-gray-900 dark:text-white cursor-pointer">
-        contact me!
-      </span>
-      <span className="absolute top-full left-1/2 -translate-x-1/2 mt-1 opacity-0 w-max px-2 py-1 text-sm text-gray-900 bg-white border border-gray-300 rounded-md pointer-events-none shadow-md transition-opacity duration-300 delay-400 group-hover:opacity-100">
-        I need friends
-      </span>
-    </span>{' '}
-    📩 
-  </p>
-</div>
-
-
-          {/* Right: Laptop image */}
+          {/* Right: Laptop */}
           <div className="hidden custom:flex flex-col justify-center items-center text-center">
             <h3 className="mb-4 text-xs md:text-sm">
               Click for work, website history and contact! A better design is being worked on!
@@ -284,6 +300,18 @@ function Home() {
             </Link>
           </div>
         </div>
+
+        {/* 🥭 Secret Mango #1 - Random */}
+        {showRandomMango && (
+          <motion.div
+            className="absolute bottom-24 right-16 text-3xl cursor-pointer select-none"
+            whileHover={{ scale: 1.2, rotate: 15 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => collectMango('random-mango')}
+          >
+            🥭
+          </motion.div>
+        )}
       </section>
     </>
   );

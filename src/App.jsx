@@ -6,41 +6,46 @@ import Projects from './components/sections/projectfolder/Projects';
 import Hobbies from './components/sections/Hobbies';
 import BucketList from './components/sections/BucketList';
 import Computer from './components/computer/Computer';
-import ProjectAWeek from './components/sections/projectfolder/projectaweek'; 
+import ProjectAWeek from './components/sections/projectfolder/projectaweek';
+import MangoAchievements from './components/sections/mango/MangoAch'; 
 import { Toaster } from 'react-hot-toast';
+import { MangoProvider } from './context/MangoContext'; 
 
 function App() {
   return (
-    <Router>
-      <NavBar />
-      <SocialBar className="hidden md:flex" />
+    <MangoProvider>
+      <Router>
+        <NavBar />
+        <SocialBar className="hidden md:flex" />
 
-      {/* Global Toast System */}
-      <Toaster
-  position="bottom-right"
-  toastOptions={{
-    duration: 2500,
-    style: {
-      background: 'transparent',  // remove background
-      boxShadow: 'none',          // remove shadow
-      padding: 0,                 // remove padding
-      border: 'none',             // remove border
-      color: 'inherit',           // use site text color
-      fontWeight: 300, 
-      fontFamily: 'inherit',      // match site font
-    },
-  }}
-/>
+        {/* Global Toast System */}
+        <Toaster
+          position="bottom-right"
+          toastOptions={{
+            duration: 2500,
+            style: {
+              background: 'transparent',
+              boxShadow: 'none',
+              padding: 0,
+              border: 'none',
+              color: 'inherit',
+              fontWeight: 300,
+              fontFamily: 'inherit',
+            },
+          }}
+        />
 
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/projects" element={<Projects />} />
-        <Route path="/hobbies" element={<Hobbies />} />
-        <Route path="/bucket-list" element={<BucketList />} />
-        <Route path="/computer" element={<Computer />} />
-        <Route path="/projectaweek" element={<ProjectAWeek />} />
-      </Routes>
-    </Router>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/hobbies" element={<Hobbies />} />
+          <Route path="/bucket-list" element={<BucketList />} />
+          <Route path="/computer" element={<Computer />} />
+          <Route path="/projectaweek" element={<ProjectAWeek />} />
+          <Route path="/mango-achievements" element={<MangoAchievements />} /> {/* 🥭 new route */}
+        </Routes>
+      </Router>
+    </MangoProvider>
   );
 }
 

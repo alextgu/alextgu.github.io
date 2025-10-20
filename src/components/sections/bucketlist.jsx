@@ -1,7 +1,6 @@
 // components/Sections/BucketList.jsx
 import React, { useState } from "react";
 import { bucketListData } from "./data/bucketData";
-import { miscAchievementsData } from "./data/miscAchievements";
 import { ChevronRight, ChevronDown, Check, Clock, Circle } from "lucide-react";
 import "./styles/bucket-list.css";
 
