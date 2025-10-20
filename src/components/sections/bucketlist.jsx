@@ -109,8 +109,6 @@ export default function BucketList() {
             </li>
           ))}
         </ul>
-
-
       </div>
     </section>
   );
