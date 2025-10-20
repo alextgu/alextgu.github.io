@@ -44,7 +44,7 @@ export default function MangoAchievements({ onClose }) {
         </div>
 
         <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-6">
-          Find hidden mangoes across the site to unlock achievements!
+          Find hidden mangoes across the site to unlock achievements! (STILL IN PROGRESS NOT WORKING CURRENTLY)
         </p>
 
         {/* Scrollable achievements */}
