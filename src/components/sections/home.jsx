@@ -4,27 +4,39 @@ import { Link } from 'react-router-dom';
 import Computer from '../computer/Computer';
 import { useMango } from '@/context/MangoContext';
 import { motion } from 'framer-motion';
+import SocialBar from '../SocialBar';
 
 
 function Home() {
   const { collectMango, isCollected } = useMango();
 
   const [showMobileWarning, setShowMobileWarning] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
+    const handleResize = () => {
+      const isMobileNow = window.innerWidth < 768;
+      const hasSeenPopup = localStorage.getItem('hasSeenMobileWarning') === 'true';
 
-    const hasSeenPopup = localStorage.getItem('hasSeenMobileWarning');
-    if (!hasSeenPopup && window.innerWidth < 768) {
-      setShowMobileWarning(true);
-      localStorage.setItem('hasSeenMobileWarning', 'true');
-    }
+      if (isMobileNow && !hasSeenPopup) {
+        setShowMobileWarning(true);
+      } else {
+        setShowMobileWarning(false);
+      }
+    };
 
-    return () => window.removeEventListener('resize', checkMobile);
+    // Check immediately on mount
+    handleResize();
+
+    // Listen for window resize
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  const handleVisitAnyways = () => {
+    localStorage.setItem('hasSeenMobileWarning', 'true');
+    setShowMobileWarning(false);
+  };
 
   const handleLeave = () => {
     window.location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
@@ -262,7 +274,8 @@ function Home() {
               📩
             </p>
           </div>
-
+          <SocialBar />
+          
           {/* Right: Laptop */}
           <div className="hidden custom:flex flex-col justify-center items-center text-center">
             <h3 className="mb-4 text-xs md:text-sm">
