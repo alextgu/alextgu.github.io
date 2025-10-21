@@ -14,7 +14,7 @@ function SocialBar() {
 
   // Fade in after 0.5s
   useEffect(() => {
-    const timer = setTimeout(() => setFadeIn(true), 500);
+    const timer = setTimeout(() => setFadeIn(true), 800);
     return () => clearTimeout(timer);
   }, []);
 

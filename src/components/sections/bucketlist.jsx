@@ -1,11 +1,17 @@
 // components/Sections/BucketList.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { bucketListData } from "./data/bucketData";
 import { ChevronRight, ChevronDown, Check, Clock, Circle } from "lucide-react";
 import "./styles/bucket-list.css";
 
 export default function BucketList() {
   const [openId, setOpenId] = useState(null);
+  const [shake, setShake] = useState(false);
+
+  // Trigger shake on page load
+  useEffect(() => {
+    setShake(true);
+  }, []);
 
   const handleToggle = (id) => {
     setOpenId(openId === id ? null : id);
@@ -15,7 +21,7 @@ export default function BucketList() {
     <section className="min-h-screen pt-20 md:pt-24 lg:pt-32 px-4 sm:px-6 md:px-20 lg:px-20">
       <div className="max-w-6xl mx-auto">
         {/* HEADER SECTION */}
-        <div className="flex flex-col md:flex-row md:items-start gap-8 mb-12">
+        <div className={`flex flex-col md:flex-row md:items-start gap-8 mb-12 ${shake ? 'animate-subtle-shake' : ''}`}>
           <div className="flex-1">
             <h1 className="text-5xl sm:text-6xl lg:text-7xl font-normal mb-3">
               Bucket List
@@ -29,7 +35,7 @@ export default function BucketList() {
         </div>
 
         {/* BUCKET LIST */}
-        <ul className="divide-y divide-gray-200 dark:divide-gray-700 max-w-3xl mx-auto mb-16">
+        <ul className={`divide-y divide-gray-200 dark:divide-gray-700 max-w-3xl mx-auto mb-16 ${shake ? 'animate-slide-in-left' : ''}`}>
           {bucketListData.map((item) => (
             <li key={item.id} className="py-3 sm:py-5">
               <div

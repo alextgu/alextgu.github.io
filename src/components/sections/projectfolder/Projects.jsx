@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import ProjectCard from "./ProjectCard";
 import ProjectModal from "./ProjectModal";
 import { projectsData, featuredContent } from "../data/projectsData";
+import './projects.css';
 
 function Projects() {
   const navigate = useNavigate();
@@ -15,6 +16,12 @@ function Projects() {
   const [currentFeaturedIndex, setCurrentFeaturedIndex] = useState(0);
   const [isHoveringFeatured, setIsHoveringFeatured] = useState(false);
   const [hoveredProjectId, setHoveredProjectId] = useState(null);
+  const [shake, setShake] = useState(false);
+
+  // Trigger shake on page load
+  useEffect(() => {
+    setShake(true);
+  }, []);
 
   const sortProjects = (option, direction) => {
     const sorted = [...projectsData];
@@ -59,7 +66,7 @@ function Projects() {
       <div className="max-w-6xl mx-auto">
         {/* HEADER AND FEATURED SECTION */}
         <div className="flex flex-col md:flex-row md:items-start gap-8 mb-12">
-          <div className="flex-1">
+          <div className={`flex-1 ${shake ? 'animate-subtle-shake' : ''}`}>
             <h1 className="text-5xl sm:text-6xl lg:text-7xl font-normal mb-3">Projects</h1>
             <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 font-light mt-4 leading-relaxed">
               I build things. Most suck, here are some of them.
@@ -75,7 +82,7 @@ function Projects() {
           </div>
 
           {/* FEATURED SECTION */}
-          <div className="flex-1 md:flex md:flex-col md:justify-center">
+          <div className={`flex-1 md:flex md:flex-col md:justify-center ${shake ? 'animate-subtle-shake' : ''}`}>
             <div className="flex items-center gap-2 mb-4">
               <Sparkles size={20} className="text-yellow-500 dark:text-yellow-400" />
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-normal text-gray-900 dark:text-white">Featured</h2>
@@ -149,7 +156,7 @@ function Projects() {
         </div>
 
         {/* SORT BAR */}
-        <div className="flex items-center justify-start gap-2 sm:gap-4 mb-8">
+        <div className={`flex items-center justify-start gap-2 sm:gap-4 mb-8 ${shake ? 'animate-slide-in-left' : ''}`}>
           {sortButtons.map((btn) => (
             <button
               key={btn.id}
