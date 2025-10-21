@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import Computer from '../computer/Computer';
 import { useMango } from '@/context/MangoContext';
 import { motion } from 'framer-motion';
-import Mango from '@/components/sections/Mango/mango';
 
 
 function Home() {
@@ -55,32 +54,14 @@ function Home() {
   // Rotating words
   // --------------------------
   const rotatingWords = [
-    '"cool" ', '"dumb" ', '"poopy" ', '"sigma" ', '"goofy" ', '"epic" ', '"wild" ', '"cool" ', '"dumb" ', '"poopy" ', '"sigma" ', '"goofy" ', '"epic" ', '"wild" ',
-    '"cool" ', '"dumb" ', '"poopy" ', '"sigma" ', '"goofy" ', '"epic" ', '"wild" ','"cool" ', '"dumb" ', '"poopy" ', '"sigma" ', '"goofy" ', '"epic" ', '"wild" ',
-    '"cool" ', '"dumb" ', '"poopy" ', '"sigma" ', '"goofy" ', '"epic" ', '"wild" ','"cool" ', '"dumb" ', '"poopy" ', '"sigma" ', '"goofy" ', '"epic" ', '"wild" ',
-    '"cool" ', '"dumb" ', '"poopy" ', '"sigma" ', '"goofy" ', '"epic" ', '"wild" ','"cool" ', '"dumb" ', '"poopy" ', '"sigma" ', '"goofy" ', '"epic" ', '"wild" ',
-    '🥭 '
+    '"cool"', '"dumb"', '"poopy"', '"sigma"', '"goofy"', '"epic"', '"wild"'
   ];
   const [wordIndex, setWordIndex] = useState(0);
 
-  // 🥭 Secret #2: click counter for mango unlock
-  const [clickCount, setClickCount] = useState(0);
   const handleWordClick = () => {
     const nextIndex = (wordIndex + 1) % rotatingWords.length;
     setWordIndex(nextIndex);
-    setClickCount((prev) => prev + 1);
-  
-    // If the current word is the mango, collect it
-    if (rotatingWords[wordIndex] === '🥭' && !isCollected('word-mango')) {
-      collectMango('word-mango');
-    }
   };
-
-  useEffect(() => {
-    if (clickCount === 7 && !isCollected('word-mango')) {
-      collectMango('word-mango');
-    }
-  }, [clickCount, collectMango, isCollected]);
 
   // --------------------------
   // Alex hover font cycling
@@ -160,20 +141,6 @@ function Home() {
     const timeout = setTimeout(() => setWave(false), 1500);
     return () => clearTimeout(timeout);
   }, []);
-
-  // 🥭 Secret #1: Randomly appearing mango
-  const [showRandomMango, setShowRandomMango] = useState(false);
-  useEffect(() => {
-    if (!isCollected('random-mango')) {
-      const chance = Math.random();
-      if (chance < 0.15) {
-        // 15% chance to appear on load
-        setShowRandomMango(true);
-        const timer = setTimeout(() => setShowRandomMango(false), 10000);
-        return () => clearTimeout(timer);
-      }
-    }
-  }, [isCollected]);
 
   return (
     <>
@@ -256,17 +223,11 @@ function Home() {
               </Link>{' '}
               and building{' '}
               <span
-  className="interactive-word-wrapper cursor-pointer"
-  onClick={() => {
-    handleWordClick();
-    if (clickCount + 1 === 7 && !isCollected('word-mango')) {
-      collectMango('word-mango');
-    }
-  }}
->
-  {rotatingWords[wordIndex]}
-</span>
-
+                className="interactive-word-wrapper cursor-pointer"
+                onClick={handleWordClick}
+              >
+                {rotatingWords[wordIndex]}{' '}
+              </span>
               <Link to="/projects">
                 <span className="highlight-word highlight-blue text-gray-900 dark:text-white">
                   projects.
@@ -316,19 +277,6 @@ function Home() {
             </Link>
           </div>
         </div>
-
-      {/* 🥭 Secret Mango #1 - Random (clickable only) */}
-{!isCollected('random-mango') && showRandomMango && (
-  <motion.div
-    className="absolute bottom-24 right-16 text-3xl cursor-pointer select-none"
-    whileHover={{ scale: 1.2, rotate: 15 }}
-    whileTap={{ scale: 0.9 }}
-    onClick={() => collectMango('random-mango')}
-  >
-    🥭
-  </motion.div>
-)}
-
       </section>
     </>
   );
