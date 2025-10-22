@@ -9,7 +9,6 @@ function SocialBar() {
     { name: 'LinkedIn', href: 'https://linkedin.com/in/alextgu', color: '#0A66C2' },
     { name: 'GitHub', href: 'https://github.com/alextgu', color: '#181717' },
     { name: 'Devpost', href: 'https://devpost.com/alexwin2099', color: '#003e54' },
-    { name: 'CV', href: '/files/Alex_Tang_CV.pdf', color: '#E63946' },
   ];
 
   // Fade in after 0.5s

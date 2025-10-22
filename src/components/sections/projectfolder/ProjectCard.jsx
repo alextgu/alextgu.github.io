@@ -11,15 +11,37 @@ const iconComponents = {
   GraduationCap,
 };
 
-function ProjectCard({ project, isHovered, onHover, onLeave, onClick, sortOption }) {
+function ProjectCard({ project, isHovered, onHover, onLeave, onClick, sortOption, animationState, cardIndex, rowIndex, totalRows, totalCards }) {
   const IconComponent = iconComponents[project.lucideIcon];
+
+  // Calculate animation delay based on card index for cascading effect
+  const getAnimationDelay = () => {
+    if (animationState === 'entering') {
+      // Top to bottom: card 0 first, then card 1, etc.
+      // Delay increases with each card for smooth cascade
+      return cardIndex * 0.05; // 50ms delay per card
+    } else if (animationState === 'exiting') {
+      // Bottom to top: reverse the order
+      return (totalCards - cardIndex - 1) * 0.04; // 40ms delay per card from bottom
+    }
+    return 0;
+  };
+
+  const animationClass = animationState === 'entering' ? 'card-enter' : 
+                        animationState === 'exiting' ? 'card-exit' : '';
+  
+  // Don't render if exiting to prevent flash
+  if (animationState === 'exiting' && getAnimationDelay() === 0 && totalCards === 0) {
+    return null;
+  }
 
   return (
     <div
       onClick={onClick}
       onMouseEnter={onHover}
       onMouseLeave={onLeave}
-      className="relative bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-xl p-5 sm:p-6 hover:border-gray-400 dark:hover:border-gray-500 transition-all duration-300 hover:shadow-xl cursor-pointer min-h-[240px] overflow-hidden group"
+      className={`relative bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-xl p-5 sm:p-6 hover:border-gray-400 dark:hover:border-gray-500 transition-all duration-300 hover:shadow-xl cursor-pointer min-h-[240px] overflow-hidden group ${animationClass}`}
+      style={{ animationDelay: `${getAnimationDelay()}s` }}
     >
       {/* ANIMATED GRADIENT BACKGROUND */}
       <div className={`absolute inset-0 bg-gradient-to-br ${project.gradientColor} opacity-0 group-hover:opacity-100 transition-opacity duration-300`}></div>

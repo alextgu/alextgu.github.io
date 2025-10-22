@@ -17,6 +17,9 @@ function Projects() {
   const [isHoveringFeatured, setIsHoveringFeatured] = useState(false);
   const [hoveredProjectId, setHoveredProjectId] = useState(null);
   const [shake, setShake] = useState(false);
+  const [animationState, setAnimationState] = useState('entering'); // 'entering', 'visible', 'exiting'
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
+  const [isAnimating, setIsAnimating] = useState(false); // Prevent spam clicking
 
   // Trigger shake on page load
   useEffect(() => {
@@ -36,10 +39,25 @@ function Projects() {
   };
 
   useEffect(() => {
-    setSortedProjects(sortProjects("time", "desc"));
+    const projects = sortProjects("time", "desc");
+    setSortedProjects(projects);
+    setAnimationState('entering');
+    // Set to visible after animation completes
+    // Calculate time based on number of cards: (cards * delay) + animation duration
+    const animationTime = (projects.length * 50) + 500 + 200; // delay per card + animation + buffer
+    const timer = setTimeout(() => {
+      setAnimationState('visible');
+      setIsInitialLoad(false);
+    }, animationTime);
+    return () => clearTimeout(timer);
   }, []);
 
   const handleSort = (option) => {
+    // Prevent spam clicking during animation
+    if (isAnimating) {
+      return;
+    }
+
     let newOption = sortOption;
     let newDirection = sortDirection;
 
@@ -50,9 +68,34 @@ function Projects() {
       newDirection = "desc";
     }
 
-    setSortOption(newOption);
-    setSortDirection(newDirection);
-    setSortedProjects(sortProjects(newOption, newDirection));
+    // Set animating flag
+    setIsAnimating(true);
+
+    // Start exit animation
+    setAnimationState('exiting');
+    
+    // Calculate exit animation time
+    const exitTime = (sortedProjects.length * 40) + 350 + 100; // delay per card + animation + buffer
+    
+    // After exit animation, update projects and start enter animation
+    setTimeout(() => {
+      const newProjects = sortProjects(newOption, newDirection);
+      setSortOption(newOption);
+      setSortDirection(newDirection);
+      setSortedProjects(newProjects);
+      setAnimationState('entering');
+      
+      // Set to visible after enter animation completes
+      const enterTime = (newProjects.length * 50) + 500 + 200;
+      setTimeout(() => {
+        setAnimationState('visible');
+      }, enterTime);
+      
+      // Re-enable buttons after 0.7 seconds from when entering starts
+      setTimeout(() => {
+        setIsAnimating(false);
+      }, 700);
+    }, exitTime);
   };
 
   const sortButtons = [
@@ -161,11 +204,12 @@ function Projects() {
             <button
               key={btn.id}
               onClick={() => handleSort(btn.id)}
+              disabled={isAnimating}
               className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-lg border transition-all duration-200 text-sm ${
                 sortOption === btn.id
                   ? "bg-gray-900 text-white dark:bg-white dark:text-gray-900 border-transparent"
                   : "bg-transparent border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-              }`}
+              } ${isAnimating ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
             >
               {btn.icon}
               <span className="whitespace-nowrap">{btn.label}</span>
@@ -177,17 +221,30 @@ function Projects() {
 
         {/* PROJECT GRID */}
         <div className="grid gap-4 sm:gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
-          {sortedProjects.map((project) => (
-            <ProjectCard
-              key={project.id}
-              project={project}
-              isHovered={hoveredProjectId === project.id}
-              onHover={() => setHoveredProjectId(project.id)}
-              onLeave={() => setHoveredProjectId(null)}
-              onClick={() => setSelectedProject(project)}
-              sortOption={sortOption}
-            />
-          ))}
+          {sortedProjects.map((project, index) => {
+            // Calculate row based on screen size
+            // For xl: 3 columns, lg/md: 2 columns, sm: 1 column
+            // We'll use the xl breakpoint (3 columns) for calculation
+            const cardsPerRow = 3; // Adjust if needed based on your layout
+            const rowIndex = Math.floor(index / cardsPerRow);
+            
+            return (
+              <ProjectCard
+                key={project.id}
+                project={project}
+                isHovered={hoveredProjectId === project.id}
+                onHover={() => setHoveredProjectId(project.id)}
+                onLeave={() => setHoveredProjectId(null)}
+                onClick={() => setSelectedProject(project)}
+                sortOption={sortOption}
+                animationState={animationState}
+                cardIndex={index}
+                rowIndex={rowIndex}
+                totalRows={Math.ceil(sortedProjects.length / cardsPerRow)}
+                totalCards={sortedProjects.length}
+              />
+            );
+          })}
         </div>
       </div>
 
