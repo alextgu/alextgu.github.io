@@ -7,33 +7,34 @@ export const projectAWeekInfo = {
   };
   
   export const projectsList = [
+    
     { 
       week: 1, 
       name: "--", 
-      description: "--",
+      description: "An app to filter files and images",
       longDescription: "",
-      generalPlan: "Object Oriented Programming Based",
+      generalPlan: "",
       image: "",
-      techStack: [""],
+      techStack: ["Gemini API", "Python", "React"],
       links: {
-        github: "",
+        github: "https://github.com/alextgu/project-a-week-challenge/blob/main/week1/README.md",
         demo: ""
       },
       done: false
     },
     { 
       week: 2, 
-      name: "--", 
-      description: "--",
+      name: "Poker Black Jack", 
+      description: "Standard Poker but with additional Black Jack Rules",
       longDescription: "",
-      generalPlan: "",
+      generalPlan: "Object Oriented Programming Based",
       image: "",
-      techStack: [],
+      techStack: ["Python", "Object Oriented Programming"],
       links: {
-        github: "",
+        github: "https://github.com/alextgu/project-a-week-challenge/blob/main/week2/README.md",
         demo: ""
       },
-      done: false
+      done: true
     },
     { 
         week: 3, 
