@@ -89,12 +89,11 @@ function Projects() {
       const enterTime = (newProjects.length * 50) + 500 + 200;
       setTimeout(() => {
         setAnimationState('visible');
+        // Re-enable buttons after 0.7 second delay
+        setTimeout(() => {
+          setIsAnimating(false);
+        }, 700);
       }, enterTime);
-      
-      // Re-enable buttons after 0.7 seconds from when entering starts
-      setTimeout(() => {
-        setIsAnimating(false);
-      }, 700);
     }, exitTime);
   };
 

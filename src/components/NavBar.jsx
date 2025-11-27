@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import { Link, useLocation } from 'react-router-dom';
 import { Sun, Moon, Volume2, VolumeX, ChevronRight } from 'lucide-react';
-import MangoAchievements from '@/components/sections/mango/MangoAch';
-import { useMango } from '@/context/MangoContext';
 import './NavBar.css';
 
 function NavBar() {
@@ -13,17 +11,6 @@ function NavBar() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isMusicOn, setIsMusicOn] = useState(false);
   const [cooldown, setCooldown] = useState(false);
-
-  const [showMangoModal, setShowMangoModal] = useState(false);
-
-  const { collected } = useMango();
-
-  const [seenMangos, setSeenMangos] = useState(false);
-
-  const handleOpenMango = () => {
-    setShowMangoModal(true);
-    setSeenMangos(true);
-  };
 
 
   const [visible, setVisible] = useState(false);
@@ -73,9 +60,6 @@ function NavBar() {
 
   return (
     <>
-      {/* Mango Achievements Modal */}
-      {showMangoModal && <MangoAchievements onClose={() => setShowMangoModal(false)} />}
-
       {/* Nav */}
       <div
         className={`fixed top-4 left-20 z-50 flex items-center gap-0.5 h-10
@@ -156,24 +140,6 @@ function NavBar() {
           >
             {isMusicOn ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
           </button>
-
-        {/* 🥭 Mango Achievements toggle */}
-<div className="relative">
-  <button
-    onClick={handleOpenMango}
-    className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-zinc-400/40 dark:hover:bg-zinc-700/40 transition text-gray-400 dark:text-zinc-500"
-  >
-    <span className="text-xl">🥭</span>
-  </button>
-
-  {/* Show badge only if there are collected mangoes AND user hasn't seen them yet */}
-  {collected.length > 0 && !seenMangos && (
-    <span className="absolute -top-1.5 -right-1.5 bg-amber-400 text-[10px] font-semibold rounded-full px-1 shadow-sm">
-      {collected.length}
-    </span>
-  )}
-</div>
-
         </div>
       </div>
     </>

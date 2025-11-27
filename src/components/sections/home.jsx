@@ -2,52 +2,20 @@ import { useState, useEffect, useRef } from 'react';
 import './styles/home.css';
 import { Link } from 'react-router-dom';
 import Computer from '../computer/Computer';
-import { useMango } from '@/context/MangoContext';
 import SocialBar from '../SocialBar';
 
 function Home() {
-  const { collectMango, isCollected } = useMango();
-
-  const [showMobileWarning, setShowMobileWarning] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
   const [shake, setShake] = useState(false);
 
   // Trigger shake on page load
   useEffect(() => {
     setShake(true);
+    // Remove shake after animation completes (700ms)
+    const timeout = setTimeout(() => {
+      setShake(false);
+    }, 1000);
+    return () => clearTimeout(timeout);
   }, []);
-
-  // --------------------------
-  // Mobile warning popup
-  // --------------------------
-  useEffect(() => {
-    const handleResize = () => {
-      const isMobileNow = window.innerWidth < 768;
-      const hasSeenPopup = sessionStorage.getItem('hasSeenMobileWarning') === 'true';
-
-      if (isMobileNow && !hasSeenPopup) {
-        setShowMobileWarning(true);
-        setIsMobile(true);
-      } else {
-        setShowMobileWarning(false);
-        setIsMobile(isMobileNow);
-      }
-    };
-
-    handleResize();
-    window.addEventListener('resize', handleResize);
-
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  const handleVisitAnyways = () => {
-    sessionStorage.setItem('hasSeenMobileWarning', 'true');
-    setShowMobileWarning(false);
-  };
-
-  const handleLeave = () => {
-    window.location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
-  };
 
   // --------------------------
   // Alex hover font animation
@@ -75,22 +43,16 @@ function Home() {
   // --------------------------
   // Typing subtitle
   // --------------------------
-  const subtitleWords = ['website','blog','digital garden','webpage','yapsite'];
-  const emojis = [' 🥭'];
+  const subtitleWords = ['website','blog','webpage','yapsite'];
   const [typedText, setTypedText] = useState('');
   const [currentWord, setCurrentWord] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [emoji, setEmoji] = useState('');
 
   useEffect(() => {
     const current = subtitleWords[currentWord];
     const typeSpeed = isDeleting ? 50 : 120;
     const pause = isDeleting ? 500 : 1000 + Math.random() * 1500;
     let typingTimeout;
-
-    if (!isDeleting && typedText.length === 0 && Math.floor(Math.random()*20) === 0) {
-      setEmoji(emojis[Math.floor(Math.random()*emojis.length)]);
-    }
 
     if (!isDeleting && typedText.length < current.length) {
       typingTimeout = setTimeout(() => setTypedText(current.slice(0, typedText.length + 1)), typeSpeed);
@@ -114,68 +76,183 @@ function Home() {
   const [wave, setWave] = useState(true);
   useEffect(() => { const timeout = setTimeout(() => setWave(false), 1500); return () => clearTimeout(timeout); }, []);
 
+  // --------------------------
+  // Card tilt effect
+  // --------------------------
+  const cardRef = useRef(null);
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+
+
+  const handleMouseMove = (e) => {
+    const container = cardRef.current;
+    if (!container) return;
+    
+    const card = container.querySelector('.card-tilt');
+    if (!card) return;
+    
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    
+    const rotateX = ((y - centerY) / centerY) * -1.5;
+    const rotateY = ((x - centerX) / centerX) * 1.5;
+    
+    setTilt({ x: rotateX, y: rotateY });
+  };
+
+  const handleMouseLeave = () => {
+    setTilt({ x: 0, y: 0 });
+  };
+
+  // --------------------------
+  // Floating prompts for "any reason"
+  // --------------------------
+  const [floatingPrompts, setFloatingPrompts] = useState([]);
+  const [clickCount, setClickCount] = useState(0);
+  const resetTimerRef = useRef(null);
+  
+  const reasonMessages = [
+    "Let's bike somewhere!",
+    "Let's grab coffee sometime ☕",
+    "Let's film a movie!",
+    "Let's freestyle rap. ",
+    "I'm a good listener (where my hug at)",
+    "Let's talk about baseball ⚾",
+    "I know the best noodle spots 🍜",
+    "Let's collaborate on something! 🤝",
+    "I offer incredible wisdom!",
+    "I can help with your project!",
+    "I'm funny!",
+    "I need friends!",
+  ];
+
+  // Reset click count after 5 seconds of inactivity
+  useEffect(() => {
+    if (clickCount > 0) {
+      // Clear existing timer
+      if (resetTimerRef.current) {
+        clearTimeout(resetTimerRef.current);
+      }
+      
+      // Set new timer to reset after 5 seconds
+      resetTimerRef.current = setTimeout(() => {
+        setClickCount(0);
+      }, 5000);
+    }
+    
+    return () => {
+      if (resetTimerRef.current) {
+        clearTimeout(resetTimerRef.current);
+      }
+    };
+  }, [clickCount]);
+
+  const handleAnyReasonClick = (e) => {
+    const rect = e.target.getBoundingClientRect();
+    setClickCount(prev => prev + 1);
+    
+    // Calculate probability of "Please :(" appearing based on click count
+    // After 5 clicks, it starts appearing more frequently
+    const desperationThreshold = 5;
+    const desperationChance = clickCount >= desperationThreshold 
+      ? Math.min(0.7, (clickCount - desperationThreshold + 1) * 0.15) 
+      : 0;
+    
+    let randomMessage;
+    if (Math.random() < desperationChance) {
+      randomMessage = "Please :(";
+    } else {
+      randomMessage = reasonMessages[Math.floor(Math.random() * reasonMessages.length)];
+    }
+    
+    // Random horizontal offset (-50px to 50px)
+    const randomX = (Math.random() - 0.5) * 100;
+    // Random rotation (-15deg to 15deg)
+    const randomRotation = (Math.random() - 0.5) * 30;
+    
+    const newPrompt = {
+      id: Date.now(),
+      message: randomMessage,
+      x: rect.left + rect.width / 2,
+      y: rect.top,
+      offsetX: randomX,
+      rotation: randomRotation,
+    };
+    
+    setFloatingPrompts(prev => [...prev, newPrompt]);
+    
+    // Remove prompt after animation completes
+    setTimeout(() => {
+      setFloatingPrompts(prev => prev.filter(p => p.id !== newPrompt.id));
+    }, 3000);
+  };
 
   return (
     <>
-      {/* Mobile Warning Popup */}
-      {isMobile && showMobileWarning && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-zinc-900 border border-gray-300 dark:border-zinc-700 rounded-md shadow-xl max-w-sm w-full p-5">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-              You're missing out! 🖥️
-            </h2>
-            <p className="text-sm text-gray-700 dark:text-zinc-300 mb-5 leading-relaxed">
-              This website is much better on a laptop (or maximize your window)! Please change your device!
-            </p>
-            <div className="flex gap-2">
-              <button
-                onClick={handleVisitAnyways}
-                className="flex-1 px-3 py-2 text-xs bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-md font-medium hover:bg-gray-700 dark:hover:bg-gray-200 transition-colors"
-              >
-                Visit Anyways
-              </button>
-              <button
-                onClick={handleLeave}
-                className="flex-1 px-3 py-2 text-xs bg-white dark:bg-zinc-800 text-gray-900 dark:text-white border border-gray-300 dark:border-zinc-600 rounded-md font-medium hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors"
-              >
-                Leave Site
-              </button>
-            </div>
+      {/* Floating Prompts */}
+      {floatingPrompts.map(prompt => (
+        <div
+          key={prompt.id}
+          className="fixed z-50 animate-float-up cursor-pointer hover:scale-110 transition-transform"
+          style={{
+            left: `${prompt.x}px`,
+            top: `${prompt.y}px`,
+            transform: 'translate(-50%, -100%)',
+            '--offset-x': `${prompt.offsetX}px`,
+            '--rotation': `${prompt.rotation}deg`,
+          }}
+          onClick={() => setFloatingPrompts(prev => prev.filter(p => p.id !== prompt.id))}
+        >
+          <div className="bg-amber-400 text-gray-900 px-3 py-2 rounded-lg shadow-lg text-[clamp(10px,1.8vw,14px)] md:text-sm font-medium whitespace-nowrap">
+            {prompt.message}
           </div>
         </div>
-      )}
+      ))}
 
       {/* Main Section */}
       <section id="home" className="min-h-screen pt-24 relative">
-        <div className="grid grid-cols-1 custom:grid-cols-2 lg:grid-cols-2 gap-12 items-start w-full">
-
+        <div className="grid md:grid-cols-2 gap-12 items-start w-full">
+          
           {/* Left: Text Content */}
-          <div className="space-y-6 sm:space-y-12 px-6 sm:pl-6 md:pl-20 lg:pl-15">
-
-            <div>
-              <h1 className={`text-3xl sm:text-[48px] custom:text-[60px] xl:text-[68px] font-normal text-gray-400 dark:text-zinc-500 leading-tight sm:leading-[5rem] ${shake ? 'animate-subtle-shake' : ''}`}>
-                Hi, I'm{' '}
+          <div 
+            className="md:pl-20 flex justify-center md:justify-start px-8"
+            ref={cardRef}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+          >
+            <div 
+              className={`card-tilt border border-gray-300 dark:border-zinc-700 rounded-lg py-[clamp(1.5rem,3vw,2rem)] px-[clamp(1.5rem,3vw,2rem)] pr-[clamp(2rem,4vw,3rem)] bg-white/50 dark:bg-zinc-900/50 backdrop-blur-sm shadow-lg space-y-[clamp(2rem,5vw,3rem)] md:py-8 md:pl-8 md:pr-12 md:space-y-12 w-[clamp(400px,80vw,700px)] md:w-[700px] md:min-w-[700px] flex-shrink-0 ${shake ? 'animate-subtle-shake' : ''}`}
+              style={{
+                '--rotate-x': `${tilt.x}deg`,
+                '--rotate-y': `${tilt.y}deg`,
+              }}
+            >
+              <div>
+              <h1 className="text-[clamp(32px,6vw,56px)] md:text-[56px] font-normal leading-tight">
+                <span className="text-gray-400 dark:text-zinc-500">Hi, I'm{' '}</span>
                 <span
                   className={`alex-interactive text-gray-900 dark:text-white ${fonts[alexFont]} inline-block`}
                   onMouseEnter={() => setIsHovering(true)}
                   onMouseLeave={() => setIsHovering(false)}
                 >
-                  Alex
+                  Alexander
                 </span>{' '}
                 <span className={wave ? 'hand-wave' : ''}>👋</span>
               </h1>
 
-              <p className={`text-base sm:text-[20px] custom:text-[22px] xl:text-2xl font-light text-gray-700 dark:text-zinc-300 mt-1 sm:mt-2 tracking-tight leading-relaxed sm:leading-normal ${shake ? 'animate-subtle-shake' : ''}`}>
-                Welcome to my personal{' '}
+              <p className="text-[clamp(15px,2.7vw,24px)] md:text-2xl font-light text-gray-700 dark:text-zinc-300 mt-2 tracking-tight leading-normal">
+                Thank you for visiting! Welcome to my personal{' '}
                 <span className="font-medium text-gray-900 dark:text-white border-b border-dotted border-gray-400">
                   {typedText}
-                  {emoji}
                   <span className="typing-cursor">|</span>
                 </span>
               </p>
             </div>
 
-            <p className={`text-lg sm:text-[27px] custom:text-[30px] xl:text-[30px] font-normal text-gray-400 dark:text-zinc-500 leading-relaxed custom:leading-snug ${shake ? 'animate-subtle-shake' : ''}`}>
+            <p className="text-[clamp(18px,3.5vw,30px)] md:text-[30px] font-normal text-gray-400 dark:text-zinc-500 leading-snug">
               I love playing{' '}
               <Link to="/hobbies">
                 <span className="highlight-word highlight-green text-gray-900 dark:text-white cursor-pointer">
@@ -215,14 +292,14 @@ function Home() {
               at an MLB game.
             </p>
 
-            <p className={`text-lg sm:text-[27px] custom:text-[28px] xl:text-[30px] font-normal text-gray-400 dark:text-zinc-500 leading-relaxed custom:leading-snug ${shake ? 'animate-subtle-shake' : ''}`}>
+            <p className="text-[clamp(18px,3.5vw,30px)] md:text-[30px] font-normal text-gray-400 dark:text-zinc-500 leading-snug">
             <a>
                 I'm currently helping organize the first{' '}
                 <span className="highlight-word highlight-purple text-gray-900 dark:text-white">
                   Chinese Canadian Film Festival.
                 </span>
               </a>{' '}
-              If you want to <span className="any-reason">(for any reason)</span> reach out, please{' '}
+              If you want to <span className="any-reason cursor-pointer" onClick={handleAnyReasonClick}>(for any reason)</span> reach out, please{' '}
               <span className="relative inline-block group">
                 <span className="highlight-word highlight-yellow text-gray-900 dark:text-white cursor-pointer">
                   contact me!
@@ -233,21 +310,22 @@ function Home() {
               </span>{' '}
               📩
             </p>
+            </div>
           </div>
 
           {/* Social Bar */}
           <SocialBar />
 
           {/* Right: Laptop */}
-          <div className="hidden custom:flex flex-col justify-center items-center text-center">
-            <h3 className="mb-4 text-xs md:text-sm">
+          <div className="hidden md:flex flex-col justify-center items-center text-center">
+            <h3 className="mb-4 text-sm">
               Click for work, website history and contact! A better design is being worked on!
             </h3>
             <Link to="/computer">
               <img
                 src="/home/laptop.png"
                 alt="Laptop"
-                className="transform scale-x-[-1] cursor-pointer hover:opacity-90 transition-opacity w-full max-w-[260px] xl:max-w-[300px]"
+                className="transform scale-x-[-1] cursor-pointer hover:opacity-90 transition-opacity w-full max-w-[300px]"
               />
             </Link>
           </div>
