@@ -24,10 +24,10 @@ export function Navbar() {
   }, []);
 
   const navItems = [
-    { name: "Alex", href: "/", isView: true as const, viewKey: "alex" },
-    { name: "Projects", href: "/projects", isView: false as const },
-    { name: "Hobbies", href: "/hobbies", isView: false as const },
-    { name: "Contact", href: "/?view=contact", isView: true as const, viewKey: "contact" },
+    { name: "Alex", href: "/", isView: true as const, viewKey: "alex", isReset: true },
+    { name: "Projects", href: "/projects", isView: false as const, isReset: false },
+    { name: "Hobbies", href: "/hobbies", isView: false as const, isReset: false },
+    { name: "Contact", href: "/?view=contact", isView: true as const, viewKey: "contact", isReset: false },
   ] as const;
 
   const isActive = (item: (typeof navItems)[number]) => {
@@ -75,7 +75,15 @@ export function Navbar() {
             key={item.name}
             href={item.href}
             scroll={false}
-            onClick={() => setActiveSection(item.name)}
+            onClick={(e) => {
+              setActiveSection(item.name);
+              // If clicking "Alex" while on home page with a view, force navigation to reset
+              if (item.isReset && pathname === "/" && view) {
+                e.preventDefault();
+                window.history.pushState({}, "", "/");
+                window.dispatchEvent(new PopStateEvent("popstate"));
+              }
+            }}
             className={`px-2 py-1 rounded-md transition-colors hover:bg-gray-300/60 dark:hover:bg-zinc-700/60
                 text-xs md:text-sm
                 ${
