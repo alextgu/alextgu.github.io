@@ -4,6 +4,12 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* ==========================================================================
+   GLOBAL DESIGN TOKENS
+   Edit this file to change site-wide colours, fonts, radius, and typography.
+   Fonts are loaded in src/app/layout.tsx (--font-geist-sans, --font-geist-mono).
+   ========================================================================== */
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -38,6 +44,7 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+  /* Container curvature: base radius; use rounded-md, rounded-lg, etc. in components */
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -47,8 +54,11 @@
   --radius-4xl: calc(var(--radius) + 16px);
 }
 
+/* ---------- COLOURS (light) ---------- */
 :root {
+  /* Shape: global corner radius for cards, buttons, inputs (e.g. 0.625rem = 10px) */
   --radius: 0.625rem;
+
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -80,8 +90,10 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  --underline-color: oklch(0.205 0 0);
 }
 
+/* ---------- COLOURS (dark) ---------- */
 .dark {
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
@@ -114,13 +126,47 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+  --underline-color: oklch(0.985 0 0);
 }
 
+/* ---------- Social link hover: wavy underline ---------- */
+.social-link {
+  text-decoration: none;
+}
+.social-link:hover {
+  text-decoration-line: underline;
+  text-decoration-style: wavy;
+  text-decoration-color: var(--underline-color);
+  text-decoration-thickness: 1px;
+  color: black;
+}
+.dark .social-link:hover {
+  color: white;
+}
+
+/* ---------- GLOBAL RULES (borders, body) ---------- */
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
+  }
+
+  /* Word styles: headings and body. Use in HTML or with className. */
+  h1 {
+    @apply text-3xl font-semibold tracking-tight;
+  }
+  h2 {
+    @apply text-2xl font-semibold tracking-tight;
+  }
+  h3 {
+    @apply text-xl font-medium tracking-tight;
+  }
+  p {
+    @apply text-base leading-7 text-foreground;
+  }
+  .text-muted {
+    @apply text-muted-foreground;
   }
 }
