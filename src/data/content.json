@@ -5,12 +5,47 @@
       "title": "Alex T. Gu",
       "content": "Bio content goes here..."
     },
-    "contact": {
+    "computer": {
       "displayType": "HUD_CARD",
-      "title": "Contact",
-      "content": "Email and Social handles..."
+      "title": "Projects",
+      "content": "A showcase of things I've built..."
+    },
+    "bucketlist": {
+      "displayType": "HUD_LIST",
+      "title": "Bucket List",
+      "items": [
+        "Visit every continent",
+        "Learn to sail",
+        "Build a cabin",
+        "Run a marathon",
+        "Publish a short film",
+        "See the northern lights"
+      ]
     }
   },
+  "billboard": [
+    {
+      "type": "blog",
+      "id": "intro-post",
+      "image": "/desk.png",
+      "title": "Welcome to my desk",
+      "summary": "A quick intro to what this space is about."
+    },
+    {
+      "type": "video",
+      "id": "film-reel",
+      "image": "/desk.png",
+      "title": "Latest Film Reel",
+      "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ"
+    },
+    {
+      "type": "blog",
+      "id": "dev-log-1",
+      "image": "/desk.png",
+      "title": "Dev Log #1",
+      "summary": "Building a personal site that feels like a workspace."
+    }
+  ],
   "portals": {
     "projects": {
       "path": "/projects",

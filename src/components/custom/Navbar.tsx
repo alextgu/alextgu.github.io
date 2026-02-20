@@ -17,22 +17,26 @@ export function Navbar() {
   const [isMusicOn, setIsMusicOn] = useState(false);
   const [cooldown, setCooldown] = useState(false);
   const [visible, setVisible] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const timeout = setTimeout(() => setVisible(true), 50);
     return () => clearTimeout(timeout);
   }, []);
 
   const navItems = [
-    { name: "Alex", href: "/", isView: true as const, viewKey: "alex", isReset: true },
+    { name: "Alex", href: "/?explore=true", isView: true as const, viewKey: "alex", isReset: true },
     { name: "Projects", href: "/projects", isView: false as const, isReset: false },
     { name: "Hobbies", href: "/hobbies", isView: false as const, isReset: false },
-    { name: "Contact", href: "/?view=contact", isView: true as const, viewKey: "contact", isReset: false },
+    { name: "Workbench", href: "/workbench", isView: false as const, isReset: false },
   ] as const;
+
+  const explore = searchParams.get("explore");
 
   const isActive = (item: (typeof navItems)[number]) => {
     if (item.isView) {
-      return pathname === "/" && (view === item.viewKey || (item.viewKey === "alex" && !view));
+      return pathname === "/" && (view === item.viewKey || (item.viewKey === "alex" && explore === "true"));
     }
     return pathname === item.href;
   };
@@ -70,31 +74,24 @@ export function Navbar() {
       }`}
     >
       <div className="flex items-center gap-0.25 bg-white/70 dark:bg-zinc-900/70 backdrop-blur border border-gray-300/70 dark:border-zinc-700/70 rounded-md px-2 shadow-md text-sm h-full">
-        {navItems.map((item) => (
-          <Link
-            key={item.name}
-            href={item.href}
-            scroll={false}
-            onClick={(e) => {
-              setActiveSection(item.name);
-              // If clicking "Alex" while on home page with a view, force navigation to reset
-              if (item.isReset && pathname === "/" && view) {
-                e.preventDefault();
-                window.history.pushState({}, "", "/");
-                window.dispatchEvent(new PopStateEvent("popstate"));
-              }
-            }}
-            className={`px-2 py-1 rounded-md transition-colors hover:bg-gray-300/60 dark:hover:bg-zinc-700/60
-                text-xs md:text-sm
-                ${
-                  isActive(item)
-                    ? "text-gray-600 dark:text-zinc-300 font-semibold"
-                    : "text-gray-400 dark:text-zinc-500"
-                }`}
-          >
-            {item.name}
-          </Link>
-        ))}
+        {navItems.map((item) => {
+          const active = mounted && isActive(item);
+
+          return (
+            <Link
+              key={item.name}
+              href={active ? "/" : item.href}
+              scroll={false}
+              className={`px-2 py-1 rounded-md transition-colors hover:bg-gray-300/60 dark:hover:bg-zinc-700/60 text-xs md:text-sm ${
+                active
+                  ? "text-gray-600 dark:text-zinc-300"
+                  : "text-gray-400 dark:text-zinc-500"
+              }`}
+            >
+              {active ? "Home" : item.name}
+            </Link>
+          );
+        })}
       </div>
 
       <button
