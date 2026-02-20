@@ -1,0 +1,31 @@
+{
+  "deskStates": {
+    "alex": {
+      "displayType": "HUD_CARD",
+      "title": "Alex T. Gu",
+      "content": "Bio content goes here..."
+    },
+    "contact": {
+      "displayType": "HUD_CARD",
+      "title": "Contact",
+      "content": "Email and Social handles..."
+    }
+  },
+  "portals": {
+    "projects": {
+      "path": "/projects",
+      "items": []
+    },
+    "hobbies": {
+      "path": "/hobbies",
+      "categories": [
+        {
+          "id": "cinematography",
+          "displayType": "VIDEO_GALLERY",
+          "title": "Film Work",
+          "items": []
+        }
+      ]
+    }
+  }
+}
