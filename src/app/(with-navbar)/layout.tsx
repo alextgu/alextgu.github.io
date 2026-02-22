@@ -8,7 +8,7 @@ export default function NavbarLayout({
 }) {
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between gap-4 border-b border-border bg-background/95 px-6 py-4 backdrop-blur supports-[backdrop-filter]:bg-background/80">
+      <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between max-md:justify-center gap-4 px-8 py-5">
         <Navbar />
         <SocialLinks />
       </header>
