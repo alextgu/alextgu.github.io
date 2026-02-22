@@ -69,12 +69,13 @@ export function Navbar() {
   }, [showIcons]);
 
   return (
+    <>
     <nav
       className={`flex items-center gap-1 h-8 transition-all duration-700 ease-out ${
         visible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8"
       }`}
     >
-      <div className="flex items-center gap-0.5 bg-white/70 dark:bg-zinc-900/70 backdrop-blur border border-gray-300/70 dark:border-zinc-700/70 rounded-md px-1.5 shadow-sm h-full">
+      <div className="flex items-center gap-0.5 bg-white/80 dark:bg-zinc-800/80 backdrop-blur border border-gray-300 dark:border-zinc-600 rounded-md px-1.5 shadow-md h-full">
         {navItems.map((item) => {
           const active = mounted && isActive(item);
 
@@ -93,7 +94,7 @@ export function Navbar() {
                 setTimeout(() => setTransitioningItem(null), 150);
                 setTimeout(() => setNavCooldown(false), 500);
               }}
-              className={`px-1.5 py-1.25 rounded text-xs text-black dark:text-white hover:bg-gray-200/60 dark:hover:bg-zinc-700/60 transition-all duration-100 ease-out inline-block overflow-hidden ${
+              className={`px-1.5 py-1.25 rounded text-xs text-[var(--text-primary)] hover:bg-gray-200/60 dark:hover:bg-zinc-700/60 transition-all duration-100 ease-out inline-block overflow-hidden ${
                 navCooldown ? "pointer-events-none" : ""
               }`}
             >
@@ -116,7 +117,7 @@ export function Navbar() {
       >
         <ChevronRight
           size={12}
-          className={`text-black dark:text-white transition-transform duration-150 ${
+          className={`text-[var(--text-primary)] transition-transform duration-150 ${
             showIcons ? "rotate-180" : "rotate-0"
           }`}
         />
@@ -124,7 +125,7 @@ export function Navbar() {
 
       <div
         className={`absolute top-0 left-full ml-0.5 flex gap-0.5 px-1 bg-white/70 dark:bg-zinc-900/70 backdrop-blur border border-gray-300/70 dark:border-zinc-700/70 rounded-md shadow-sm h-full items-center
-            transition-all duration-250 ease-out max-md:hidden
+            transition-all duration-100 ease-out max-md:hidden
             ${
               showIcons
                 ? "translate-x-0 opacity-100"
@@ -136,7 +137,7 @@ export function Navbar() {
           type="button"
           onClick={() => handleIconClick("dark")}
           disabled={cooldown}
-          className={`p-1.5 rounded transition-colors duration-75 text-black dark:text-white hover:bg-gray-200/60 dark:hover:bg-zinc-700/60
+          className={`p-1.5 rounded transition-colors duration-75 text-[var(--text-primary)] hover:bg-gray-200/60 dark:hover:bg-zinc-700/60
               ${cooldown ? "cursor-not-allowed opacity-70" : "cursor-pointer"}`}
         >
           {isDarkMode ? <Moon className="w-3.5 h-3.5" /> : <Sun className="w-3.5 h-3.5" />}
@@ -146,12 +147,35 @@ export function Navbar() {
           type="button"
           onClick={() => handleIconClick("music")}
           disabled={cooldown}
-          className={`p-1.5 rounded transition-colors duration-75 text-black dark:text-white hover:bg-gray-200/60 dark:hover:bg-zinc-700/60
+          className={`p-1.5 rounded transition-colors duration-75 text-[var(--text-primary)] hover:bg-gray-200/60 dark:hover:bg-zinc-700/60
               ${cooldown ? "cursor-not-allowed opacity-70" : "cursor-pointer"}`}
         >
           {isMusicOn ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
         </button>
       </div>
     </nav>
+
+    {/* Mobile icon tray — fixed top-right of screen */}
+    <div className="fixed top-5 right-4 z-50 flex gap-0.5 px-1 bg-white/70 dark:bg-zinc-900/70 backdrop-blur border border-gray-300/70 dark:border-zinc-700/70 rounded-md shadow-sm h-8 items-center md:hidden">
+      <button
+        type="button"
+        onClick={() => handleIconClick("dark")}
+        disabled={cooldown}
+        className={`p-1.5 rounded transition-colors duration-75 text-[var(--text-primary)] hover:bg-gray-200/60 dark:hover:bg-zinc-700/60
+            ${cooldown ? "cursor-not-allowed opacity-70" : "cursor-pointer"}`}
+      >
+        {isDarkMode ? <Moon className="w-3.5 h-3.5" /> : <Sun className="w-3.5 h-3.5" />}
+      </button>
+      <button
+        type="button"
+        onClick={() => handleIconClick("music")}
+        disabled={cooldown}
+        className={`p-1.5 rounded transition-colors duration-75 text-[var(--text-primary)] hover:bg-gray-200/60 dark:hover:bg-zinc-700/60
+            ${cooldown ? "cursor-not-allowed opacity-70" : "cursor-pointer"}`}
+      >
+        {isMusicOn ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
+      </button>
+    </div>
+    </>
   );
 }
