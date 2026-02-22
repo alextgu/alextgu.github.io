@@ -8,7 +8,7 @@ export function SocialLinks() {
 
   const socialLinks = [
     { name: 'LinkedIn', href: 'https://linkedin.com/in/alextgu', color: '#0A66C2' },
-    { name: 'GitHub', href: 'https://github.com/alextgu', color: '#181717' },
+    { name: 'GitHub', href: 'https://github.com/alextgu', color: '#6e5494' },
     { name: 'Devpost', href: 'https://devpost.com/alexwin2099', color: '#003e54' },
   ];
 
@@ -34,7 +34,7 @@ export function SocialLinks() {
 
   return (
     <div
-      className={`fixed top-6 right-12 flex gap-4 hidden md:flex transition-opacity duration-500 ease-in-out
+      className={`fixed top-6 right-12 flex gap-4 max-md:hidden transition-opacity duration-500 ease-in-out
         ${fadeIn && visible ? 'opacity-100' : 'opacity-0 pointer-events-none'}
       `}
     >
@@ -44,8 +44,8 @@ export function SocialLinks() {
           href={item.href}
           target="_blank"
           rel="noopener noreferrer"
-          className="social-link text-[0.825rem] font-medium text-gray-400 dark:text-zinc-500 transition-colors duration-300 ease-out hover:text-black dark:hover:text-white"
-          style={{ ['--underline-color' as string]: item.color } as React.CSSProperties}
+          className="social-link text-[0.825rem] font-medium text-[var(--text-primary)] opacity-50 hover:opacity-100"
+          style={{ '--link-color': item.color } as React.CSSProperties}
         >
           {item.name}
         </a>
