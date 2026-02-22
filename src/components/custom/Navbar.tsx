@@ -11,13 +11,14 @@ export function Navbar() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const view = searchParams.get("view");
-  const [activeSection, setActiveSection] = useState("Home");
   const [showIcons, setShowIcons] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isMusicOn, setIsMusicOn] = useState(false);
   const [cooldown, setCooldown] = useState(false);
+  const [navCooldown, setNavCooldown] = useState(false);
   const [visible, setVisible] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [transitioningItem, setTransitioningItem] = useState<string | null>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -68,12 +69,12 @@ export function Navbar() {
   }, [showIcons]);
 
   return (
-    <div
-      className={`flex items-center gap-0.5 h-10 transition-all duration-700 ease-out ${
-        visible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-12"
+    <nav
+      className={`flex items-center gap-1 h-8 transition-all duration-700 ease-out ${
+        visible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8"
       }`}
     >
-      <div className="flex items-center gap-0.25 bg-white/70 dark:bg-zinc-900/70 backdrop-blur border border-gray-300/70 dark:border-zinc-700/70 rounded-md px-2 shadow-md text-sm h-full">
+      <div className="flex items-center gap-0.5 bg-white/70 dark:bg-zinc-900/70 backdrop-blur border border-gray-300/70 dark:border-zinc-700/70 rounded-md px-1.5 shadow-sm h-full">
         {navItems.map((item) => {
           const active = mounted && isActive(item);
 
@@ -82,13 +83,27 @@ export function Navbar() {
               key={item.name}
               href={active ? "/" : item.href}
               scroll={false}
-              className={`px-2 py-1 rounded-md transition-colors hover:bg-gray-300/60 dark:hover:bg-zinc-700/60 text-xs md:text-sm ${
-                active
-                  ? "text-gray-600 dark:text-zinc-300"
-                  : "text-gray-400 dark:text-zinc-500"
+              onClick={(e) => {
+                if (navCooldown) {
+                  e.preventDefault();
+                  return;
+                }
+                setNavCooldown(true);
+                setTransitioningItem(item.name);
+                setTimeout(() => setTransitioningItem(null), 150);
+                setTimeout(() => setNavCooldown(false), 500);
+              }}
+              className={`px-1.5 py-1.25 rounded text-xs text-black dark:text-white hover:bg-gray-200/60 dark:hover:bg-zinc-700/60 transition-all duration-100 ease-out inline-block overflow-hidden ${
+                navCooldown ? "pointer-events-none" : ""
               }`}
             >
-              {active ? "Home" : item.name}
+              <span
+                className={`inline-block transition-all duration-150 ease-out ${
+                  transitioningItem === item.name ? "scale-75 opacity-0 blur-sm -translate-y-1" : "scale-100 opacity-100 blur-0 translate-y-0"
+                }`}
+              >
+                {active ? "Home" : item.name}
+              </span>
             </Link>
           );
         })}
@@ -97,23 +112,23 @@ export function Navbar() {
       <button
         type="button"
         onClick={() => setShowIcons(!showIcons)}
-        className="ml-0.5 px-2 bg-white/70 dark:bg-zinc-900/70 border border-gray-300/70 dark:border-zinc-700/70 shadow-md hover:bg-gray-200/70 dark:hover:bg-zinc-800/70 transition flex items-center h-full rounded-md relative z-20 max-md:hidden"
+        className="px-1 bg-white/70 dark:bg-zinc-900/70 backdrop-blur border border-gray-300/70 dark:border-zinc-700/70 rounded-md shadow-sm transition flex items-center h-full relative z-20 max-md:hidden"
       >
         <ChevronRight
-          size={16}
-          className={`text-gray-400 dark:text-zinc-500 transition-transform duration-150 ${
+          size={12}
+          className={`text-black dark:text-white transition-transform duration-150 ${
             showIcons ? "rotate-180" : "rotate-0"
           }`}
         />
       </button>
 
       <div
-        className={`absolute top-0 left-full ml-1 flex gap-0.5 px-2 bg-white/70 dark:bg-zinc-900/70 border border-gray-300/70 dark:border-zinc-700/70 shadow-md h-full items-center rounded-md 
+        className={`absolute top-0 left-full ml-0.5 flex gap-0.5 px-1 bg-white/70 dark:bg-zinc-900/70 backdrop-blur border border-gray-300/70 dark:border-zinc-700/70 rounded-md shadow-sm h-full items-center
             transition-all duration-250 ease-out max-md:hidden
             ${
               showIcons
-                ? "translate-x-0 opacity-100 blur-0 backdrop-blur"
-                : "translate-x-[-4rem] opacity-0 blur-sm"
+                ? "translate-x-0 opacity-100"
+                : "translate-x-[-2rem] opacity-0 pointer-events-none"
             }`}
         style={{ transformOrigin: "left" }}
       >
@@ -121,22 +136,22 @@ export function Navbar() {
           type="button"
           onClick={() => handleIconClick("dark")}
           disabled={cooldown}
-          className={`p-1.5 rounded-md hover:bg-gray-300/60 dark:hover:bg-zinc-700/60 transition text-gray-400 dark:text-zinc-500
+          className={`p-1.5 rounded transition-colors duration-75 text-black dark:text-white hover:bg-gray-200/60 dark:hover:bg-zinc-700/60
               ${cooldown ? "cursor-not-allowed opacity-70" : "cursor-pointer"}`}
         >
-          {isDarkMode ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
+          {isDarkMode ? <Moon className="w-3.5 h-3.5" /> : <Sun className="w-3.5 h-3.5" />}
         </button>
 
         <button
           type="button"
           onClick={() => handleIconClick("music")}
           disabled={cooldown}
-          className={`p-1.5 rounded-md hover:bg-gray-300/60 dark:hover:bg-zinc-700/60 transition text-gray-400 dark:text-zinc-500
+          className={`p-1.5 rounded transition-colors duration-75 text-black dark:text-white hover:bg-gray-200/60 dark:hover:bg-zinc-700/60
               ${cooldown ? "cursor-not-allowed opacity-70" : "cursor-pointer"}`}
         >
-          {isMusicOn ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
+          {isMusicOn ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
         </button>
       </div>
-    </div>
+    </nav>
   );
 }
