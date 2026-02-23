@@ -129,7 +129,7 @@ export default function Home() {
       {/* Desk background — always visible */}
       <div
         className="fixed inset-0 bg-zinc-950 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "url('/desk.png')" }}
+        style={{ backgroundImage: "url('/assets/desk.png')" }}
         aria-hidden
       />
 

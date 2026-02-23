@@ -5,8 +5,8 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 const SLIDES = [
-  "/desk.png",
-  "/desk.png",
+  "/assets/desk.png",
+  "/assets/desk.png",
 ];
 
 const INTERVAL_MS = 4000;

@@ -27,23 +27,58 @@
     {
       "type": "blog",
       "id": "intro-post",
-      "image": "/desk.png",
+      "image": "/assets/desk.png",
       "title": "Welcome to my desk",
       "summary": "A quick intro to what this space is about."
     },
     {
       "type": "video",
       "id": "film-reel",
-      "image": "/desk.png",
+      "image": "/assets/desk.png",
       "title": "Latest Film Reel",
       "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ"
     },
     {
       "type": "blog",
       "id": "dev-log-1",
-      "image": "/desk.png",
+      "image": "/assets/desk.png",
       "title": "Dev Log #1",
       "summary": "Building a personal site that feels like a workspace."
+    }
+  ],
+  "desktopFolders": [
+    {
+      "id": "website_history",
+      "label": "Website",
+      "icon": "globe",
+      "desktopIcon": "document",
+      "content": {
+        "type": "text",
+        "src": "/assets/text.txt",
+        "section": "website"
+      }
+    },
+    {
+      "id": "alex_experiences",
+      "label": "Experiences",
+      "icon": "briefcase",
+      "desktopIcon": "document",
+      "content": {
+        "type": "text",
+        "src": "/assets/text.txt",
+        "section": "experiences"
+      }
+    },
+    {
+      "id": "alex_mov",
+      "label": "alex",
+      "icon": "film",
+      "content": {
+        "type": "folder",
+        "items": [
+          { "type": "image", "name": "majors.jpg", "src": "/assets/majors.JPG" }
+        ]
+      }
     }
   ],
   "portals": {
