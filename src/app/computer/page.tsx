@@ -180,18 +180,26 @@ export default function ComputerPage() {
 
   return (
     <div
-      className="relative h-screen w-screen overflow-hidden font-sans select-none"
+      className="fixed inset-0 overflow-auto bg-zinc-950 font-sans select-none hide-scrollbar"
       onClick={handleDesktopClick}
     >
-      {/* Desktop wallpaper */}
-      <div className="fixed inset-0 bg-gradient-to-br from-indigo-950 via-slate-900 to-zinc-950" />
+      <div
+        className="flex justify-center items-center min-h-[max(100vh,820px)] min-w-[max(100vw,1300px)]"
+      >
+        <div
+          className="flex items-end justify-center w-[1300px] h-[820px] shrink-0 bg-zinc-950"
+          style={{ paddingBottom: "72px" }}
+        >
+        <div className="w-[1000px] h-[700px] relative overflow-hidden rounded-t-xl shrink-0">
+        {/* Desktop wallpaper */}
+        <div className="absolute inset-0 bg-gradient-to-br from-indigo-950 via-slate-900 to-zinc-950" />
 
-      {/* macOS-style menu bar */}
-      {(() => {
-        const frontId = windowOrder[windowOrder.length - 1];
-        const activeMenuTitle = frontId ? (folders.find((f) => f.id === frontId)?.label ?? "Finder") : "Finder";
-        return (
-      <div className="fixed top-0 left-0 right-0 z-[100] flex items-center justify-between bg-black/40 backdrop-blur-xl border-b border-white/5 px-4 h-7" onClick={(e) => e.stopPropagation()}>
+        {/* macOS-style menu bar */}
+        {(() => {
+          const frontId = windowOrder[windowOrder.length - 1];
+          const activeMenuTitle = frontId ? (folders.find((f) => f.id === frontId)?.label ?? "Finder") : "Finder";
+          return (
+        <div className="absolute top-0 left-0 right-0 z-[100] flex items-center justify-between bg-black/40 backdrop-blur-xl border-b border-white/5 px-4 h-7" onClick={(e) => e.stopPropagation()}>
         <div className="flex items-center gap-4">
           <div className="relative">
             <button type="button" className="text-xs font-semibold text-white hover:text-white/90 cursor-pointer transition-colors" onClick={() => setOpenMenuBar((m) => (m === "apple" ? null : "apple"))} aria-label="Apple menu">
@@ -284,7 +292,7 @@ export default function ComputerPage() {
           </button>
           <span className="flex items-center gap-1 text-[11px] text-white">
             <span>{now.toLocaleDateString([], { weekday: "short", month: "short", day: "numeric" }).replace(/,/g, "")}</span>
-            <span>{now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</span>
+            <span>{now.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}</span>
           </span>
         </div>
       </div>
@@ -321,7 +329,7 @@ export default function ComputerPage() {
       ))}
 
       {/* Open folder windows */}
-      <div className="fixed inset-0 top-7 z-[10] pointer-events-none">
+      <div className="absolute inset-0 top-7 z-[10] pointer-events-none">
         {openWindows.map((folderId, idx) => {
           const folder = folders.find((f) => f.id === folderId);
           if (!folder) return null;
@@ -350,6 +358,9 @@ export default function ComputerPage() {
         })}
       </div>
 
+        </div>
+        </div>
+      </div>
     </div>
   );
 }
