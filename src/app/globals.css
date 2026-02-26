@@ -191,3 +191,14 @@
 .hitbox-hint {
   animation: hitbox-pulse 2.8s ease-in-out infinite;
 }
+
+/* Hide scrollbars while keeping scroll functionality */
+.hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
