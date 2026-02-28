@@ -53,9 +53,33 @@
       "icon": "globe",
       "desktopIcon": "document",
       "content": {
-        "type": "text",
-        "src": "/assets/text.txt",
-        "section": "website"
+        "type": "website_history",
+        "techStack": [
+          " - Built with Next.js 16, React 19, and Tailwind v4. Radix via Shadcn for dialog, card, and button.",
+          " - Framer Motion for animations; react-rnd for draggable windows in the computer view. Custom pieces: desk hitbox, DesktopIcon, FolderWindow, menu bar.",
+          " - Typography: Newsreader for headings and Inter for body, via next/font with subsetting."
+        ],
+        "timeline": [
+          {
+            "date": "Feb 2026 - Present",
+            "title": "Now",
+            "description": "This iteration is heavily inspired by Paul, Chester, Gregory and credit to this site for allowing me to find them. I wanted my website to feel like my desk, where everything on it tells you something about me. It may seem chaotic and I know that simplicity is the key to good design, but I just have so many ideas I want to explore! So to satisfy my drive to build, I'm adding whatever I find cool to this website. (MORE IS BETTER)",
+            "links": [
+              { "text": "Paul", "url": "https://paulstamatiou.com" },
+              { "text": "Chester", "url": "https://chester.how/" },
+              { "text": "Gregory", "url": "https://gkoberger.com/" },
+              { "text": "this site", "url": "https://danielwirtz.com/blog/favorite-personal-websites" }
+            ]
+          },
+          {
+            "date": "2024 - 2025",
+            "title": "Unfinished Sites",
+            "description": "I've built so many unfinished personal sites due to a lack of commitment or just building it at a time where I didn't have the skills or the reasons why I wanted to build them. Here are some funny ones.",
+            "pictures": [
+              { "src": "/assets/desk.png", "alt": "What even are these..." }
+            ]
+          }
+        ]
       }
     },
     {
@@ -64,9 +88,20 @@
       "icon": "briefcase",
       "desktopIcon": "document",
       "content": {
-        "type": "text",
-        "src": "/assets/text.txt",
-        "section": "experiences"
+        "type": "experiences",
+        "description": "A short intro about you and your background — edit this in content.json.",
+        "experiences": [
+          {
+            "title": "Experience 1",
+            "company": "Company Name",
+            "readMore": "Expandable paragraph. Add more detail about this role or project here. You can add multiple experiences in content.json."
+          },
+          {
+            "title": "Experience 2",
+            "company": "Another Company",
+            "readMore": "Another expandable read-more section. Click the row to toggle."
+          }
+        ]
       }
     },
     {

@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, type ReactNode } from "react";
 import Link from "next/link";
 import { Rnd } from "react-rnd";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { ImageIcon, Lock, X } from "lucide-react";
+import { ImageIcon, Lock, X, ChevronDown, ChevronUp } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { DesktopIcon } from "@/components/custom/DesktopIcon";
 import { FolderWindow, type WindowBounds } from "@/components/custom/FolderWindow";
@@ -44,7 +44,31 @@ interface FolderTextContent {
   section: string;
 }
 
-type FolderContent = FolderListContent | FolderVideoContent | FolderFolderContent | FolderTextContent;
+interface FolderWebsiteHistoryContent {
+  type: "website_history";
+  techStack: string[];
+  timeline: {
+    date: string;
+    title: string;
+    description?: string;
+    pictures?: { src: string; alt?: string }[];
+    links?: { text: string; url: string }[];
+  }[];
+}
+
+interface FolderExperiencesContent {
+  type: "experiences";
+  description: string;
+  experiences: { title: string; company: string; readMore: string }[];
+}
+
+type FolderContent =
+  | FolderListContent
+  | FolderVideoContent
+  | FolderFolderContent
+  | FolderTextContent
+  | FolderWebsiteHistoryContent
+  | FolderExperiencesContent;
 
 interface DesktopFolder {
   id: string;
@@ -180,16 +204,17 @@ export default function ComputerPage() {
 
   return (
     <div
-      className="fixed inset-0 overflow-auto bg-zinc-950 font-sans select-none hide-scrollbar"
+      className="fixed inset-0 overflow-hidden bg-zinc-950 font-sans select-none"
       onClick={handleDesktopClick}
     >
-      <div
-        className="flex justify-center items-center min-h-[max(100vh,820px)] min-w-[max(100vw,1300px)]"
-      >
+      <div className="fixed inset-0 overflow-auto hide-scrollbar">
         <div
-          className="flex items-end justify-center w-[1300px] h-[820px] shrink-0 bg-zinc-950"
-          style={{ paddingBottom: "72px" }}
+          className="flex justify-center items-center min-h-[max(100vh,820px)] min-w-[max(100vw,1300px)]"
         >
+          <div
+            className="flex items-end justify-center w-[1300px] h-[820px] shrink-0 bg-zinc-950"
+            style={{ paddingBottom: "72px" }}
+          >
         <div className="w-[1000px] h-[700px] relative overflow-hidden rounded-t-xl shrink-0">
         {/* Desktop wallpaper */}
         <div className="absolute inset-0 bg-gradient-to-br from-indigo-950 via-slate-900 to-zinc-950" />
@@ -360,6 +385,7 @@ export default function ComputerPage() {
 
         </div>
         </div>
+        </div>
       </div>
     </div>
   );
@@ -382,11 +408,11 @@ function TextView({ src, section }: { src: string; section: string }) {
       .catch(() => setError(true));
   }, [src, section]);
 
-  if (error) return <p className="text-sm text-zinc-500">Could not load content.</p>;
-  if (text === null) return <p className="text-sm text-zinc-500">Loading…</p>;
+  if (error) return <p className="text-base text-zinc-400">Could not load content.</p>;
+  if (text === null) return <p className="text-base text-zinc-400">Loading…</p>;
 
   return (
-    <pre className="text-sm text-zinc-300 whitespace-pre-wrap font-sans leading-relaxed">
+    <pre className="text-base text-zinc-300 whitespace-pre-wrap font-sans leading-relaxed">
       {text}
     </pre>
   );
@@ -405,10 +431,10 @@ function FolderView({ items }: { items: FolderImageItem[] }) {
             onClick={() => setOpenedImage({ src: item.src, name: item.name })}
             className="flex items-center gap-3 p-2.5 rounded-lg bg-white/5 hover:bg-white/10 transition-colors text-left w-full"
           >
-            <div className="w-9 h-9 rounded-md bg-zinc-600/30 flex items-center justify-center shrink-0">
+            <div className="w-9 h-9 rounded-md bg-white/10 flex items-center justify-center shrink-0">
               <ImageIcon className="w-4 h-4 text-zinc-400" />
             </div>
-            <span className="text-sm font-medium text-zinc-200 truncate">{item.name}</span>
+            <span className="text-base font-medium text-zinc-200 truncate">{item.name}</span>
           </button>
         ))}
       </div>
@@ -420,7 +446,7 @@ function FolderView({ items }: { items: FolderImageItem[] }) {
               <motion.button
                 type="button"
                 onClick={() => setOpenedImage(null)}
-                className="absolute top-4 right-4 z-10 rounded-md p-1.5 text-zinc-400 hover:text-white hover:bg-white/10 transition-colors"
+                className="absolute top-4 right-4 z-10 rounded-md p-1.5 text-zinc-400 hover:text-zinc-200 hover:bg-white/10 transition-colors"
                 whileTap={{ scale: 0.85 }}
                 aria-label="Close"
               >
@@ -444,7 +470,210 @@ function FolderView({ items }: { items: FolderImageItem[] }) {
   );
 }
 
+function descriptionWithLinks(
+  description: string,
+  links?: { text: string; url: string }[]
+): ReactNode {
+  if (!links?.length) return description;
+  const sorted = [...links].sort((a, b) => b.text.length - a.text.length);
+  const escaped = sorted.map((l) => l.text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+  const regex = new RegExp(escaped.join("|"), "g");
+  const segments: ReactNode[] = [];
+  let lastIndex = 0;
+  let match;
+  let key = 0;
+  while ((match = regex.exec(description)) !== null) {
+    if (match.index > lastIndex) segments.push(description.slice(lastIndex, match.index));
+    const link = links.find((l) => l.text === match![0]);
+    if (link)
+      segments.push(
+        <a
+          key={key++}
+          href={link.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-zinc-400 underline decoration-zinc-500 underline-offset-2 hover:text-zinc-200 hover:decoration-zinc-400"
+        >
+          {link.text}
+        </a>
+      );
+    else segments.push(match[0]);
+    lastIndex = regex.lastIndex;
+  }
+  if (lastIndex < description.length) segments.push(description.slice(lastIndex));
+  return <>{segments}</>;
+}
+
+function WebsiteHistoryView({
+  techStack,
+  timeline,
+}: {
+  techStack: string[];
+  timeline: {
+    date: string;
+    title: string;
+    description?: string;
+    pictures?: { src: string; alt?: string }[];
+    links?: { text: string; url: string }[];
+  }[];
+}) {
+  return (
+    <div className="flex flex-col gap-8 font-sans text-base">
+      <section>
+        <h3 className="text-sm font-medium text-zinc-500 uppercase tracking-wider mb-3">Current tech stack</h3>
+        <div className="flex flex-col gap-3">
+          {techStack.map((sentence, idx) => (
+            <p key={idx} className="text-base text-zinc-400 leading-relaxed">
+              {sentence.split(/(Newsreader|Inter)/).map((part, i) =>
+                part === "Newsreader" ? (
+                  <a
+                    key={i}
+                    href="https://fonts.google.com/specimen/Newsreader"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-zinc-400 underline decoration-zinc-500 underline-offset-2 hover:text-zinc-200 hover:decoration-zinc-400"
+                  >
+                    Newsreader
+                  </a>
+                ) : part === "Inter" ? (
+                  <a
+                    key={i}
+                    href="https://fonts.google.com/specimen/Inter"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-zinc-400 underline decoration-zinc-500 underline-offset-2 hover:text-zinc-200 hover:decoration-zinc-400"
+                  >
+                    Inter
+                  </a>
+                ) : (
+                  part
+                )
+              )}
+            </p>
+          ))}
+        </div>
+      </section>
+
+      <section>
+        <h3 className="text-sm font-medium text-zinc-500 uppercase tracking-wider mb-4">History</h3>
+        <div className="flex flex-col gap-6">
+          {timeline.map((item, idx) => (
+            <article key={idx} className="border-b border-zinc-700/40 pb-6 last:border-0 last:pb-0">
+              <p className="text-sm text-zinc-500 mb-1 tracking-wide">{item.date}</p>
+              <h4 className="text-base font-medium text-zinc-200 mb-0.5">{item.title}</h4>
+              {item.description && (
+                <p className="text-base text-zinc-400 leading-relaxed">
+                  {descriptionWithLinks(item.description, item.links)}
+                </p>
+              )}
+              {item.pictures && item.pictures.length > 0 && (
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {item.pictures.map((pic, picIdx) => (
+                    <div
+                      key={picIdx}
+                      className="rounded-lg overflow-hidden border border-zinc-700/50 bg-white/5 max-w-full"
+                    >
+                      <Image
+                        src={pic.src}
+                        alt={pic.alt ?? ""}
+                        width={400}
+                        height={250}
+                        className="w-full h-auto max-h-48 object-cover"
+                        unoptimized
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </article>
+          ))}
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function ExperiencesView({
+  description,
+  experiences,
+}: {
+  description: string;
+  experiences: { title: string; company: string; readMore: string }[];
+}) {
+  const [expanded, setExpanded] = useState<Set<number>>(new Set());
+
+  const toggle = (idx: number) => {
+    setExpanded((prev) => {
+      const next = new Set(prev);
+      if (next.has(idx)) next.delete(idx);
+      else next.add(idx);
+      return next;
+    });
+  };
+
+  return (
+    <div className="flex flex-col gap-8 font-sans text-base">
+      <section>
+        <h3 className="text-sm font-medium text-zinc-500 uppercase tracking-wider mb-3">About me</h3>
+        <p className="text-base text-zinc-400 leading-relaxed">{description}</p>
+      </section>
+
+      <section>
+        <h3 className="text-sm font-medium text-zinc-500 uppercase tracking-wider mb-4">Experiences</h3>
+        <div className="flex flex-col gap-2">
+          {experiences.map((exp, idx) => (
+            <div
+              key={idx}
+              className="rounded-lg border border-zinc-700/50 bg-white/5 overflow-hidden"
+            >
+              <button
+                type="button"
+                onClick={() => toggle(idx)}
+                className="w-full flex items-center justify-between gap-3 px-4 py-3 text-left hover:bg-white/5 transition-colors"
+              >
+                <div className="min-w-0 flex items-baseline gap-2 flex-wrap">
+                  <h4 className="text-base font-medium text-zinc-200">{exp.title}</h4>
+                  <span className="text-zinc-600" aria-hidden>·</span>
+                  <span className="text-base text-zinc-500">{exp.company}</span>
+                </div>
+                <span className="shrink-0 text-zinc-500" aria-hidden>
+                  {expanded.has(idx) ? (
+                    <ChevronUp className="w-4 h-4" />
+                  ) : (
+                    <ChevronDown className="w-4 h-4" />
+                  )}
+                </span>
+              </button>
+              {expanded.has(idx) && (
+                <div className="px-4 pb-4 pt-0 border-t border-zinc-700/40">
+                  <p className="text-base text-zinc-400 leading-relaxed pt-3">{exp.readMore}</p>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
+  );
+}
+
 function FolderContents({ content }: { content: FolderContent }) {
+  if (content.type === "website_history") {
+    return (
+      <WebsiteHistoryView
+        techStack={content.techStack}
+        timeline={content.timeline}
+      />
+    );
+  }
+  if (content.type === "experiences") {
+    return (
+      <ExperiencesView
+        description={content.description}
+        experiences={content.experiences}
+      />
+    );
+  }
   if (content.type === "video") {
     return (
       <div className="flex flex-col gap-3">
@@ -456,7 +685,7 @@ function FolderContents({ content }: { content: FolderContent }) {
             allowFullScreen
           />
         </div>
-        <p className="text-sm text-zinc-400">{content.caption}</p>
+        <p className="text-base text-zinc-400">{content.caption}</p>
       </div>
     );
   }
@@ -474,16 +703,16 @@ function FolderContents({ content }: { content: FolderContent }) {
       {content.items.map((item) => (
         <div
           key={item.name}
-          className="flex items-start gap-3 p-3 rounded-lg bg-white/5 hover:bg-white/8 transition-colors"
+          className="flex items-start gap-3 p-3 rounded-lg bg-white/5 hover:bg-white/10 transition-colors"
         >
-          <div className="w-8 h-8 rounded-md bg-blue-500/20 flex items-center justify-center shrink-0 mt-0.5">
-            <span className="text-blue-400 text-xs font-mono">
+          <div className="w-8 h-8 rounded-md bg-white/10 flex items-center justify-center shrink-0 mt-0.5">
+            <span className="text-zinc-400 text-sm font-sans">
               {item.name.charAt(0).toUpperCase()}
             </span>
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-zinc-200 truncate">{item.name}</p>
-            <p className="text-xs text-zinc-500 mt-0.5">{item.description}</p>
+            <p className="text-base font-medium text-zinc-200 truncate">{item.name}</p>
+            <p className="text-sm text-zinc-400 mt-0.5">{item.description}</p>
           </div>
         </div>
       ))}

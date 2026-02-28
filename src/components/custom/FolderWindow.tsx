@@ -83,9 +83,10 @@ export function FolderWindow({
       }
       rndRef.current.updatePosition({ x: 0, y: 0 });
       const parent = rndRef.current.getSelfElement()?.parentElement;
+      const parentWidth = parent ? parent.clientWidth : window.innerWidth;
       const parentHeight = parent ? parent.clientHeight : window.innerHeight - 28;
       rndRef.current.updateSize({
-        width: window.innerWidth,
+        width: parentWidth,
         height: parentHeight,
       });
       setIsMaximized(true);
@@ -145,13 +146,13 @@ export function FolderWindow({
                   <Maximize2 className="w-1.5 h-1.5 text-green-900 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </button>
               </div>
-              <span className="ml-2 text-xs text-zinc-400 font-mono select-none pointer-events-none">
+              <span className="ml-2 text-xs text-zinc-400 font-sans select-none pointer-events-none">
                 {title}
               </span>
             </div>
 
             {/* Window content */}
-            <div className="flex-1 bg-zinc-900/95 backdrop-blur-md overflow-y-auto p-4">
+            <div className="flex-1 min-h-0 bg-zinc-900/95 backdrop-blur-md overflow-y-auto overflow-x-hidden px-6 py-4 font-sans">
               {children}
             </div>
           </motion.div>

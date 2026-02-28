@@ -23,7 +23,14 @@ export function DesktopIcon({ label, selected, onClick, onDoubleClick, iconType 
           ${selected ? "bg-white/20 ring-1 ring-white/30" : "hover:bg-white/5"}`}
       >
         {iconType === "document" ? (
-          <div className="w-[72px] h-[72px] rounded bg-white/10 shrink-0" aria-hidden />
+          <Image
+            src="/assets/file.png"
+            alt={label}
+            width={56}
+            height={56}
+            className="drop-shadow-lg pointer-events-none object-contain w-14 h-14"
+            draggable={false}
+          />
         ) : (
           <Image
             src="/assets/folder.png"
