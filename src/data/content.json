@@ -55,7 +55,7 @@
       "content": {
         "type": "website_history",
         "techStack": [
-          " - Built with Next.js 16, React 19, and Tailwind v4. Radix via Shadcn for dialog, card, and button.",
+          " - Built with Next.js 16, React 19, and Tailwind v4. Shadcn for some components.",
           " - Framer Motion for animations; react-rnd for draggable windows in the computer view. Custom pieces: desk hitbox, DesktopIcon, FolderWindow, menu bar.",
           " - Typography: Newsreader for headings and Inter for body, via next/font with subsetting."
         ],
@@ -76,7 +76,7 @@
             "title": "Unfinished Sites",
             "description": "I've built so many unfinished personal sites due to a lack of commitment or just building it at a time where I didn't have the skills or the reasons why I wanted to build them. Here are some funny ones.",
             "pictures": [
-              { "src": "/assets/desk.png", "alt": "What even are these..." }
+              { "src": "/assets/computer/website/placeholder.png", "alt": "What even are these..." }
             ]
           }
         ]
@@ -105,13 +105,38 @@
       }
     },
     {
+      "id": "hackathons",
+      "label": "Hackathons",
+      "icon": "code",
+      "desktopIcon": "folder",
+      "content": {
+        "type": "hackathons",
+        "entries": [
+          {
+            "id": "hackathon-1",
+            "name": "Hackathon 1",
+            "subtitle": "Event · 2025",
+            "description": "A short description of this hackathon — what you built, the theme, and the outcome. Edit in content.json.",
+            "sections": [
+              { "title": "Problem", "body": "What problem did your project solve?" },
+              { "title": "Solution", "body": "Tech stack and approach." },
+              { "title": "Result", "body": "Prizes, learnings, or next steps." }
+            ],
+            "images": [
+              { "src": "/assets/computer/hackathons/hackathon-1.png", "alt": "Hackathon photo" }
+            ]
+          }
+        ]
+      }
+    },
+    {
       "id": "alex_mov",
       "label": "alex",
       "icon": "film",
       "content": {
         "type": "folder",
         "items": [
-          { "type": "image", "name": "majors.jpg", "src": "/assets/majors.JPG" }
+          { "type": "image", "name": "majors.jpg", "src": "/assets/computer/alex/majors.JPG" }
         ]
       }
     }

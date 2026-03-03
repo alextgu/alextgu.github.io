@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Rnd } from "react-rnd";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { ImageIcon, Lock, X, ChevronDown, ChevronUp } from "lucide-react";
+import { ImageIcon, Lock, X, ChevronDown, ChevronUp, ChevronLeft } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { DesktopIcon } from "@/components/custom/DesktopIcon";
 import { FolderWindow, type WindowBounds } from "@/components/custom/FolderWindow";
@@ -62,13 +62,26 @@ interface FolderExperiencesContent {
   experiences: { title: string; company: string; readMore: string }[];
 }
 
+interface FolderHackathonsContent {
+  type: "hackathons";
+  entries: {
+    id: string;
+    name: string;
+    subtitle?: string;
+    description: string;
+    sections?: { title: string; body: string }[];
+    images?: { src: string; alt?: string }[];
+  }[];
+}
+
 type FolderContent =
   | FolderListContent
   | FolderVideoContent
   | FolderFolderContent
   | FolderTextContent
   | FolderWebsiteHistoryContent
-  | FolderExperiencesContent;
+  | FolderExperiencesContent
+  | FolderHackathonsContent;
 
 interface DesktopFolder {
   id: string;
@@ -431,8 +444,15 @@ function FolderView({ items }: { items: FolderImageItem[] }) {
             onClick={() => setOpenedImage({ src: item.src, name: item.name })}
             className="flex items-center gap-3 p-2.5 rounded-lg bg-white/5 hover:bg-white/10 transition-colors text-left w-full"
           >
-            <div className="w-9 h-9 rounded-md bg-white/10 flex items-center justify-center shrink-0">
-              <ImageIcon className="w-4 h-4 text-zinc-400" />
+            <div className="w-9 h-9 rounded-md bg-white/10 flex items-center justify-center shrink-0 overflow-hidden">
+              <Image
+                src={item.src}
+                alt={item.name}
+                width={36}
+                height={36}
+                className="w-9 h-9 object-cover"
+                unoptimized
+              />
             </div>
             <span className="text-base font-medium text-zinc-200 truncate">{item.name}</span>
           </button>
@@ -657,6 +677,153 @@ function ExperiencesView({
   );
 }
 
+function HackathonsView({
+  entries,
+}: {
+  entries: FolderHackathonsContent["entries"];
+}) {
+  const [activeId, setActiveId] = useState<string | null>(null);
+  const [openedImage, setOpenedImage] = useState<{ src: string; alt: string } | null>(null);
+
+  const active = activeId
+    ? (entries.find((e) => e.id === activeId) ?? null)
+    : null;
+
+  if (!entries.length) {
+    return (
+      <div className="flex flex-col gap-4 font-sans text-base">
+        <p className="text-base text-zinc-400 leading-relaxed">Hackathons coming soon.</p>
+      </div>
+    );
+  }
+
+  if (activeId === null) {
+    return (
+      <div className="flex flex-col gap-6 font-sans text-base">
+        <h3 className="text-sm font-medium text-zinc-500 uppercase tracking-wider">Hackathons</h3>
+        <div className="flex flex-col gap-2">
+          {entries.map((entry) => (
+            <button
+              key={entry.id}
+              type="button"
+              onClick={() => setActiveId(entry.id)}
+              className="w-full flex items-center justify-between gap-3 px-4 py-3 text-left rounded-lg border border-zinc-700/50 bg-white/5 hover:bg-white/8 transition-colors"
+            >
+              <div className="min-w-0 flex flex-col gap-0.5">
+                <span className="text-base font-medium text-zinc-200 truncate">
+                  {entry.name}
+                </span>
+                {entry.subtitle && (
+                  <span className="text-sm text-zinc-500 truncate">
+                    {entry.subtitle}
+                  </span>
+                )}
+              </div>
+              <ChevronDown className="w-4 h-4 shrink-0 text-zinc-500 rotate-[-90deg]" aria-hidden />
+            </button>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col gap-6 font-sans text-base">
+      <button
+        type="button"
+        onClick={() => setActiveId(null)}
+        className="flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-300 transition-colors w-fit"
+      >
+        <ChevronLeft className="w-4 h-4" aria-hidden />
+        Back to Hackathons
+      </button>
+
+      <section>
+        <div className="flex flex-col gap-4">
+          <div>
+            <h4 className="text-lg font-semibold text-zinc-200">{active!.name}</h4>
+            {active!.subtitle && (
+              <p className="text-sm text-zinc-500 mt-0.5">{active!.subtitle}</p>
+            )}
+          </div>
+          <p className="text-base text-zinc-400 leading-relaxed">
+            {active!.description}
+          </p>
+
+          {active!.sections && active!.sections.length > 0 && (
+            <div className="flex flex-col gap-4">
+              {active!.sections.map((section, idx) => (
+                <div key={idx}>
+                  <h5 className="text-sm font-medium text-zinc-200">
+                    {section.title}
+                  </h5>
+                  <p className="text-base text-zinc-400 leading-relaxed mt-1">
+                    {section.body}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {active!.images && active!.images.length > 0 && (
+            <div className="flex flex-col gap-2 mt-2">
+              <h5 className="text-sm font-medium text-zinc-200">Photos</h5>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                {active!.images.map((img, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => setOpenedImage({ src: img.src, alt: img.alt ?? active!.name })}
+                    className="relative overflow-hidden rounded-md border border-zinc-700/50 bg-white/5 hover:bg-white/10 transition-colors"
+                  >
+                    <Image
+                      src={img.src}
+                      alt={img.alt ?? active!.name}
+                      width={320}
+                      height={200}
+                      className="w-full h-28 sm:h-32 object-cover"
+                      unoptimized
+                    />
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
+
+      <Dialog open={!!openedImage} onOpenChange={(open) => !open && setOpenedImage(null)}>
+        <DialogContent className="max-w-4xl bg-zinc-950 border-zinc-800 p-0 overflow-hidden" showCloseButton={false}>
+          {openedImage && (
+            <>
+              <DialogTitle className="sr-only">{openedImage.alt}</DialogTitle>
+              <motion.button
+                type="button"
+                onClick={() => setOpenedImage(null)}
+                className="absolute top-4 right-4 z-10 rounded-md p-1.5 text-zinc-400 hover:text-zinc-200 hover:bg-white/10 transition-colors"
+                whileTap={{ scale: 0.85 }}
+                aria-label="Close"
+              >
+                <X className="w-4 h-4" />
+              </motion.button>
+              <div className="relative w-full max-h-[85vh] flex items-center justify-center">
+                <Image
+                  src={openedImage.src}
+                  alt={openedImage.alt}
+                  width={1200}
+                  height={800}
+                  className="w-full h-auto max-h-[85vh] object-contain"
+                  unoptimized
+                />
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+}
+
 function FolderContents({ content }: { content: FolderContent }) {
   if (content.type === "website_history") {
     return (
@@ -673,6 +840,9 @@ function FolderContents({ content }: { content: FolderContent }) {
         experiences={content.experiences}
       />
     );
+  }
+  if (content.type === "hackathons") {
+    return <HackathonsView entries={content.entries} />;
   }
   if (content.type === "video") {
     return (
