@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Rnd } from "react-rnd";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { ImageIcon, Lock, X, ChevronDown, ChevronUp, ChevronLeft } from "lucide-react";
+import { ImageIcon, Lock, X, ChevronDown, ChevronUp, ChevronLeft, Crown } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { DesktopIcon } from "@/components/custom/DesktopIcon";
 import { FolderWindow, type WindowBounds } from "@/components/custom/FolderWindow";
@@ -67,8 +67,12 @@ interface FolderHackathonsContent {
   entries: {
     id: string;
     name: string;
+    projectName?: string;
     subtitle?: string;
     description: string;
+    won?: boolean;
+    score?: number;
+    devpostUrl?: string;
     sections?: { title: string; body: string }[];
     images?: { src: string; alt?: string }[];
   }[];
@@ -220,7 +224,7 @@ export default function ComputerPage() {
       className="fixed inset-0 overflow-hidden bg-zinc-950 font-sans select-none"
       onClick={handleDesktopClick}
     >
-      <div className="fixed inset-0 overflow-auto hide-scrollbar">
+      <div className="fixed inset-0 overflow-hidden">
         <div
           className="flex justify-center items-center min-h-[max(100vh,820px)] min-w-[max(100vw,1300px)]"
         >
@@ -472,14 +476,12 @@ function FolderView({ items }: { items: FolderImageItem[] }) {
               >
                 <X className="w-4 h-4" />
               </motion.button>
-              <div className="relative w-full max-h-[85vh] flex items-center justify-center">
-                <Image
+              <div className="relative w-full min-h-0 flex items-center justify-center p-4">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
                   src={openedImage.src}
                   alt={openedImage.name}
-                  width={1200}
-                  height={800}
-                  className="w-full h-auto max-h-[85vh] object-contain"
-                  unoptimized
+                  className="max-w-full max-h-[85vh] w-auto h-auto object-contain block"
                 />
               </div>
             </>
@@ -537,6 +539,8 @@ function WebsiteHistoryView({
     links?: { text: string; url: string }[];
   }[];
 }) {
+  const [openedImage, setOpenedImage] = useState<{ src: string; alt: string } | null>(null);
+
   return (
     <div className="flex flex-col gap-8 font-sans text-base">
       <section>
@@ -589,19 +593,26 @@ function WebsiteHistoryView({
               {item.pictures && item.pictures.length > 0 && (
                 <div className="mt-3 flex flex-wrap gap-2">
                   {item.pictures.map((pic, picIdx) => (
-                    <div
+                    <button
                       key={picIdx}
-                      className="rounded-lg overflow-hidden border border-zinc-700/50 bg-white/5 max-w-full"
+                      type="button"
+                      onClick={() =>
+                        setOpenedImage({
+                          src: pic.src,
+                          alt: pic.alt ?? item.title,
+                        })
+                      }
+                      className="rounded-lg overflow-hidden border border-zinc-700/50 bg-white/5 max-w-[480px] hover:bg-white/10 transition-colors"
                     >
                       <Image
                         src={pic.src}
-                        alt={pic.alt ?? ""}
+                        alt={pic.alt ?? item.title}
                         width={400}
                         height={250}
                         className="w-full h-auto max-h-48 object-cover"
                         unoptimized
                       />
-                    </div>
+                    </button>
                   ))}
                 </div>
               )}
@@ -609,6 +620,33 @@ function WebsiteHistoryView({
           ))}
         </div>
       </section>
+
+      <Dialog open={!!openedImage} onOpenChange={(open) => !open && setOpenedImage(null)}>
+        <DialogContent className="max-w-4xl bg-zinc-950 border-zinc-800 p-0 overflow-hidden" showCloseButton={false}>
+          {openedImage && (
+            <>
+              <DialogTitle className="sr-only">{openedImage.alt}</DialogTitle>
+              <motion.button
+                type="button"
+                onClick={() => setOpenedImage(null)}
+                className="absolute top-4 right-4 z-10 rounded-md p-1.5 text-zinc-400 hover:text-zinc-200 hover:bg-white/10 transition-colors"
+                whileTap={{ scale: 0.85 }}
+                aria-label="Close"
+              >
+                <X className="w-4 h-4" />
+              </motion.button>
+              <div className="relative w-full min-h-0 flex items-center justify-center p-4">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={openedImage.src}
+                  alt={openedImage.alt}
+                  className="max-w-full max-h-[85vh] w-auto h-auto object-contain block"
+                />
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
@@ -700,7 +738,19 @@ function HackathonsView({
   if (activeId === null) {
     return (
       <div className="flex flex-col gap-6 font-sans text-base">
-        <h3 className="text-sm font-medium text-zinc-500 uppercase tracking-wider">Hackathons</h3>
+        <div className="flex items-center justify-between gap-3">
+          <h3 className="text-sm font-medium text-zinc-500 uppercase tracking-wider">
+            Hackathons
+          </h3>
+          <a
+            href="https://devpost.com/alexwin2099?ref_content=user-portfolio&ref_feature=portfolio&ref_medium=global-nav"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs text-zinc-400 hover:text-zinc-200 underline underline-offset-2 decoration-zinc-600 hover:decoration-zinc-300"
+          >
+            View all on Devpost
+          </a>
+        </div>
         <div className="flex flex-col gap-2">
           {entries.map((entry) => (
             <button
@@ -709,10 +759,23 @@ function HackathonsView({
               onClick={() => setActiveId(entry.id)}
               className="w-full flex items-center justify-between gap-3 px-4 py-3 text-left rounded-lg border border-zinc-700/50 bg-white/5 hover:bg-white/8 transition-colors"
             >
-              <div className="min-w-0 flex flex-col gap-0.5">
-                <span className="text-base font-medium text-zinc-200 truncate">
-                  {entry.name}
-                </span>
+              <div className="min-w-0 flex flex-col gap-1">
+                <div className="flex items-center gap-2">
+                  <span className="text-base font-medium text-zinc-200 truncate">
+                    {entry.name}
+                  </span>
+                  {entry.won && (
+                    <span className="inline-flex items-center gap-1 rounded-full border border-amber-500/40 bg-amber-500/10 px-2 py-0.5 text-[11px] font-medium text-amber-200 shrink-0">
+                      <Crown className="w-3 h-3" aria-hidden />
+                      Winner
+                    </span>
+                  )}
+                </div>
+                {entry.projectName && (
+                  <span className="text-sm text-zinc-400 truncate">
+                    {entry.projectName}
+                  </span>
+                )}
                 {entry.subtitle && (
                   <span className="text-sm text-zinc-500 truncate">
                     {entry.subtitle}
@@ -741,7 +804,18 @@ function HackathonsView({
       <section>
         <div className="flex flex-col gap-4">
           <div>
-            <h4 className="text-lg font-semibold text-zinc-200">{active!.name}</h4>
+            <div className="flex items-center gap-3 flex-wrap">
+              <h4 className="text-lg font-semibold text-zinc-200">{active!.name}</h4>
+              {active!.won && (
+                <span className="inline-flex items-center gap-1 rounded-full border border-amber-500/40 bg-amber-500/10 px-2.5 py-0.5 text-[11px] font-medium uppercase tracking-wide text-amber-200">
+                  <Crown className="w-3 h-3" aria-hidden />
+                  Winner
+                </span>
+              )}
+            </div>
+            {active!.projectName && (
+              <p className="text-sm text-zinc-400 mt-0.5">{active!.projectName}</p>
+            )}
             {active!.subtitle && (
               <p className="text-sm text-zinc-500 mt-0.5">{active!.subtitle}</p>
             )}
@@ -768,7 +842,7 @@ function HackathonsView({
           {active!.images && active!.images.length > 0 && (
             <div className="flex flex-col gap-2 mt-2">
               <h5 className="text-sm font-medium text-zinc-200">Photos</h5>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-w-2xl">
                 {active!.images.map((img, idx) => (
                   <button
                     key={idx}
@@ -789,6 +863,34 @@ function HackathonsView({
               </div>
             </div>
           )}
+
+          {active!.devpostUrl && (
+            <div className="mt-4">
+              <a
+                href={active!.devpostUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-xs font-medium text-sky-400 hover:text-sky-300 underline underline-offset-2 decoration-sky-600 hover:decoration-sky-400"
+              >
+                View project on Devpost
+              </a>
+            </div>
+          )}
+
+          {typeof active!.score === "number" && (
+            <div className="mt-4 flex flex-col gap-1.5">
+              <div className="flex items-center justify-between text-xs text-zinc-500">
+                <span>Personal score</span>
+                <span className="text-zinc-300 font-medium">{active!.score}/100</span>
+              </div>
+              <div className="h-1.5 rounded-full bg-zinc-800 overflow-hidden">
+                <div
+                  className="h-full rounded-full bg-emerald-500"
+                  style={{ width: `${Math.max(0, Math.min(100, active!.score ?? 0))}%` }}
+                />
+              </div>
+            </div>
+          )}
         </div>
       </section>
 
@@ -806,14 +908,12 @@ function HackathonsView({
               >
                 <X className="w-4 h-4" />
               </motion.button>
-              <div className="relative w-full max-h-[85vh] flex items-center justify-center">
-                <Image
+              <div className="relative w-full min-h-0 flex items-center justify-center p-4">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
                   src={openedImage.src}
                   alt={openedImage.alt}
-                  width={1200}
-                  height={800}
-                  className="w-full h-auto max-h-[85vh] object-contain"
-                  unoptimized
+                  className="max-w-full max-h-[85vh] w-auto h-auto object-contain block"
                 />
               </div>
             </>

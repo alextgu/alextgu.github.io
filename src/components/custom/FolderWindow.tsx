@@ -152,7 +152,7 @@ export function FolderWindow({
             </div>
 
             {/* Window content */}
-            <div className="flex-1 min-h-0 bg-zinc-900/95 backdrop-blur-md overflow-y-auto overflow-x-hidden px-6 py-4 font-sans">
+            <div className="flex-1 min-h-0 bg-zinc-900/95 backdrop-blur-md overflow-y-auto overflow-x-hidden px-6 py-4 font-sans hide-scrollbar">
               {children}
             </div>
           </motion.div>
