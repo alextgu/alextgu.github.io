@@ -83,18 +83,17 @@
       "desktopIcon": "document",
       "content": {
         "type": "experiences",
-        "description": "PLEASE HIRE ME. I am Alexander Gu and I am a student at the University of Toronto aspiring to work in software development. I'm currently really interested in Fintech and AI. This experience section isn't my resume, so it will be more about stories and not a list of technical details + acomplishments.",
+        "description": "",
         "experiences": [
-          
           {
-            "title": "Full Stack Developer Intern",
-            "company": "Toronto Chinese Canadian Film Festival",
-            "readMore": "TO BE WRITTEN"
+            "title": "Technology Exec",
+            "company": "Google Developers Group",
+            "date": "Sept 2025 - June 2026"
           },
           {
-            "title": "Kid Stuff",
-            "company": "Me",
-            "readMore": "I worked at GongCha for a couple of months, tutored 3 people in Piano, was an umpire three times for kid baseball games, ran a bubble tea stand in middle school and delivered newspapers.."
+            "title": "Full Stack Developer Intern",
+            "company": "TCCFF (Film Festival)",
+            "date": "June 2025 - Sept 2025"
           }
         ]
       }

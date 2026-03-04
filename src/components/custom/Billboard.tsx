@@ -58,8 +58,7 @@ export function Billboard({ items, visible = true, isLoading = false, onBlogClic
       <div
         className={cn(
           "relative max-w-lg w-full",
-          "bg-[var(--glass-bg)] backdrop-blur-sm border border-[var(--glass-border)] rounded-xl",
-          "overflow-hidden",
+          "bg-stone-100/95 border border-stone-300/60 rounded-xl shadow-lg overflow-hidden",
           className
         )}
       >
@@ -84,8 +83,7 @@ export function Billboard({ items, visible = true, isLoading = false, onBlogClic
         }}
         className={cn(
           "relative max-w-lg w-full cursor-pointer",
-          "bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl",
-          "shadow-2xl overflow-hidden",
+          "bg-stone-100/95 border border-stone-300/60 rounded-xl shadow-xl overflow-hidden",
           className
         )}
         onClick={handleClick}

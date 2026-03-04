@@ -94,9 +94,6 @@
   /* Text: obsidian black — deep charcoal with a cool undertone */
   --text-primary: #1a1a2e;
 
-  /* Glassmorphism: low-opacity for depth without hue */
-  --glass-bg: oklch(0.985 0.002 247 / 0.12);
-  --glass-border: oklch(0.985 0.002 247 / 0.2);
 }
 
 /* ---------- Zinc monochrome (dark): Zinc 950 bg, Zinc 50 fg ---------- */
@@ -135,9 +132,6 @@
   /* Text: pastel white — soft warm off-white */
   --text-primary: #ede9e3;
 
-  /* Glassmorphism: low-opacity zinc-50 for depth */
-  --glass-bg: oklch(0.985 0.002 247 / 0.08);
-  --glass-border: oklch(0.985 0.002 247 / 0.18);
 }
 
 /* ---------- Social link hover: wavy underline ---------- */

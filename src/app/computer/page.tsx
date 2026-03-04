@@ -59,7 +59,7 @@ interface FolderWebsiteHistoryContent {
 interface FolderExperiencesContent {
   type: "experiences";
   description: string;
-  experiences: { title: string; company: string; readMore: string }[];
+  experiences: { title: string; company: string; date?: string; readMore?: string }[];
 }
 
 interface FolderHackathonsContent {
@@ -224,7 +224,7 @@ export default function ComputerPage() {
       className="fixed inset-0 overflow-hidden bg-zinc-950 font-sans select-none"
       onClick={handleDesktopClick}
     >
-      <div className="fixed inset-0 overflow-hidden">
+      <div className="fixed inset-0 overflow-auto">
         <div
           className="flex justify-center items-center min-h-[max(100vh,820px)] min-w-[max(100vw,1300px)]"
         >
@@ -241,7 +241,7 @@ export default function ComputerPage() {
           const frontId = windowOrder[windowOrder.length - 1];
           const activeMenuTitle = frontId ? (folders.find((f) => f.id === frontId)?.label ?? "Finder") : "Finder";
           return (
-        <div className="absolute top-0 left-0 right-0 z-[100] flex items-center justify-between bg-black/40 backdrop-blur-xl border-b border-white/5 px-4 h-7" onClick={(e) => e.stopPropagation()}>
+        <div className="absolute top-0 left-0 right-0 z-[100] flex items-center justify-between bg-black/40 backdrop-blur-xl border-b border-white/5 px-5 h-10" onClick={(e) => e.stopPropagation()}>
         <div className="flex items-center gap-4">
           <div className="relative">
             <button type="button" className="text-xs font-semibold text-white hover:text-white/90 cursor-pointer transition-colors" onClick={() => setOpenMenuBar((m) => (m === "apple" ? null : "apple"))} aria-label="Apple menu">
@@ -656,60 +656,39 @@ function ExperiencesView({
   experiences,
 }: {
   description: string;
-  experiences: { title: string; company: string; readMore: string }[];
+  experiences: { title: string; company: string; date?: string; readMore?: string }[];
 }) {
-  const [expanded, setExpanded] = useState<Set<number>>(new Set());
-
-  const toggle = (idx: number) => {
-    setExpanded((prev) => {
-      const next = new Set(prev);
-      if (next.has(idx)) next.delete(idx);
-      else next.add(idx);
-      return next;
-    });
-  };
-
   return (
     <div className="flex flex-col gap-8 font-sans text-base">
       <section>
-        <h3 className="text-sm font-medium text-zinc-500 uppercase tracking-wider mb-3">About me</h3>
         <p className="text-base text-zinc-400 leading-relaxed">{description}</p>
       </section>
 
-      <section>
-        <h3 className="text-sm font-medium text-zinc-500 uppercase tracking-wider mb-4">Experiences</h3>
-        <div className="flex flex-col gap-2">
-          {experiences.map((exp, idx) => (
-            <div
-              key={idx}
-              className="rounded-lg border border-zinc-700/50 bg-white/5 overflow-hidden"
-            >
-              <button
-                type="button"
-                onClick={() => toggle(idx)}
-                className="w-full flex items-center justify-between gap-3 px-4 py-3 text-left hover:bg-white/5 transition-colors"
-              >
-                <div className="min-w-0 flex items-baseline gap-2 flex-wrap">
-                  <h4 className="text-base font-medium text-zinc-200">{exp.title}</h4>
-                  <span className="text-zinc-600" aria-hidden>·</span>
-                  <span className="text-base text-zinc-500">{exp.company}</span>
-                </div>
-                <span className="shrink-0 text-zinc-500" aria-hidden>
-                  {expanded.has(idx) ? (
-                    <ChevronUp className="w-4 h-4" />
-                  ) : (
-                    <ChevronDown className="w-4 h-4" />
-                  )}
-                </span>
-              </button>
-              {expanded.has(idx) && (
-                <div className="px-4 pb-4 pt-0 border-t border-zinc-700/40">
-                  <p className="text-base text-zinc-400 leading-relaxed pt-3">{exp.readMore}</p>
-                </div>
-              )}
+      <section className="relative">
+        <div
+          className="absolute left-[9px] top-0 bottom-0 w-px bg-zinc-600/60"
+          aria-hidden
+        />
+        {experiences.map((exp, idx) => (
+          <div key={idx} className="flex gap-4 items-start py-2 first:pt-0">
+            <div className="w-5 shrink-0 flex justify-center pt-2">
+              <div className="rounded-full w-2 h-2 bg-zinc-500 z-10" aria-hidden />
             </div>
-          ))}
-        </div>
+            <div className="flex-1 pb-8 last:pb-0 flex flex-col gap-0.5">
+              <span className="text-base flex items-baseline gap-1.5 flex-wrap">
+                <span className="font-medium text-zinc-200">{exp.company}</span>
+                <span className="text-zinc-600" aria-hidden>·</span>
+                <span className="text-zinc-500">{exp.title}</span>
+                {exp.date && (
+                  <>
+                    <span className="text-zinc-600" aria-hidden>·</span>
+                    <span className="text-xs text-zinc-500 tracking-wide">{exp.date}</span>
+                  </>
+                )}
+              </span>
+            </div>
+          </div>
+        ))}
       </section>
     </div>
   );

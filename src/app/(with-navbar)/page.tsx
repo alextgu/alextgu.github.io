@@ -2,7 +2,8 @@
 
 import { Suspense, useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { GlassCard } from "@/components/custom/GlassCard";
+import { motion } from "framer-motion";
+import { DeskDisplay } from "@/components/custom/DeskDisplay";
 import { Billboard } from "@/components/custom/Billboard";
 import { ViewLoader } from "@/components/custom/ViewLoader";
 import { Button } from "@/components/ui/button";
@@ -46,7 +47,7 @@ function DeskHUD() {
       {/* Dim overlay — visible when HUD is focused */}
       <div
         className={
-          "fixed inset-0 z-[1] bg-black/40 backdrop-blur-[2px] transition-opacity duration-500 pointer-events-none " +
+          "fixed inset-0 z-[1] bg-black/30 transition-opacity duration-500 pointer-events-none " +
           (isExplorationMode ? "opacity-0" : "opacity-100")
         }
         aria-hidden
@@ -57,21 +58,21 @@ function DeskHUD() {
         <div className="fixed bottom-6 right-6 z-20 flex flex-col gap-3 items-end">
           <Button
             variant="outline"
-            className="border-white/30 bg-black/40 text-white backdrop-blur-md hover:bg-black/60"
+            className="border-stone-400 bg-stone-100/95 text-stone-800 hover:bg-stone-200/95 shadow-lg"
             onClick={() => router.push("/computer")}
           >
             Open Computer
           </Button>
           <Button
             variant="outline"
-            className="border-white/30 bg-black/40 text-white backdrop-blur-md hover:bg-black/60"
+            className="border-stone-400 bg-stone-100/95 text-stone-800 hover:bg-stone-200/95 shadow-lg"
             onClick={() => {/* TODO: open contact popup */}}
           >
             Contact
           </Button>
           <Button
             variant="outline"
-            className="border-white/30 bg-black/40 text-white backdrop-blur-md hover:bg-black/60"
+            className="border-stone-400 bg-stone-100/95 text-stone-800 hover:bg-stone-200/95 shadow-lg"
             onClick={() => {/* TODO: open bucket list popup */}}
           >
             Bucket List
@@ -79,15 +80,15 @@ function DeskHUD() {
         </div>
       )}
 
-      {/* GlassCard */}
+      {/* Normal display (zoomed wall section) */}
       <div className="fixed left-0 top-0 z-10 flex h-screen w-full max-w-[45%] items-stretch p-8 pt-24 pb-8 overflow-hidden pointer-events-none">
-        <GlassCard
+        <DeskDisplay
           key={currentState.title}
           title={currentState.title}
           content={currentState.displayType === "HUD_CARD" ? currentState.content : undefined}
           items={currentState.displayType === "HUD_LIST" ? currentState.items : undefined}
           focused={isFocused}
-          className="w-full h-full overflow-y-auto pointer-events-auto"
+          className="w-full h-full pointer-events-auto"
         />
       </div>
 
@@ -110,7 +111,7 @@ function DeskHUD() {
 function HUDFallback() {
   return (
     <>
-      <div className="fixed inset-0 z-[1] bg-black/40 backdrop-blur-[2px] pointer-events-none" aria-hidden />
+      <div className="fixed inset-0 z-[1] bg-black/30 pointer-events-none" aria-hidden />
       <div className="fixed left-0 top-0 z-10 flex h-screen w-full max-w-[45%] items-stretch p-8 pt-24 pb-8 overflow-hidden pointer-events-none">
         <ViewLoader variant="card" className="w-full h-full" />
       </div>
@@ -126,10 +127,25 @@ function HUDFallback() {
 export default function Home() {
   return (
     <div className="relative h-screen overflow-hidden font-sans">
-      {/* Desk background — always visible */}
-      <div
-        className="fixed inset-0 bg-zinc-950 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "url('/assets/desk.png')" }}
+      {/* Desk background — zoom out from display area when entering desk view */}
+      <motion.div
+        className="fixed inset-0 bg-zinc-950 bg-cover bg-no-repeat"
+        style={{
+          backgroundImage: "url('/assets/desk.png')",
+          backgroundPosition: "center",
+          backgroundSize: "cover",
+          transformOrigin: "20% 50%",
+        }}
+        initial={{
+          scale: 1.7,
+        }}
+        animate={{
+          scale: 1,
+        }}
+        transition={{
+          duration: 1,
+          ease: [0.25, 0.46, 0.45, 0.94],
+        }}
         aria-hidden
       />
 

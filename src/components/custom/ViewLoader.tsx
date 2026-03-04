@@ -13,7 +13,7 @@ export function ViewLoader({ variant = "card", className }: ViewLoaderProps) {
       <div
         className={cn(
           "relative max-w-lg w-full",
-          "bg-[var(--glass-bg)] backdrop-blur-sm border border-[var(--glass-border)] rounded-xl",
+          "bg-stone-100/95 border border-stone-300/60 rounded-xl shadow-lg",
           "overflow-hidden",
           className
         )}
@@ -30,7 +30,7 @@ export function ViewLoader({ variant = "card", className }: ViewLoaderProps) {
   return (
     <Card
       className={cn(
-        "bg-[var(--glass-bg)] backdrop-blur-md border-[var(--glass-border)] shadow-lg",
+        "bg-stone-100/95 border border-stone-300/60 shadow-lg",
         className
       )}
     >
