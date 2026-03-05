@@ -1,5 +1,5 @@
 # alextgu.github.io
-
+# WEBSITE IN PROGRESS
 This is the official personal website of Alexander Gu! After months of creating half built personal websites, I'm finally going to officially build my own personal website. Please take a look and let me know your opinions :).
 
 
