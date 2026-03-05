@@ -47,16 +47,23 @@ export function FadingSlideshow({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.8, ease: "easeInOut" }}
-          className="relative w-full aspect-[4/5] max-h-[70vh] rounded-lg overflow-hidden"
+          className="relative w-full aspect-[4/5] max-h-[70vh] rounded-lg overflow-hidden bg-zinc-900"
         >
-          <Image
-            src={item.image}
-            alt={item.title ?? "Slideshow image"}
-            fill
-            sizes="(max-width: 768px) 90vw, 32rem"
-            className="object-cover"
-            priority={current === 0}
-          />
+          {item.image ? (
+            <Image
+              src={item.image}
+              alt={item.title ?? "Slideshow image"}
+              fill
+              sizes="(max-width: 768px) 90vw, 32rem"
+              className="object-cover"
+              priority={current === 0}
+            />
+          ) : (
+            <div
+              className="absolute inset-0 bg-[radial-gradient(circle_at_20%_0,rgba(255,255,255,0.05),transparent_55%),radial-gradient(circle_at_80%_100%,rgba(255,255,255,0.04),transparent_55%)]"
+              aria-hidden
+            />
+          )}
         </motion.div>
       </AnimatePresence>
     </div>

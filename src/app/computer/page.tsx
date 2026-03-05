@@ -162,6 +162,7 @@ export default function ComputerPage() {
   const [battery, setBattery] = useState<{ level: number; charging: boolean }>({ level: 1, charging: false });
   const [batteryShowNumber, setBatteryShowNumber] = useState(false);
   const [openMenuBar, setOpenMenuBar] = useState<"apple" | "finder" | "file" | "edit" | "view" | null>(null);
+  const [showWebsiteDiagram, setShowWebsiteDiagram] = useState(false);
 
   useEffect(() => {
     const tick = setInterval(() => setNow(new Date()), 1000);
@@ -399,6 +400,18 @@ export default function ComputerPage() {
           );
         })}
       </div>
+
+      {/* Website diagram popup (triggered by Website icon) */}
+      <Dialog open={showWebsiteDiagram} onOpenChange={setShowWebsiteDiagram}>
+        <DialogContent className="max-w-4xl bg-zinc-950 border-zinc-800">
+          <DialogTitle className="text-lg font-semibold text-zinc-100">
+            Website diagram
+          </DialogTitle>
+          <div className="mt-4 rounded-lg border border-zinc-800/80 bg-zinc-900/80 min-h-[260px] flex items-center justify-center text-zinc-500 text-sm">
+            Diagram of the website will go here.
+          </div>
+        </DialogContent>
+      </Dialog>
 
         </div>
         </div>

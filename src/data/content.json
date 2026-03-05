@@ -2,17 +2,17 @@
   "deskStates": {
     "alex": {
       "displayType": "HUD_CARD",
-      "title": "Welcome to my personal website!",
-      "content": "Bio content goes here..."
+      "subtitle": "Welcome to my personal website!",
+      "content": "This will be where I showcase my work and interests. I'm a student studying CS & Stats at the University of Toronto. I love playing sports, cinematography, eating noodles and building whatever I want. I never understood being simple so please don't get lost on my website."
     },
     "computer": {
       "displayType": "HUD_CARD",
-      "title": "Project",
+      "subtitle": "Project",
       "content": "A showcase of things I've built..."
     },
     "bucketlist": {
       "displayType": "HUD_LIST",
-      "title": "Bucket List",
+      "subtitle": "Bucket List",
       "items": [
         "Pitch on an MLB Field",
         "Dunk a basketball",
@@ -26,23 +26,20 @@
     {
       "type": "blog",
       "id": "intro-post",
-      "image": "/assets/desk.png",
-      "title": "Welcome to my desk",
-      "summary": "A quick intro to what this space is about."
+      "image": "",
+      "title": "Welcome to my desk"
     },
     {
       "type": "video",
       "id": "film-reel",
-      "image": "/assets/desk.png",
-      "title": "Latest Film Reel",
-      "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ"
+      "image": "",
+      "title": "Latest Film Reel"
     },
     {
       "type": "blog",
       "id": "dev-log-1",
-      "image": "/assets/desk.png",
-      "title": "Dev Log #1",
-      "summary": "Building a personal site that feels like a workspace."
+      "image": "",
+      "title": "Dev Log #1"
     }
   ],
   "desktopFolders": [
@@ -83,7 +80,7 @@
       "desktopIcon": "document",
       "content": {
         "type": "experiences",
-        "description": "",
+        "description": "COMING SOON",
         "experiences": [
           {
             "title": "Technology Exec",
@@ -111,7 +108,7 @@
             "name": "DeerHacks V",
             "projectName": "Depth-First Social",
             "subtitle": "In-Person Event · March 2026",
-            "description": "Pretty cool hackathon, which I did with my friends. I got to tackle a lot of structural code which gave me experience in stuff like Snowflake, Supabase, Auth0 and Solana. Our product actually worked and the workflow actually made sense to me this time. I don't know if AI just got better, but I feel like my coding has gotten better too. Maybe it's my understanding of just how different frameworks work — I realized I was a lot better at debugging and helping other people debug. The hackathon was pretty cool, but the food wasn't very good. I got very sick of pizza by the end. I got to play chess and was beating a 2000 (apparently) rating convincingly — I had 2 rooks with 4 pawns and he had 1 bishop, 1 rook and 1 pawn, but I lost in the end. I also played poker which was actually really fun. The workshops in general were all pretty good which definitely raised my score.",
+            "description": "Pretty cool hackathon, which I did with my friends. I got to tackle a lot of structural code which gave me experience in stuff like Snowflake, Supabase, Auth0 and Solana. Our product actually worked and the workflow actually made sense to me this time. I don't know if AI just got better, but I feel like my coding has gotten better too. Maybe it's my understanding of just how different frameworks work and I also realized I was a lot better at debugging and helping other people debug. The hackathon was pretty cool, but the food wasn't very good, I got very sick of pizza by the end. I got to play chess and was beating a 2000 (so he said) rating convincingly where I had 2 rooks with 4 pawns and he had 1 bishop, 1 rook and 1 pawn (nowhere near promotion), but I lost in the end due to a blunder. I also played poker which was actually really fun. The workshops in general were all pretty good which definitely raised my score.",
             "won": true,
             "score": 66,
             "devpostUrl": "https://devpost.com/alexwin2099?ref_content=user-portfolio&ref_feature=portfolio&ref_medium=global-nav",
@@ -121,8 +118,8 @@
               { "title": "Result", "body": "Won Best Use of Gemini, which was cool because it's usually pretty competitive. I realized it's more about the way you use the tools than the tools themselves. Won Google Merch" }
             ],
             "images": [
-              { "src": "/assets/computer/hackathons/deerhacksV.jpeg", "alt": "win" },
-              { "src": "/assets/computer/hackathons/deerhacksV2.jpeg", "alt": "poker" }
+              { "src": "/assets/computer/hackathons/deerhacksV.jpg", "alt": "win" },
+              { "src": "/assets/computer/hackathons/deerhacksV2.jpg", "alt": "poker" }
             ]
           },
           {
@@ -130,12 +127,12 @@
             "name": "UofT Hacks 13",
             "projectName": "Brick by Brick",
             "subtitle": "In-Person Event · January 2026",
-            "description": "I got to team up with some really cool people and build something very ambitious. I got food poisoning the first night and no joke had to use the washroom 24 times during the 36 hour event... I would constantly be woken up with a bad stomach and mid conversation have to leave. This hackathon had some really smart people, especially the sponsors that came. I was reminded once again how cool this community is and to be a bit more humble. The project went pretty well and I also had to spend almost 50 dollars on extra Cursor credits. I'm actually demoing this project to one of the sponsors who liked our project so much! This is one of the hardest I've ever worked on a project and my complete dead face for our winning photos really showed. (has to be top 10 chopped images of me)",
+            "description": "I got to team up with some really cool people and build something very ambitious. I got food poisoning the first night and no joke had to use the washroom 24 times during the 36 hour event... I would constantly be woken up with a bad stomach and mid conversation have to leave. This hackathon had some really smart people, especially the sponsors that came. I was reminded once again how cool this community is and to be a bit more humble. The project went pretty well and I also had to spend almost 50 dollars on extra Cursor credits. I'm actually demoing this project because we won a track! This is one of the hardest I've ever worked on a project and my complete dead face for our winning photos really showed. (has to be top 10 chopped images of me)",
             "won": true,
             "score": 78,
             "devpostUrl": "https://devpost.com/alexwin2099?ref_content=user-portfolio&ref_feature=portfolio&ref_medium=global-nav",
             "sections": [
-              { "title": "Problem", "body": "There is no creative way to remember your identity as you grow and change" },
+              { "title": "Problem", "body": "There isn't an easy way to build custom LEGO sets." },
               { "title": "Solution", "body": "Brick by Brick lets you capture a video of any space or object, and our pipeline converts it into a buildable LEGO set complete with an instruction manual. Twelve Labs' Pegasus model analyzes frames from multiple angles to extract spatial and texture data, while a custom voxelization engine maps the 3D environment into a 0.1m logical pixel grid. Backboard AI acts as the orchestrator, routing tasks between Gemini Pro for complex geometry and Gemini Flash for bulk placement. A greedy optimization algorithm then pulls from the Rebrickable API to find the most efficient brick combinations, and the final output gets stored on Solana for a permanent decentralized build history." },
               { "title": "Result", "body": "Won second place in TwelveLabs track and best use of Solana. Got asked to present for TwelveLabs builder event (coming soon). Won another ledger and some credits." }
             ],
@@ -284,10 +281,12 @@
   "portals": {
     "projects": {
       "path": "/projects",
+      "description": "Here are the fully finished projects that I've worked on and that I am proud of. Not much to see right now, but hopefully will have a lot in the future.",
       "items": []
     },
     "hobbies": {
       "path": "/hobbies",
+      "description": "I love doing things! This page is dedicated to exactly those things. Chances are I love talking about these things as well, so feel free to reach out. Things, things, things...",
       "categories": [
         {
           "id": "cinematography",
@@ -296,6 +295,10 @@
           "items": []
         }
       ]
+    },
+    "workbench": {
+      "path": "/workbench",
+      "description": "This page is for what I am currently working on and a bunch of random projects or ideas in the back of my mind. I have a lot of brilliantly dumb ideas that you are free to explore. "
     }
   }
 }

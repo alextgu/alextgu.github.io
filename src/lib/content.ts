@@ -4,13 +4,13 @@ import data from "@/data/content.json";
 
 export interface HudCard {
   displayType: "HUD_CARD";
-  title: string;
+  subtitle: string;
   content: string;
 }
 
 export interface HudList {
   displayType: "HUD_LIST";
-  title: string;
+  subtitle: string;
   items: string[];
 }
 
@@ -58,7 +58,7 @@ export const siteContent = data as SiteContent;
 
 const DEFAULT_DESK_STATE: HudCard = {
   displayType: "HUD_CARD",
-  title: "Alex T. Gu",
+  subtitle: "Alex T. Gu",
   content: "Bio content goes here...",
 };
 

@@ -19,7 +19,7 @@ function VideoGalleryBlock({ category }: { category: CategoryItem }) {
       </h2>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {category.items.length === 0 ? (
-          <p className="text-muted-foreground col-span-full">No items yet.</p>
+          <p className="text-foreground col-span-full">No items yet.</p>
         ) : (
           (category.items as { id?: string; title?: string; url?: string }[]).map((item) => (
             <div
@@ -51,7 +51,7 @@ function StandardListBlock({ category }: { category: CategoryItem }) {
       </h2>
       <ul className="space-y-2">
         {category.items.length === 0 ? (
-          <li className="text-muted-foreground">No items yet.</li>
+          <li className="text-foreground">No items yet.</li>
         ) : (
           (category.items as { id?: string; label?: string }[]).map((item) => (
             <li key={item.id ?? item.label ?? Math.random()} className="text-foreground">
@@ -76,16 +76,30 @@ function CategoryFactory({ category }: { category: CategoryItem }) {
 }
 
 export default function HobbiesPage() {
-  const hobbies = (content.portals as { hobbies: { path: string; categories: CategoryItem[] } }).hobbies;
-  const categories = hobbies.categories;
+  const portals = (content.portals as any) ?? {};
+  const hobbiesPortal = portals.hobbies as { path: string; categories: CategoryItem[]; description?: string };
+  const categories = hobbiesPortal.categories;
+  const description = hobbiesPortal.description ?? "";
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <main className="mx-auto max-w-4xl pl-4 pr-6 md:pl-6 pt-24 md:pt-28 pb-24 scroll-smooth">
+      <main className="px-6 md:px-10 pt-8 md:pt-12 pb-24 scroll-smooth">
         <div className="mb-6">
           <h1 className="font-serif font-normal text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-foreground tracking-tight leading-[1.1]">
             <AnimatedWords text="Hobbies" stagger={0.06} />
           </h1>
+          {description && (
+            <p className="mt-2 text-base md:text-lg text-neutral-700 dark:text-zinc-300 w-full md:max-w-[50%]">
+              {description.split(/(things)/gi).map((part, i) =>
+                part.toLowerCase() === "things" ? (
+                  <em key={i} className="italic">{part}</em>
+                ) : (
+                  part
+                )
+              )}
+            </p>
+          )}
+          <div className="mt-4 h-px w-full bg-[color-mix(in_oklab,var(--foreground)_24%,transparent)]" />
         </div>
         <div className="flex flex-col gap-8">
           {categories.map((category) => (

@@ -3,8 +3,6 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
-const WALL_IMAGE = "/assets/desk.png";
-
 type DeskDisplayProps = {
   title: string;
   content?: string;
@@ -15,8 +13,8 @@ type DeskDisplayProps = {
 };
 
 /**
- * Normal display (no glass) showing a zoomed-in section of the wall.
- * The "screen" content is a crop of the same wall image; title/content overlay for state.
+ * Normal display (no glass) showing a stylized wall background.
+ * The \"screen\" content overlays the background so routing/state still work.
  */
 export function DeskDisplay({
   title,
@@ -48,14 +46,9 @@ export function DeskDisplay({
         className
       )}
     >
-      {/* Screen: zoomed-in section of the wall (same image as desk, cropped) */}
+      {/* Screen background: gradient stand-in until desk image exists */}
       <div
-        className="absolute inset-0 bg-cover bg-no-repeat bg-center"
-        style={{
-          backgroundImage: `url('${WALL_IMAGE}')`,
-          backgroundSize: "280%",
-          backgroundPosition: "18% 50%",
-        }}
+        className="absolute inset-0 bg-[radial-gradient(circle_at_20%_0,rgba(255,255,255,0.08),transparent_55%),radial-gradient(circle_at_80%_100%,rgba(255,255,255,0.06),transparent_55%)] bg-zinc-900"
         aria-hidden
       />
       {/* Overlay: title + content so routing/state still work */}

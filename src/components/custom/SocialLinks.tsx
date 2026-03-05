@@ -44,7 +44,7 @@ export function SocialLinks() {
           href={item.href}
           target="_blank"
           rel="noopener noreferrer"
-          className="social-link text-base font-medium text-[var(--text-primary)] opacity-50 hover:opacity-100 py-1"
+          className="social-link text-sm font-medium text-[var(--text-primary)] opacity-50 hover:opacity-100 py-1"
           style={{ '--link-color': item.color } as React.CSSProperties}
         >
           {item.name}
