@@ -71,11 +71,11 @@ export function Navbar() {
   return (
     <>
     <nav
-      className={`flex items-center gap-1 h-8 transition-all duration-700 ease-out ${
+      className={`flex items-center gap-1.5 h-11 transition-all duration-700 ease-out ${
         visible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-8"
       }`}
     >
-      <div className="flex items-center gap-0.5 bg-white/80 dark:bg-zinc-800/80 backdrop-blur border border-gray-300 dark:border-zinc-600 rounded-md px-1.5 shadow-md h-full">
+      <div className="flex items-center gap-1 bg-white/80 dark:bg-zinc-800/80 backdrop-blur border border-gray-300 dark:border-zinc-600 rounded-lg px-2.5 shadow-md h-full">
         {navItems.map((item) => {
           const active = mounted && isActive(item);
 
@@ -94,7 +94,7 @@ export function Navbar() {
                 setTimeout(() => setTransitioningItem(null), 150);
                 setTimeout(() => setNavCooldown(false), 500);
               }}
-              className={`px-1.5 py-1.25 rounded text-xs text-[var(--text-primary)] hover:bg-gray-200/60 dark:hover:bg-zinc-700/60 transition-all duration-100 ease-out inline-block overflow-hidden ${
+              className={`px-2.5 py-2 rounded text-sm text-[var(--text-primary)] hover:bg-gray-200/60 dark:hover:bg-zinc-700/60 transition-all duration-100 ease-out inline-block overflow-hidden ${
                 navCooldown ? "pointer-events-none" : ""
               }`}
             >
@@ -113,10 +113,10 @@ export function Navbar() {
       <button
         type="button"
         onClick={() => setShowIcons(!showIcons)}
-        className="px-1 bg-white/70 dark:bg-zinc-900/70 backdrop-blur border border-gray-300/70 dark:border-zinc-700/70 rounded-md shadow-sm transition flex items-center h-full relative z-20 max-md:hidden"
+        className="px-1.5 bg-white/70 dark:bg-zinc-900/70 backdrop-blur border border-gray-300/70 dark:border-zinc-700/70 rounded-lg shadow-sm transition flex items-center h-full relative z-20 max-md:hidden"
       >
         <ChevronRight
-          size={12}
+          size={16}
           className={`text-[var(--text-primary)] transition-transform duration-150 ${
             showIcons ? "rotate-180" : "rotate-0"
           }`}
@@ -124,7 +124,7 @@ export function Navbar() {
       </button>
 
       <div
-        className={`absolute top-0 left-full ml-0.5 flex gap-0.5 px-1 bg-white/70 dark:bg-zinc-900/70 backdrop-blur border border-gray-300/70 dark:border-zinc-700/70 rounded-md shadow-sm h-full items-center
+        className={`absolute top-0 left-full ml-1 flex gap-1 px-1.5 bg-white/70 dark:bg-zinc-900/70 backdrop-blur border border-gray-300/70 dark:border-zinc-700/70 rounded-lg shadow-sm h-full items-center
             transition-all duration-100 ease-out max-md:hidden
             ${
               showIcons
@@ -137,43 +137,43 @@ export function Navbar() {
           type="button"
           onClick={() => handleIconClick("dark")}
           disabled={cooldown}
-          className={`p-1.5 rounded transition-colors duration-75 text-[var(--text-primary)] hover:bg-gray-200/60 dark:hover:bg-zinc-700/60
+          className={`p-2 rounded transition-colors duration-75 text-[var(--text-primary)] hover:bg-gray-200/60 dark:hover:bg-zinc-700/60
               ${cooldown ? "cursor-not-allowed opacity-70" : "cursor-pointer"}`}
         >
-          {isDarkMode ? <Moon className="w-3.5 h-3.5" /> : <Sun className="w-3.5 h-3.5" />}
+          {isDarkMode ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
         </button>
 
         <button
           type="button"
           onClick={() => handleIconClick("music")}
           disabled={cooldown}
-          className={`p-1.5 rounded transition-colors duration-75 text-[var(--text-primary)] hover:bg-gray-200/60 dark:hover:bg-zinc-700/60
+          className={`p-2 rounded transition-colors duration-75 text-[var(--text-primary)] hover:bg-gray-200/60 dark:hover:bg-zinc-700/60
               ${cooldown ? "cursor-not-allowed opacity-70" : "cursor-pointer"}`}
         >
-          {isMusicOn ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
+          {isMusicOn ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
         </button>
       </div>
     </nav>
 
-    {/* Mobile icon tray — fixed top-right of screen */}
-    <div className="fixed top-5 right-4 z-50 flex gap-0.5 px-1 bg-white/70 dark:bg-zinc-900/70 backdrop-blur border border-gray-300/70 dark:border-zinc-700/70 rounded-md shadow-sm h-8 items-center md:hidden">
+    {/* Mobile icon tray — fixed bottom-right on small screens */}
+    <div className="fixed bottom-5 right-4 z-50 flex gap-1 px-1.5 bg-white/70 dark:bg-zinc-900/70 backdrop-blur border border-gray-300/70 dark:border-zinc-700/70 rounded-lg shadow-sm h-11 items-center md:hidden">
       <button
         type="button"
         onClick={() => handleIconClick("dark")}
         disabled={cooldown}
-        className={`p-1.5 rounded transition-colors duration-75 text-[var(--text-primary)] hover:bg-gray-200/60 dark:hover:bg-zinc-700/60
+        className={`p-2 rounded transition-colors duration-75 text-[var(--text-primary)] hover:bg-gray-200/60 dark:hover:bg-zinc-700/60
             ${cooldown ? "cursor-not-allowed opacity-70" : "cursor-pointer"}`}
       >
-        {isDarkMode ? <Moon className="w-3.5 h-3.5" /> : <Sun className="w-3.5 h-3.5" />}
+        {isDarkMode ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
       </button>
       <button
         type="button"
         onClick={() => handleIconClick("music")}
         disabled={cooldown}
-        className={`p-1.5 rounded transition-colors duration-75 text-[var(--text-primary)] hover:bg-gray-200/60 dark:hover:bg-zinc-700/60
+        className={`p-2 rounded transition-colors duration-75 text-[var(--text-primary)] hover:bg-gray-200/60 dark:hover:bg-zinc-700/60
             ${cooldown ? "cursor-not-allowed opacity-70" : "cursor-pointer"}`}
       >
-        {isMusicOn ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
+        {isMusicOn ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
       </button>
     </div>
     </>

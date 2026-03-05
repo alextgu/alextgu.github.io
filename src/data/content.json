@@ -2,12 +2,12 @@
   "deskStates": {
     "alex": {
       "displayType": "HUD_CARD",
-      "title": "Alex T. Gu",
+      "title": "Welcome to my personal website!",
       "content": "Bio content goes here..."
     },
     "computer": {
       "displayType": "HUD_CARD",
-      "title": "Projects",
+      "title": "Project",
       "content": "A showcase of things I've built..."
     },
     "bucketlist": {

@@ -34,7 +34,7 @@ export function SocialLinks() {
 
   return (
     <div
-      className={`fixed top-6 right-12 flex gap-4 max-md:hidden transition-opacity duration-500 ease-in-out
+      className={`fixed top-6 right-12 flex gap-6 max-md:hidden transition-opacity duration-500 ease-in-out
         ${fadeIn && visible ? 'opacity-100' : 'opacity-0 pointer-events-none'}
       `}
     >
@@ -44,7 +44,7 @@ export function SocialLinks() {
           href={item.href}
           target="_blank"
           rel="noopener noreferrer"
-          className="social-link text-[0.825rem] font-medium text-[var(--text-primary)] opacity-50 hover:opacity-100"
+          className="social-link text-base font-medium text-[var(--text-primary)] opacity-50 hover:opacity-100 py-1"
           style={{ '--link-color': item.color } as React.CSSProperties}
         >
           {item.name}
