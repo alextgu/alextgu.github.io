@@ -18,7 +18,8 @@
         "Dunk a basketball",
         "Meet Shohei Ohtani, Ryan Higa and Jeremy Lin",
         "Publish a film",
-        "Raise 1 million dollars for something that matters to me"
+        "Raise 1 million dollars for something that matters to me",
+        "Be a fortnite skin"
       ]
     }
   },
@@ -138,7 +139,7 @@
             ],
             "images": [
               { "src": "/assets/computer/hackathons/uofthacks1.jpeg", "alt": "team" },
-              { "src": "/assets/computer/hackathons/uofthacks2.jpeg", "alt": "team again" }
+              { "src": "/assets/computer/hackathons/uofthacks2.jpg", "alt": "team again" }
             ]
           },
           {
@@ -204,6 +205,9 @@
               { "title": "Problem", "body": "Emergency responders need to act fast, and they are not always equipped with the right information when operating in post-disaster areas." },
               { "title": "Solution", "body": "We created DisasteRisk*, a platform that provides quick information about an area following an earthquake. Simply select an estimated earthquake magnitude and draw a circle anywhere on the map to get detailed data on the estimated population, locations of emergency buildings, and which structures are most at risk." },
               { "title": "Result", "body": "No win, but a cool project regardless." }
+            ],
+            "images": [
+              { "src": "/assets/computer/hackathons/HTV.jpg", "alt": "My hair was way too long" }
             ]
           },
           {

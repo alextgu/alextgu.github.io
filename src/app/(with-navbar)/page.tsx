@@ -1,15 +1,21 @@
 "use client";
 
-import { Suspense, useState, useEffect } from "react";
+import React, { Suspense, useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { AnimatedWords } from "@/components/custom/AnimatedWords";
+import { FontCyclingText } from "@/components/custom/FontCyclingText";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { getContentByView, siteContent } from "@/lib/content";
 
+/** High-res room background — add /public/assets/room-bg.jpg for your room image */
+const ROOM_BACKGROUND = "/assets/room-bg.jpg";
+
 const EMPHASIZED_PHRASES = [
-  "work and interests",
+  "work",
+  "interests",
   "CS & Stats",
   "sports",
   "cinematography",
@@ -22,14 +28,20 @@ function splitByEmphasized(text: string): string[] {
   const escaped = EMPHASIZED_PHRASES.map((p) =>
     p.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
   );
-  const regex = new RegExp(`(${escaped.join("|")})`, "gi");
+  // Include optional trailing . or , so punctuation stays next to emphasized words
+  const regex = new RegExp(`(${escaped.map((e) => `${e}[.,]?`).join("|")})`, "gi");
   return text.split(regex).filter(Boolean);
 }
 
 function isEmphasized(part: string): boolean {
+  const trimmed = part.replace(/[.,]$/, "");
   return EMPHASIZED_PHRASES.some(
-    (p) => p.toLowerCase() === part.toLowerCase()
+    (p) => p.toLowerCase() === trimmed.toLowerCase()
   );
+}
+
+function getEmphasizedBase(part: string): string {
+  return part.replace(/[.,]$/, "");
 }
 
 function DeskHUD() {
@@ -41,6 +53,7 @@ function DeskHUD() {
   const [isExplorationMode, setIsExplorationMode] = useState(false);
   const [activeView, setActiveView] = useState<string | null>(null);
   const [showWebsitePopup, setShowWebsitePopup] = useState(false);
+  const [isAlexHovered, setIsAlexHovered] = useState(false);
 
   useEffect(() => {
     if (exploreParam === "true") {
@@ -104,46 +117,98 @@ function DeskHUD() {
         </div>
       )}
 
-      {/* Room: wall always present so camera pull feels continuous (desk scales back to reveal it) */}
+      {/* Virtual Camera: single rig with room bg, transform-only (scale/translate) */}
       <div
-        className="fixed inset-0 z-[2] bg-[#e8e4dc] dark:bg-[#1c1b19]"
-        aria-hidden
-        style={{ pointerEvents: "none" }}
-      />
-
-      {/* Home page on the wall — visible when zoomed out (Alex); same spot the desk zooms to */}
-      <motion.div
-        className="fixed left-4 top-20 z-[3] w-[min(300px,26vw)] rounded-xl border-[5px] border-stone-400 dark:border-stone-600 bg-background shadow-2xl dark:shadow-black/40 p-5 pointer-events-none overflow-hidden"
-        aria-hidden
-        initial={false}
-        animate={{ opacity: isHomeView ? 0 : 1, scale: isHomeView ? 0.98 : 1 }}
-        transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+        id="camera-viewport"
+        className="fixed inset-0 z-[2] overflow-hidden bg-[#e8e4dc] dark:bg-[#1c1b19]"
+        aria-hidden={false}
       >
-        <div className="font-serif text-foreground">
-          <p className="text-lg md:text-xl font-normal tracking-tight text-foreground/60">Hi I&apos;m</p>
-          <p className="text-xl md:text-2xl font-normal tracking-tight mt-0.5">Alex</p>
-          <p className="text-sm md:text-base text-foreground/70 mt-2 leading-snug">Welcome to my personal website!</p>
-        </div>
-      </motion.div>
+        <motion.div
+          id="camera-rig"
+          className="absolute left-0 top-0 h-screen w-screen origin-top-left"
+          style={{
+            willChange: "transform",
+            backgroundImage: `url(${ROOM_BACKGROUND})`,
+            backgroundSize: "cover",
+            backgroundPosition: "top left",
+            backgroundColor: "#e8e4dc",
+          }}
+          initial={false}
+          animate={{
+            scale: isHomeView ? 1 : 0.28,
+            x: 0,
+            y: 0,
+          }}
+          transition={{ duration: 0.85, ease: [0.33, 0, 0.2, 1] }}
+        >
+          {/* Home poster on wall — always in scene, scales with rig */}
+          <div
+            className="absolute left-4 top-20 z-[1] w-[min(300px,26vw)] rounded-xl border-[5px] border-stone-400 dark:border-stone-600 bg-background shadow-2xl dark:shadow-black/40 p-5 overflow-hidden pointer-events-none"
+            aria-hidden
+          >
+            <div className="font-serif text-foreground">
+              <p className="text-lg md:text-xl font-normal tracking-tight text-foreground/60">Hi I&apos;m</p>
+              <p className="text-xl md:text-2xl font-normal tracking-tight mt-0.5">Alex</p>
+              <p className="text-sm md:text-base text-foreground/70 mt-2 leading-snug">Welcome to my personal website!</p>
+            </div>
+          </div>
 
-      {/* Desk content: camera close (Home = scale 1) or pulled back (Alex = scale 0.28) */}
-      <motion.div
-        className={
-          "fixed left-0 top-0 z-10 flex h-screen w-screen flex-col md:flex-row transition-opacity duration-500 " +
-          (isFocused ? "opacity-100" : "opacity-0 pointer-events-none") +
-          (isHomeView ? " bg-background" : " rounded-xl border-[6px] border-stone-400 dark:border-stone-600 bg-background shadow-2xl dark:shadow-black/40 mt-4 ml-4 md:mt-6 md:ml-6")
-        }
-        style={{ transformOrigin: "0 0", willChange: "transform" }}
-        initial={false}
-        animate={{ scale: isHomeView ? 1 : 0.28 }}
-        transition={{ duration: 0.85, ease: [0.33, 0.0, 0.2, 1] }}
-      >
-        {/* Poster content — left side */}
-        <div className="flex h-screen w-full md:w-[55%] flex-col overflow-y-auto overflow-x-hidden p-6 md:p-10 pt-24 md:pt-28 pb-12">
+          {/* Desk — Home: fills view; Alex: small frame on wall (no blur, no opacity transition) */}
+          <div
+            className={
+              "relative z-10 flex h-screen w-screen flex-shrink-0 flex-col md:flex-row " +
+              (isFocused ? "opacity-100" : "opacity-0 pointer-events-none") +
+              (isHomeView
+                ? " bg-background"
+                : " rounded-xl border-[6px] border-stone-400 dark:border-stone-600 bg-background shadow-2xl dark:shadow-black/40 mt-4 ml-4 md:mt-6 md:ml-6")
+            }
+          >
+        {/* Poster content — left side (mobile: min-h allows content + slideshow to flow) */}
+        <div className="flex min-h-screen md:h-screen w-full md:w-[55%] flex-col overflow-y-auto overflow-x-hidden p-6 md:p-10 pt-24 md:pt-28 pb-12">
         <div className="min-w-0 w-full shrink-0">
-          <h1 className="font-serif font-normal text-4xl md:text-5xl lg:text-6xl xl:text-7xl tracking-tight leading-[1.1] break-words">
+          <h1 className="font-serif font-medium text-6xl md:text-5xl lg:text-6xl xl:text-7xl tracking-tight leading-[1.1] break-words">
             <span className="text-foreground/60">Hi I&apos;m </span>
-            <span className="text-foreground">Alex</span>
+            <span
+              className="text-foreground font-medium cursor-default inline"
+              onMouseEnter={() => setIsAlexHovered(true)}
+              onMouseLeave={() => setIsAlexHovered(false)}
+            >
+              <AnimatePresence mode="wait">
+                {isAlexHovered ? (
+                  <motion.span
+                    key="alexander"
+                    className="inline"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    {"Alexander Gu".split("").map((char, i) => (
+                      <motion.span
+                        key={`${i}-${char}`}
+                        className="inline"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: i * 0.06, duration: 0.1 }}
+                      >
+                        {char}
+                      </motion.span>
+                    ))}
+                  </motion.span>
+                ) : (
+                  <motion.span
+                    key="alex"
+                    className="inline"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.25 }}
+                  >
+                    Alex
+                  </motion.span>
+                )}
+              </AnimatePresence>
+            </span>
           </h1>
           <motion.div
             key={currentState.subtitle}
@@ -152,9 +217,11 @@ function DeskHUD() {
             transition={{ duration: 0.4 }}
             className="mt-0 w-full"
           >
-            <p className="font-serif font-normal text-xl md:text-3xl lg:text-4xl mt-0 leading-normal break-words">
+            <p className="font-serif font-medium text-3xl md:text-3xl lg:text-4xl mt-0 leading-normal break-words">
               <span className="text-foreground/60">Welcome to my </span>
-              <span className="text-foreground">personal website!</span>
+              <FontCyclingText className="text-foreground font-medium cursor-default">
+              personal website!
+            </FontCyclingText>
             </p>
           </motion.div>
         </div>
@@ -172,42 +239,103 @@ function DeskHUD() {
                 .map((paragraph, i) => (
                   <p
                     key={i}
-                    className="font-serif font-normal text-xl md:text-3xl lg:text-4xl leading-snug whitespace-pre-wrap w-full last:mb-0"
+                    className="font-serif font-medium text-3xl md:text-3xl lg:text-4xl leading-snug whitespace-pre-wrap w-full last:mb-0"
                   >
-                    {splitByEmphasized(paragraph).map((part, j) => {
-                      const emphasized = isEmphasized(part);
-                      const isWebsite = part.toLowerCase() === "website";
-                      if (isWebsite) {
-                        return (
-                          <button
-                            key={`${i}-${j}`}
-                            type="button"
-                            onClick={() => setShowWebsitePopup(true)}
-                            className="text-foreground underline underline-offset-2 decoration-foreground/80 hover:decoration-foreground cursor-pointer bg-transparent border-0 p-0 font-inherit text-inherit"
-                          >
-                            {part}
-                          </button>
-                        );
-                      }
-                      if (emphasized) {
-                        return (
-                          <span key={`${i}-${j}`} className="text-foreground">
-                            <AnimatedWords text={part} stagger={0.03} />
-                          </span>
-                        );
-                      }
+                    {(() => {
+                      const parts = splitByEmphasized(paragraph);
+                      return parts.map((part, j) => {
+                        const base = getEmphasizedBase(part);
+                        const emphasized = isEmphasized(part);
+                        const isWebsite = base.toLowerCase() === "website";
+                        const isSquiggly =
+                          base.toLowerCase() === "sports" ||
+                          base.toLowerCase() === "cinematography" ||
+                          base.toLowerCase() === "noodles";
+                        const nextPart = parts[j + 1];
+                        // Add space when: next part has leading space (AnimatedWords trims it) or starts with a word (needs separator).
+                        // Don't add when next part starts with punctuation (e.g. ", " or ". ") to avoid double spacing.
+                        const needsSpaceAfter =
+                          emphasized &&
+                          j < parts.length - 1 &&
+                          nextPart &&
+                          (/^\s/.test(nextPart) || !/^[.,\s]/.test(nextPart));
+                        if (isWebsite) {
+                          return (
+                            <button
+                              key={`${i}-${j}`}
+                              type="button"
+                              onClick={() => setShowWebsitePopup(true)}
+                              className="text-foreground font-medium underline underline-offset-2 decoration-foreground/80 hover:decoration-foreground cursor-pointer bg-transparent border-0 p-0 font-inherit text-inherit inline-block transition-transform duration-150 hover:scale-[1.02]"
+                            >
+                              {part}
+                            </button>
+                          );
+                        }
+                        if (emphasized) {
+                          const squigglyClass =
+                            base.toLowerCase() === "sports"
+                              ? "bio-squiggly sports"
+                              : base.toLowerCase() === "cinematography"
+                                ? "bio-squiggly cinematography"
+                                : base.toLowerCase() === "noodles"
+                                  ? "bio-squiggly noodles"
+                                  : base.toLowerCase() === "cs & stats"
+                                    ? "inline-block underline decoration-2 underline-offset-2 decoration-transparent hover:decoration-yellow-500 dark:hover:decoration-yellow-400 transition-colors"
+                                    : "";
+                          const tooltip =
+                            base.toLowerCase() === "building"
+                              ? "Check out my projects section!"
+                              : base.toLowerCase() === "work"
+                                ? "Check out my experience section on my computer!"
+                                : base.toLowerCase() === "interests"
+                                  ? "Check out my hobbies section!"
+                                  : undefined;
+                          const isCSStats = base.toLowerCase() === "cs & stats";
+                          const spaceInside = needsSpaceAfter && !isCSStats;
+                          const spanEl = (
+                            <span
+                              className={`text-foreground font-medium py-0.5 ${squigglyClass}`.trim()}
+                            >
+                              {part}
+                              {spaceInside ? " " : null}
+                            </span>
+                          );
+                          const spaceAfter = needsSpaceAfter && isCSStats ? " " : null;
+                          if (tooltip) {
+                            return (
+                              <Tooltip key={`${i}-${j}`}>
+                                <TooltipTrigger asChild>{spanEl}</TooltipTrigger>
+                                <TooltipContent
+                                  side="top"
+                                  align="center"
+                                  sideOffset={6}
+                                  className="max-w-[220px]"
+                                >
+                                  {tooltip}
+                                </TooltipContent>
+                              </Tooltip>
+                            );
+                          }
+                          return (
+                            <React.Fragment key={`${i}-${j}`}>
+                              {React.cloneElement(spanEl)}
+                              {spaceAfter}
+                            </React.Fragment>
+                          );
+                        }
                       return (
                         <span key={`${i}-${j}`} className="text-foreground/60">
                           <AnimatedWords text={part} stagger={0.03} />
                         </span>
                       );
-                    })}
+                    });
+                    })()}
                   </p>
                 ))}
             </div>
           )}
           {currentState.displayType === "HUD_LIST" && "items" in currentState && currentState.items?.length > 0 && (
-            <ul className="space-y-2 md:space-y-3 font-serif font-normal text-xl md:text-3xl lg:text-4xl text-foreground w-full">
+            <ul className="space-y-2 md:space-y-3 font-serif font-medium text-3xl md:text-3xl lg:text-4xl text-foreground w-full">
               {currentState.items.map((item) => (
                 <li key={item}>
                   <AnimatedWords text={item} stagger={0.02} />
@@ -216,6 +344,32 @@ function DeskHUD() {
             </ul>
           )}
         </motion.div>
+
+        {/* Mobile: horizontal slideshow with snap scroll sections */}
+        {isFocused && isHomeView && (
+          <div className="md:hidden mt-8 -mx-6 overflow-x-auto overflow-y-hidden snap-x snap-mandatory hide-scrollbar">
+            <div className="flex gap-4 px-6 pb-6">
+              <section className="flex-shrink-0 w-[calc(100vw-3rem)] min-w-[280px] snap-center snap-always rounded-lg border border-border bg-muted/20 p-6 text-foreground/80 text-sm">
+                <h3 className="font-serif font-medium text-foreground text-base mb-2">Alex</h3>
+                <p className="leading-relaxed">
+                  A bit about you—intro, background, or whatever you want in this first section.
+                </p>
+              </section>
+              <section className="flex-shrink-0 w-[calc(100vw-3rem)] min-w-[280px] snap-center snap-always rounded-lg border border-border bg-muted/20 p-6 text-foreground/80 text-sm">
+                <h3 className="font-serif font-medium text-foreground text-base mb-2">School (major program)</h3>
+                <p className="leading-relaxed">
+                  Your program, degree, or what you&apos;re studying—e.g. CS &amp; Stats at U of T.
+                </p>
+              </section>
+              <section className="flex-shrink-0 w-[calc(100vw-3rem)] min-w-[280px] snap-center snap-always rounded-lg border border-border bg-muted/20 p-6 text-foreground/80 text-sm">
+                <h3 className="font-serif font-medium text-foreground text-base mb-2">Sports, cinematography, noodles and building</h3>
+                <p className="leading-relaxed">
+                  The things you love—sports, cinematography, eating noodles, and building stuff. Add your own copy and media here.
+                </p>
+              </section>
+            </div>
+          </div>
+        )}
       </div>
 
         {/* Right: scroll-by-page sections — hidden on mobile, show from md */}
@@ -249,7 +403,9 @@ function DeskHUD() {
           </>
         )}
         </div>
-      </motion.div>
+          </div>
+        </motion.div>
+      </div>
 
       {/* Website popup — crumpled paper style (opened by clicking "website" in the bio, e.g. "don't get lost on my website") */}
       <Dialog open={showWebsitePopup} onOpenChange={setShowWebsitePopup}>

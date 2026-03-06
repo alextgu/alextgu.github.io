@@ -2,14 +2,20 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { Sun, Moon, Volume2, VolumeX, ChevronRight } from "lucide-react";
+
+/** Delay before navigating away from Main Page so zoom stays stable (ms) */
+const MAIN_PAGE_NAV_DELAY = 150;
+
+const MAIN_VIEW_KEY = "main-page-view";
 
 type IconType = "dark" | "music";
 
 export function Navbar() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const router = useRouter();
   const view = searchParams.get("view");
   const [showIcons, setShowIcons] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -19,6 +25,7 @@ export function Navbar() {
   const [visible, setVisible] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [transitioningItem, setTransitioningItem] = useState<string | null>(null);
+  const [lastMainView, setLastMainView] = useState<"home" | "alex">("home");
 
   useEffect(() => {
     setMounted(true);
@@ -34,6 +41,25 @@ export function Navbar() {
   ] as const;
 
   const explore = searchParams.get("explore");
+  const isOnMainPage = pathname === "/";
+  const isAlexView = explore === "true";
+
+  // Sync lastMainView: from URL when on main page, from sessionStorage when returning
+  useEffect(() => {
+    if (pathname === "/") {
+      setLastMainView(isAlexView ? "alex" : "home");
+    } else if (typeof window !== "undefined") {
+      const stored = window.sessionStorage.getItem(MAIN_VIEW_KEY) as "home" | "alex" | null;
+      if (stored) setLastMainView(stored);
+    }
+  }, [pathname, isAlexView]);
+
+  // Persist main page view when on main page so we can restore when returning
+  useEffect(() => {
+    if (isOnMainPage && typeof window !== "undefined") {
+      window.sessionStorage.setItem(MAIN_VIEW_KEY, isAlexView ? "alex" : "home");
+    }
+  }, [isOnMainPage, isAlexView]);
 
   const isActive = (item: (typeof navItems)[number]) => {
     if (item.isView) {
@@ -78,11 +104,36 @@ export function Navbar() {
       <div className="flex items-center gap-1 bg-white/80 dark:bg-zinc-800/80 backdrop-blur border border-gray-300 dark:border-zinc-600 rounded-lg px-2.5 shadow-md h-full">
         {navItems.map((item) => {
           const active = mounted && isActive(item);
+          const isAlexItem = item.isView;
+          const isExternalPage = !item.isView;
+          const isLeavingMainPage = isOnMainPage && isExternalPage;
+
+          // Alex: on main page = toggle (Home<->Alex); on other page = return to last main view
+          const alexHref = isAlexItem
+            ? isOnMainPage
+              ? isAlexView
+                ? "/"
+                : "/?explore=true"
+              : lastMainView === "alex"
+                ? "/?explore=true"
+                : "/"
+            : item.href;
+
+          const href = isAlexItem ? alexHref : item.href;
+          const label = isAlexItem
+            ? isOnMainPage
+              ? isAlexView
+                ? "Home"
+                : "Alex"
+              : lastMainView === "alex"
+                ? "Home"
+                : "Alex"
+            : item.name;
 
           return (
             <Link
               key={item.name}
-              href={active ? "/" : item.href}
+              href={href}
               scroll={false}
               onClick={(e) => {
                 if (navCooldown) {
@@ -93,6 +144,11 @@ export function Navbar() {
                 setTransitioningItem(item.name);
                 setTimeout(() => setTransitioningItem(null), 150);
                 setTimeout(() => setNavCooldown(false), 500);
+
+                if (isLeavingMainPage) {
+                  e.preventDefault();
+                  setTimeout(() => router.push(item.href), MAIN_PAGE_NAV_DELAY);
+                }
               }}
               className={`px-2 py-1.5 rounded text-sm text-[var(--text-primary)] hover:bg-gray-200/60 dark:hover:bg-zinc-700/60 transition-all duration-100 ease-out inline-block overflow-hidden ${
                 navCooldown ? "pointer-events-none" : ""
@@ -103,7 +159,7 @@ export function Navbar() {
                   transitioningItem === item.name ? "scale-75 opacity-0 blur-sm -translate-y-1" : "scale-100 opacity-100 blur-0 translate-y-0"
                 }`}
               >
-                {active ? "Home" : item.name}
+                {label}
               </span>
             </Link>
           );

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Newsreader, Inter } from "next/font/google";
 import { ScrollToTop } from "@/components/custom/ScrollToTop";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import "./globals.css";
 
 const newsreader = Newsreader({
@@ -26,8 +27,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${newsreader.variable} ${inter.variable}`}>
       <body className="antialiased">
-        <ScrollToTop />
-        {children}
+        <TooltipProvider>
+          <ScrollToTop />
+          {children}
+        </TooltipProvider>
       </body>
     </html>
   );
