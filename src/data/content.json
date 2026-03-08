@@ -1,48 +1,4 @@
 {
-  "deskStates": {
-    "alex": {
-      "displayType": "HUD_CARD",
-      "subtitle": "Welcome to my personal website!",
-      "content": "This will be where I showcase my work and interests. I'm a student studying CS & Stats at the University of Toronto. I love playing sports, cinematography, eating noodles and building whatever I want. I never understood being simple so please don't get lost on my website."
-    },
-    "computer": {
-      "displayType": "HUD_CARD",
-      "subtitle": "Project",
-      "content": "A showcase of things I've built..."
-    },
-    "bucketlist": {
-      "displayType": "HUD_LIST",
-      "subtitle": "Bucket List",
-      "items": [
-        "Pitch on an MLB Field",
-        "Dunk a basketball",
-        "Meet Shohei Ohtani, Ryan Higa and Jeremy Lin",
-        "Publish a film",
-        "Raise 1 million dollars for something that matters to me",
-        "Be a fortnite skin"
-      ]
-    }
-  },
-  "billboard": [
-    {
-      "type": "blog",
-      "id": "intro-post",
-      "image": "",
-      "title": "Welcome to my desk"
-    },
-    {
-      "type": "video",
-      "id": "film-reel",
-      "image": "",
-      "title": "Latest Film Reel"
-    },
-    {
-      "type": "blog",
-      "id": "dev-log-1",
-      "image": "",
-      "title": "Dev Log #1"
-    }
-  ],
   "desktopFolders": [
     {
       "id": "website_history",
@@ -58,10 +14,10 @@
         ],
         "timeline": [
           {
-          "date": "Feb 2026 - Present",
-"title": "Now",
-"description": "This iteration is heavily inspired by Paul, Chester, and Gregory — credit to this site for helping me find them. I wanted my website to feel like a desk with all of my favorite things on it. Weirdly enough, my desk is incredibly messy and I hate doing work on it. I also realized there's just way too much going on in my website, but this is my website and I have way too many fun ideas I want to add. (More updates coming soon!)",
-"links": [
+            "date": "Feb 2026 - Present",
+            "title": "Now",
+            "description": "This iteration is heavily inspired by Paul, Chester, and Gregory — credit to this site for helping me find them. I wanted my website to feel like a desk with all of my favorite things on it. Weirdly enough, my desk is incredibly messy and I hate doing work on it. I also realized there's just way too much going on in my website, but this is my website and I have way too many fun ideas I want to add. (More updates coming soon!)",
+            "links": [
               { "text": "Paul", "url": "https://paulstamatiou.com" },
               { "text": "Chester", "url": "https://chester.how/" },
               { "text": "Gregory", "url": "https://gkoberger.com/" },
@@ -70,7 +26,7 @@
             "pictures": [
               { "src": "/assets/computer/website/my_desk.jpg", "alt": "My physical desk setup" }
             ]
-          } 
+          }
         ]
       }
     },
@@ -103,171 +59,7 @@
       "desktopIcon": "folder",
       "content": {
         "type": "hackathons",
-        "entries": [
-          {
-            "id": "hackathon-9",
-            "name": "DeerHacks V",
-            "projectName": "Depth-First Social",
-            "subtitle": "In-Person Event · March 2026",
-            "description": "Pretty cool hackathon, which I did with my friends. I got to tackle a lot of structural code which gave me experience in stuff like Snowflake, Supabase, Auth0 and Solana. Our product actually worked and the workflow actually made sense to me this time. I don't know if AI just got better, but I feel like my coding has gotten better too. Maybe it's my understanding of just how different frameworks work and I also realized I was a lot better at debugging and helping other people debug. The hackathon was pretty cool, but the food wasn't very good, I got very sick of pizza by the end. I got to play chess and was beating a 2000 (so he said) rating convincingly where I had 2 rooks with 4 pawns and he had 1 bishop, 1 rook and 1 pawn (nowhere near promotion), but I lost in the end due to a blunder. I also played poker which was actually really fun. The workshops in general were all pretty good which definitely raised my score.",
-            "won": true,
-            "score": 66,
-            "devpostUrl": "https://devpost.com/alexwin2099?ref_content=user-portfolio&ref_feature=portfolio&ref_medium=global-nav",
-            "sections": [
-              { "title": "Problem", "body": "People are more than ever not truly themselves due to social media and the use of AI." },
-              { "title": "Solution", "body": "Depth-First Social parses your entire Google Gemini chat history and scores you across 50 variables in 6 personality dimensions to build a mathematical self-portrait called your Archetype. Gemini 2.5 Pro handles the extraction and generates a personalized compatibility blurb for each match, flagging friction points before you even meet. Snowflake stores your Archetype as a native vector and runs cosine similarity matching across the entire user pool — your raw chat data never persists, only the distilled scores. Auth0 handles identity with two post-login actions that scrub PII and stamp your Archetype directly onto your JWT. Supabase manages profiles, matches, and real-time chat with Row Level Security enforced at the database level. A Solana Anchor smart contract ties it all together with a Karma system that rewards you for showing up, giving feedback, and growing over time — reputation is soulbound and verifiable on-chain." },
-              { "title": "Result", "body": "Won Best Use of Gemini, which was cool because it's usually pretty competitive. I realized it's more about the way you use the tools than the tools themselves. Won Google Merch" }
-            ],
-            "images": [
-              { "src": "/assets/computer/hackathons/deerhacksV.jpg", "alt": "win" },
-              { "src": "/assets/computer/hackathons/deerhacksV2.jpg", "alt": "poker" }
-            ]
-          },
-          {
-            "id": "hackathon-8",
-            "name": "UofT Hacks 13",
-            "projectName": "Brick by Brick",
-            "subtitle": "In-Person Event · January 2026",
-            "description": "I got to team up with some really cool people and build something very ambitious. I got food poisoning the first night and no joke had to use the washroom 24 times during the 36 hour event... I would constantly be woken up with a bad stomach and mid conversation have to leave. This hackathon had some really smart people, especially the sponsors that came. I was reminded once again how cool this community is and to be a bit more humble. The project went pretty well and I also had to spend almost 50 dollars on extra Cursor credits. I'm actually demoing this project because we won a track! This is one of the hardest I've ever worked on a project and my complete dead face for our winning photos really showed. (has to be top 10 chopped images of me)",
-            "won": true,
-            "score": 78,
-            "devpostUrl": "https://devpost.com/alexwin2099?ref_content=user-portfolio&ref_feature=portfolio&ref_medium=global-nav",
-            "sections": [
-              { "title": "Problem", "body": "There isn't an easy way to build custom LEGO sets." },
-              { "title": "Solution", "body": "Brick by Brick lets you capture a video of any space or object, and our pipeline converts it into a buildable LEGO set complete with an instruction manual. Twelve Labs' Pegasus model analyzes frames from multiple angles to extract spatial and texture data, while a custom voxelization engine maps the 3D environment into a 0.1m logical pixel grid. Backboard AI acts as the orchestrator, routing tasks between Gemini Pro for complex geometry and Gemini Flash for bulk placement. A greedy optimization algorithm then pulls from the Rebrickable API to find the most efficient brick combinations, and the final output gets stored on Solana for a permanent decentralized build history." },
-              { "title": "Result", "body": "Won second place in TwelveLabs track and best use of Solana. Got asked to present for TwelveLabs builder event (coming soon). Won another ledger and some credits." }
-            ],
-            "images": [
-              { "src": "/assets/computer/hackathons/uofthacks1.jpeg", "alt": "team" },
-              { "src": "/assets/computer/hackathons/uofthacks2.jpg", "alt": "team again" }
-            ]
-          },
-          {
-            "id": "hackathon-7",
-            "name": "DeltaHacks 12",
-            "projectName": "Ranked Showers",
-            "subtitle": "In-Person Event · January 2026",
-            "description": "My first time visiting McMaster University, and I came with a group of friends ready to build something fun. It had been a while since my last hackathon, and I forgot how much I missed the energy. The lines for food were brutal — I ended up with the vegan option every time just by being late. The mentors were genuinely helpful and played a real role in our win. I even got to produce a cinematic promo video for the product (check it out on Devpost or my LinkedIn). I also wore my 'I paused my game for this' shirt, though sadly it didn't photograph well. This was the hackathon where I finally felt ready to take the lead — my skills have grown a lot, and it showed.",
-            "won": true,
-            "score": 82,
-            "devpostUrl": "https://devpost.com/alexwin2099?ref_content=user-portfolio&ref_feature=portfolio&ref_medium=global-nav",
-            "sections": [
-              { "title": "Problem", "body": "CS students are notorious for skipping showers — we built a system to (jokingly) fix that." },
-              { "title": "Solution", "body": "Ranked Showers is a two-part system: an anti-cheat hardware unit and a blockchain leaderboard. The hardware runs on a Raspberry Pi and uses an ultrasonic sensor to detect presence, a humidity sensor to confirm real water usage, and audio analysis via Gemini Flash 2.5 to verify an actual shower is happening. All session data — duration, temperature, and environmental efficiency — is synced nightly to the Solana blockchain and scored through a personalized algorithm tied to each user's crypto wallet." },
-              { "title": "Result", "body": "Won Best Use of Solana. MLH liked it enough to record a demo, and fun points. Won a ledger." }
-            ],
-            "images": [
-              { "src": "/assets/computer/hackathons/delta1.jpeg", "alt": "team" },
-              { "src": "/assets/computer/hackathons/delta2.jpeg", "alt": "shower" },
-              { "src": "/assets/computer/hackathons/delta3.jpeg", "alt": "hardware" }
-            ]
-          },
-          {
-            "id": "hackathon-6",
-            "name": "Hack or Treat (UofT Hacks Mini Hackathon)",
-            "projectName": "Project @ Hack or Treat",
-            "subtitle": "In-Person Event · October 2025",
-            "description": "I don't even remember this too well, but it was very short and in one of the more depressing UofT buildings. The prizes were pretty meh and my team's project was pretty uninspiring. However, I got to better meet the UofT hacks team and get some bubble tea downtown.",
-            "won": false,
-            "score": 36,
-            "devpostUrl": "https://devpost.com/alexwin2099?ref_content=user-portfolio&ref_feature=portfolio&ref_medium=global-nav",
-            "sections": [
-              { "title": "Problem", "body": "LinkedIn posts are hard and annoying to write." },
-              { "title": "Solution", "body": "Use our really poorly made prompter with settings like, performative, cluely (contravertil), boardy (it was a hype thing at the time) and serious. " },
-              { "title": "Result", "body": "Didn't win anything." }
-            ]
-          },
-          {
-            "id": "hackathon-5",
-            "name": "EmberHacks",
-            "projectName": "ZED.AI",
-            "subtitle": "In-Person Event · October 2025",
-            "description": "The food at this one was genuinely great and there was always extra to take home. I got to team up with some close friends, which made the collaboration a lot more fun and natural. The study tool theme was a bit constraining though, and most projects ended up feeling pretty similar with not a lot of room for innovation. It was my first time really diving deep into sponsor APIs and SDKs, and I learned a ton through a lot of trial and error navigating the documentation and scoping the project. I also had to miss the final pitch for a frisbee tournament, which sucked. This project did inspire my GDG school project.",
-            "won": true,
-            "score": 70,
-            "devpostUrl": "https://devpost.com/software/zed-7z0wg4",
-            "sections": [
-              { "title": "Problem", "body": "Mainstream AI usage is quietly eroding critical thinking. Students are pasting full assignments and problem sets into LLMs and submitting the output, bypassing the learning process entirely." },
-              { "title": "Solution", "body": "We built ZED.AI, an autonomous AI study partner that never hands over answers but instead uses Socratic questioning to guide students through the reasoning process. It authenticates into Canvas via Auth0 to pull course-specific materials like syllabi, lecture slides, and assignments, then uses Gemini to generate personalized quizzes directly tied to the professor's content. Voice interaction is handled through a Porcupine wake word listener and ElevenLabs TTS, making it feel like a hands-free study buddy." },
-              { "title": "Result", "body": "We won Best Use of Gemini 2.5 Computer Use, a pretty rare sponsor prize that I haven't seen awarded at any other hackathon. Won a 3d pen?" }
-            ]
-          },
-          {
-            "id": "hackathon-4",
-            "name": "Hack The Valley 10",
-            "projectName": "DisasteRisk*",
-            "subtitle": "In-Person Event · October 2025",
-            "description": "This was a great, well-organized event, but the people I met here were not as cool as those from Stupid Hacks or Hack the North. I had a really difficult experience with one person in particular that put a damper on the weekend. The food was pretty good, though I had some incredibly awkward conversations with sponsors that I'd rather forget. I also realized during this hackathon that I wasn't actually that strong of a coder and was more 'the ideas guy'. On the bright side, afterwards I got to see the Blue Jays in the playoffs!",
-            "won": false,
-            "score": 21,
-            "devpostUrl": "https://devpost.com/software/disasterisk",
-            "sections": [
-              { "title": "Problem", "body": "Emergency responders need to act fast, and they are not always equipped with the right information when operating in post-disaster areas." },
-              { "title": "Solution", "body": "We created DisasteRisk*, a platform that provides quick information about an area following an earthquake. Simply select an estimated earthquake magnitude and draw a circle anywhere on the map to get detailed data on the estimated population, locations of emergency buildings, and which structures are most at risk." },
-              { "title": "Result", "body": "No win, but a cool project regardless." }
-            ],
-            "images": [
-              { "src": "/assets/computer/hackathons/HTV.jpg", "alt": "My hair was way too long" }
-            ]
-          },
-          {
-            "id": "hackathon-3",
-            "name": "Toronto Stupid Hacks",
-            "projectName": "Dynamic PP",
-            "subtitle": "In-Person Event · September 2025",
-            "description": "This was a surprisingly very good hackathon. I got to meet the goat Satyam and team up with him. He was incredibly humble for his goat status and we made a very immature product that won us first place (stupidest)!. I didn't know Daniel Caeser at th time, but I missed out on hearing him sing live... Satyam and I were the only ones who didn't go check him out. Since this was a shorter hackathon, I don't have too much to say, but for how it was, it was very fun and worth it. ",
-            "won": true,
-            "score": 88,
-            "devpostUrl": "https://devpost.com/alexwin2099?ref_content=user-portfolio&ref_feature=portfolio&ref_medium=global-nav",
-            "sections": [
-              { "title": "Problem", "body": "Mouse (the computer one) and trackpads suck and we need an innovative way to navigate computers." },
-              { "title": "Solution", "body": "Using your phone's GPS, you can now become the mouse!" },
-              { "title": "Result", "body": "First place in stupidest, cash prize!" }
-            ],
-            "images": [
-              { "src": "/assets/computer/hackathons/StupidHacks.jpeg", "alt": "We won stupidest" }
-            ]
-          },
-          {
-            "id": "hackathon-2",
-            "name": "Hack the North 2025",
-            "projectName": "TrueCount",
-            "subtitle": "In-Person Event · September 2025",
-            "description": "This was a HUGE stepup from my first hackathon and I'm honestly surprised I even got in. The beginning was incredibly overwhelming with so many sponsors and people (I accidentally hit the YC booth and got yelled at by them). I was really lucky to have found an amazing group and learned so much in terms of coding, networking and just putting myself out there. I could write a whole essay about this hackathon and my experience, but basically this hackathon showed me I can make amazing things with code and their are so many amazing people in this industry. The only reason this is not perfect is because E7 is not my favourite building and the food was not the best.",
-            "won": true,
-            "score": 96,
-            "devpostUrl": "https://devpost.com/software/truecount",
-            "sections": [
-              { "title": "Problem", "body": "Voting systems at every scale suffer from a fundamental lack of transparency and auditability, making it difficult to verify that results are accurate and untampered." },
-              { "title": "Solution", "body": "We built TrueCount, a blockchain-based voting platform that implements a commit-reveal scheme using Solidity smart contracts. Voters first submit a cryptographic commitment (their vote hashed with a private salt), then reveal it in a second phase to ensure votes are both private during collection and publicly verifiable afterward." },
-              { "title": "Result", "body": "We won 1st place in ETHGlobal: Ethereum's Infinite Garden track, I won second in the lettuce eating competition, and I gained so much more (perhaps delusional) confidence. Won ETH and Lettuce." }
-            ],
-            "images": [
-              { "src": "/assets/computer/hackathons/HTN1.jpeg", "alt": "We won" },
-              { "src": "/assets/computer/hackathons/HTN2.jpeg", "alt": "My team" },
-              { "src": "/assets/computer/hackathons/HTN3.jpeg", "alt": "Lettuce eating" }
-            ]
-          },
-          {
-            "id": "hackathon-1",
-            "name": "DeerHacks IV",
-            "projectName": "Pathway",
-            "subtitle": "In-Person Event · February 2025",
-            "description": "This was my first hackathon, and I genuinely had no idea how to contribute. To make matters worse, it fell on Valentine's Day and I completely missed the opening ceremonies and the planning phase my team had already gone through. The entire hackathon was spent questioning whether I should just give up on CS altogether and never touch another event again. Oh, and the event photographer was trying WAY too hard to get candid shots of everyone, which was a little unsettling.",
-            "won": false,
-            "score": 17,
-            "devpostUrl": "https://devpost.com/software/pathway-9ne2sq",
-            "sections": [
-              { "title": "Problem", "body": "With an overwhelming number of courses to choose from, picking the right ones is never easy. While planning for third- and fourth-year courses, our team struggled to narrow down our interests and land on the right course list." },
-              { "title": "Solution", "body": "We built Pathway, a course recommendation system featuring an AI panel where users can describe their interests in natural language. Course data is scraped using BeautifulSoup and stored in a tree-like structure, which is then fed to ChatGPT to generate personalized recommendations. (At least, I think that's how it works as I didn't do very much...)" },
-              { "title": "Result", "body": "My girlfriend was not happy with me. To this day, I'm convinced my teammates hate me, especially after I told them I was good for a first-year. I didn't even get to grab any cool stickers." }
-            ],
-            "images": [
-              { "src": "/assets/computer/hackathons/Deerhacks4.JPG", "alt": "Team!" },
-              { "src": "/assets/computer/hackathons/Deerhacks42.JPG", "alt": "Why did I make my Girlfriend go..." }
-            ]
-          }
-        ]
+        "entries": []
       }
     },
     {
@@ -280,14 +72,20 @@
           { "type": "image", "name": "majors.jpg", "src": "/assets/computer/alex/majors.JPG" }
         ]
       }
+    },
+    {
+      "id": "projects",
+      "label": "Projects",
+      "icon": "folder",
+      "desktopIcon": "folder",
+      "content": {
+        "type": "projects",
+        "summary": "Here are the fully finished projects that I've worked on and that I am proud of. Not much to see right now, but hopefully will have a lot in the future.",
+        "entries": []
+      }
     }
   ],
   "portals": {
-    "projects": {
-      "path": "/projects",
-      "description": "Here are the fully finished projects that I've worked on and that I am proud of. Not much to see right now, but hopefully will have a lot in the future.",
-      "items": []
-    },
     "hobbies": {
       "path": "/hobbies",
       "description": "I love doing things! This page is dedicated to exactly those things. Chances are I love talking about these things as well, so feel free to reach out. Things, things, things...",

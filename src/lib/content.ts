@@ -1,6 +1,8 @@
-import data from "@/data/content.json";
+import homeData from "@/data/home.json";
+import hackathonsData from "@/data/hackathons.json";
+import contentData from "@/data/content.json";
 
-// ── Type definitions for content.json ──
+// ── Type definitions ──
 
 export interface HudCard {
   displayType: "HUD_CARD";
@@ -21,7 +23,7 @@ export interface BillboardBlog {
   id: string;
   image: string;
   title: string;
-  summary: string;
+  summary?: string;
 }
 
 export interface BillboardVideo {
@@ -29,7 +31,7 @@ export interface BillboardVideo {
   id: string;
   image: string;
   title: string;
-  videoUrl: string;
+  videoUrl?: string;
 }
 
 export type BillboardItem = BillboardBlog | BillboardVideo;
@@ -45,14 +47,39 @@ export interface SiteContent {
   deskStates: Record<string, DeskState>;
   billboard: BillboardItem[];
   portals: {
-    projects: { path: string; items: unknown[] };
-    hobbies: { path: string; categories: HobbyCategory[] };
+    hobbies: { path: string; description?: string; categories: HobbyCategory[] };
+    workbench?: { path: string; description?: string };
   };
 }
 
-// ── Typed content ──
+// ── Merged content (home + content.json portals) ──
 
-export const siteContent = data as SiteContent;
+export const siteContent: SiteContent = {
+  ...homeData,
+  portals: contentData.portals as SiteContent["portals"],
+};
+
+// ── Desktop folders (content.json + hackathons.json merged) ──
+
+type DesktopFolderItem = (typeof contentData.desktopFolders)[number];
+
+function mergeDesktopFolders(): DesktopFolderItem[] {
+  const folders = contentData.desktopFolders as DesktopFolderItem[];
+  return folders.map((folder) => {
+    if (folder.id === "hackathons" && folder.content && "entries" in folder.content) {
+      return {
+        ...folder,
+        content: {
+          ...folder.content,
+          entries: hackathonsData.entries,
+        },
+      };
+    }
+    return folder;
+  });
+}
+
+export const desktopFolders = mergeDesktopFolders();
 
 // ── Fallback ──
 

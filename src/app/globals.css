@@ -176,6 +176,26 @@
 .dark .bio-squiggly.noodles { text-decoration-color: transparent; }
 .dark .bio-squiggly.noodles:hover { text-decoration-color: #fca5a5 !important; }
 
+/* Bio website link — obvious underline + subtle attention animation */
+@keyframes bio-website-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+}
+.bio-website-link {
+  display: inline-block;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 5px;
+  text-decoration-color: currentColor;
+  animation: bio-website-pulse 2.2s ease-in-out infinite;
+  transition: transform 0.2s ease, text-decoration-thickness 0.2s ease;
+}
+.bio-website-link:hover {
+  animation: none;
+  transform: scale(1.04);
+  text-decoration-thickness: 3px;
+}
+
 /* ---------- GLOBAL RULES (borders, body) ---------- */
 @layer base {
   * {

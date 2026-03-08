@@ -35,7 +35,7 @@ export function Navbar() {
 
   const navItems = [
     { name: "Alex", href: "/?explore=true", isView: true as const, viewKey: "alex", isReset: true },
-    { name: "Projects", href: "/projects", isView: false as const, isReset: false },
+    { name: "Projects", href: "/computer?open=projects", isView: false as const, isReset: false },
     { name: "Hobbies", href: "/hobbies", isView: false as const, isReset: false },
     { name: "Workbench", href: "/workbench", isView: false as const, isReset: false },
   ] as const;

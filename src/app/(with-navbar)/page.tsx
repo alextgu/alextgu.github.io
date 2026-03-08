@@ -1,13 +1,13 @@
 "use client";
 
 import React, { Suspense, useState, useEffect } from "react";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { AnimatedWords } from "@/components/custom/AnimatedWords";
 import { FontCyclingText } from "@/components/custom/FontCyclingText";
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { useToast } from "@/components/custom/ToastMaster";
 import { getContentByView, siteContent } from "@/lib/content";
 
 /** High-res room background — add /public/assets/room-bg.jpg for your room image */
@@ -47,13 +47,14 @@ function getEmphasizedBase(part: string): string {
 function DeskHUD() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const toast = useToast();
   const viewParam = searchParams.get("view");
   const exploreParam = searchParams.get("explore");
 
   const [isExplorationMode, setIsExplorationMode] = useState(false);
   const [activeView, setActiveView] = useState<string | null>(null);
-  const [showWebsitePopup, setShowWebsitePopup] = useState(false);
   const [isAlexHovered, setIsAlexHovered] = useState(false);
+  const [showBucketListPopup, setShowBucketListPopup] = useState(false);
 
   useEffect(() => {
     if (exploreParam === "true") {
@@ -90,32 +91,134 @@ function DeskHUD() {
         aria-hidden
       />
 
-      {/* Exploration-mode action buttons */}
+      {/* Desk buttons: all desk view sections — simple buttons for now; pages/effects wired later */}
       {isExplorationMode && (
-        <div className="fixed bottom-6 right-6 z-20 flex flex-col gap-3 items-end">
-          <Button
-            variant="outline"
-            className="border-stone-400 bg-stone-100/95 text-stone-800 hover:bg-stone-200/95 shadow-lg"
-            onClick={() => router.push("/computer")}
+        <div className="fixed bottom-24 left-6 md:bottom-20 md:left-10 z-20 flex flex-wrap gap-x-4 gap-y-2 items-center max-w-[calc(100vw-2rem)]">
+          <button
+            type="button"
+            onClick={() => { toast.addToast("Opened Computer"); router.push("/computer"); }}
+            title="Open Computer"
+            className="text-foreground/80 hover:text-foreground text-sm font-medium transition-colors"
           >
-            Open Computer
-          </Button>
-          <Button
-            variant="outline"
-            className="border-stone-400 bg-stone-100/95 text-stone-800 hover:bg-stone-200/95 shadow-lg"
-            onClick={() => {/* TODO: open contact popup */}}
+            Computer
+          </button>
+          <button
+            type="button"
+            onClick={() => router.push("/projector")}
+            title="Projector"
+            className="text-foreground/80 hover:text-foreground text-sm font-medium transition-colors"
+          >
+            Projector
+          </button>
+          <button
+            type="button"
+            onClick={() => router.push("/hobbies")}
+            title="Hobbies (card game)"
+            className="text-foreground/80 hover:text-foreground text-sm font-medium transition-colors"
+          >
+            Hobbies
+          </button>
+          <button
+            type="button"
+            onClick={() => router.push("/workbench")}
+            title="Workbench"
+            className="text-foreground/80 hover:text-foreground text-sm font-medium transition-colors"
+          >
+            Workbench
+          </button>
+          <button
+            type="button"
+            onClick={() => router.push("/map")}
+            title="Map"
+            className="text-foreground/80 hover:text-foreground text-sm font-medium transition-colors"
+          >
+            Map
+          </button>
+          <button
+            type="button"
+            onClick={() => toast.addToast("Record player — effect coming soon")}
+            title="Record player"
+            className="text-foreground/80 hover:text-foreground text-sm font-medium transition-colors"
+          >
+            Record player
+          </button>
+          <button
+            type="button"
+            onClick={() => toast.addToast("Alex Doll — effect coming soon")}
+            title="Alex Doll"
+            className="text-foreground/80 hover:text-foreground text-sm font-medium transition-colors"
+          >
+            Alex Doll
+          </button>
+          <button
+            type="button"
+            onClick={() => setShowBucketListPopup(true)}
+            title="Bucket list"
+            className="text-foreground/80 hover:text-foreground text-sm font-medium transition-colors"
+          >
+            Bucket list
+          </button>
+          <button
+            type="button"
+            onClick={() => router.push("/contact")}
+            title="Contact / Mail"
+            className="text-foreground/80 hover:text-foreground text-sm font-medium transition-colors"
           >
             Contact
-          </Button>
-          <Button
-            variant="outline"
-            className="border-stone-400 bg-stone-100/95 text-stone-800 hover:bg-stone-200/95 shadow-lg"
-            onClick={() => {/* TODO: open bucket list popup */}}
+          </button>
+          <button
+            type="button"
+            onClick={() => router.push("/papers")}
+            title="Loose papers"
+            className="text-foreground/80 hover:text-foreground text-sm font-medium transition-colors"
           >
-            Bucket List
-          </Button>
+            Loose papers
+          </button>
         </div>
       )}
+
+      {/* Bucket list popup */}
+      <AnimatePresence>
+        {showBucketListPopup && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+            onClick={() => setShowBucketListPopup(false)}
+            aria-modal
+            role="dialog"
+            aria-label="Bucket list"
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+              className="rounded-xl border border-border bg-background p-6 shadow-xl max-w-md w-full max-h-[80vh] overflow-y-auto"
+            >
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="font-serif text-xl font-medium text-foreground">
+                  {siteContent.deskStates.bucketlist?.displayType === "HUD_LIST" ? siteContent.deskStates.bucketlist.subtitle : "Bucket List"}
+                </h2>
+                <button
+                  type="button"
+                  onClick={() => setShowBucketListPopup(false)}
+                  className="text-foreground/60 hover:text-foreground text-sm"
+                  aria-label="Close"
+                >
+                  Close
+                </button>
+              </div>
+              <ul className="space-y-2 text-foreground/90">
+                {siteContent.deskStates.bucketlist && siteContent.deskStates.bucketlist.displayType === "HUD_LIST" && siteContent.deskStates.bucketlist.items.map((item, i) => (
+                  <li key={i} className="list-disc list-inside">{item}</li>
+                ))}
+              </ul>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Virtual Camera: single rig with room bg, transform-only (scale/translate) */}
       <div
@@ -261,14 +364,14 @@ function DeskHUD() {
                           (/^\s/.test(nextPart) || !/^[.,\s]/.test(nextPart));
                         if (isWebsite) {
                           return (
-                            <button
+                            <Link
                               key={`${i}-${j}`}
-                              type="button"
-                              onClick={() => setShowWebsitePopup(true)}
-                              className="text-foreground font-medium underline underline-offset-2 decoration-foreground/80 hover:decoration-foreground cursor-pointer bg-transparent border-0 p-0 font-inherit text-inherit inline-block transition-transform duration-150 hover:scale-[1.02]"
+                              href="/?explore=true"
+                              scroll={false}
+                              className="bio-website-link text-foreground font-medium cursor-pointer bg-transparent border-0 p-0 font-inherit text-inherit"
                             >
                               {part}
-                            </button>
+                            </Link>
                           );
                         }
                         if (emphasized) {
@@ -291,7 +394,8 @@ function DeskHUD() {
                                   ? "Check out my hobbies section!"
                                   : undefined;
                           const isCSStats = base.toLowerCase() === "cs & stats";
-                          const spaceInside = needsSpaceAfter && !isCSStats;
+                          const hasUnderline = isSquiggly || isCSStats;
+                          const spaceInside = needsSpaceAfter && !hasUnderline;
                           const spanEl = (
                             <span
                               className={`text-foreground font-medium py-0.5 ${squigglyClass}`.trim()}
@@ -300,7 +404,7 @@ function DeskHUD() {
                               {spaceInside ? " " : null}
                             </span>
                           );
-                          const spaceAfter = needsSpaceAfter && isCSStats ? " " : null;
+                          const spaceAfter = needsSpaceAfter && hasUnderline ? " " : null;
                           if (tooltip) {
                             return (
                               <Tooltip key={`${i}-${j}`}>
@@ -407,37 +511,6 @@ function DeskHUD() {
         </motion.div>
       </div>
 
-      {/* Website popup — crumpled paper style (opened by clicking "website" in the bio, e.g. "don't get lost on my website") */}
-      <Dialog open={showWebsitePopup} onOpenChange={setShowWebsitePopup}>
-        <DialogContent
-          className="max-w-4xl p-0 overflow-hidden border-0 shadow-none bg-transparent"
-          showCloseButton={true}
-        >
-          <div
-            className="relative rounded-[2rem] p-8 min-h-[280px]"
-            style={{
-              background: "linear-gradient(145deg, #f5f0e6 0%, #e8e0d2 25%, #ebe4d8 50%, #e2d9c9 75%, #ede6dc 100%)",
-              boxShadow: `
-                2px 2px 2px rgba(0,0,0,0.04),
-                -1px -1px 3px rgba(255,255,255,0.6),
-                4px 6px 8px rgba(0,0,0,0.06),
-                8px 12px 16px rgba(0,0,0,0.08),
-                inset 0 1px 0 rgba(255,255,255,0.5),
-                inset 1px 0 0 rgba(255,255,255,0.3)
-              `,
-            }}
-          >
-            <div className="relative">
-              <DialogTitle className="text-lg font-semibold text-stone-800 dark:text-stone-200">
-                Website
-              </DialogTitle>
-              <div className="mt-4 min-h-[200px] rounded-lg p-6 text-stone-600 dark:text-stone-400 text-sm border border-stone-300/50 dark:border-stone-600/50 bg-white/30 dark:bg-black/20">
-                Design your content here.
-              </div>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
     </>
   );
 }

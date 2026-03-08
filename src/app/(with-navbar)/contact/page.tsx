@@ -1,14 +1,13 @@
 import Link from "next/link";
 
 /**
- * Workbench page — new design to be added.
- * Old design removed per design change.
+ * Contact / mail close-up view (to be added).
  */
-export default function WorkbenchPage() {
+export default function ContactPage() {
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center p-8">
       <p className="text-foreground/80 text-center max-w-md">
-        Workbench — coming soon.
+        Contact — close-up view coming soon.
       </p>
       <Link
         href="/?explore=true"
