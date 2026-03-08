@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useCallback, useEffect, type ReactNode } from "react";
+import { useState, useCallback, useEffect, useRef, type ReactNode } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { Rnd } from "react-rnd";
 import Image from "next/image";
 import { motion } from "framer-motion";
@@ -9,7 +10,7 @@ import { ImageIcon, Lock, X, ChevronDown, ChevronUp, ChevronLeft, Crown } from "
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { DesktopIcon } from "@/components/custom/DesktopIcon";
 import { FolderWindow, type WindowBounds } from "@/components/custom/FolderWindow";
-import contentData from "@/data/content.json";
+import { desktopFolders as desktopFoldersData } from "@/lib/content";
 
 interface FolderListItem {
   name: string;
@@ -78,6 +79,16 @@ interface FolderHackathonsContent {
   }[];
 }
 
+interface FolderProjectsContent {
+  type: "projects";
+  summary: string;
+  entries: {
+    id: string;
+    name: string;
+    subtitle?: string;
+  }[];
+}
+
 type FolderContent =
   | FolderListContent
   | FolderVideoContent
@@ -85,7 +96,8 @@ type FolderContent =
   | FolderTextContent
   | FolderWebsiteHistoryContent
   | FolderExperiencesContent
-  | FolderHackathonsContent;
+  | FolderHackathonsContent
+  | FolderProjectsContent;
 
 interface DesktopFolder {
   id: string;
@@ -95,7 +107,7 @@ interface DesktopFolder {
   content: FolderContent;
 }
 
-const folders = contentData.desktopFolders as DesktopFolder[];
+const folders = desktopFoldersData as DesktopFolder[];
 
 function AppleBatteryIcon({
   level,
@@ -163,6 +175,17 @@ export default function ComputerPage() {
   const [batteryShowNumber, setBatteryShowNumber] = useState(false);
   const [openMenuBar, setOpenMenuBar] = useState<"apple" | "finder" | "file" | "edit" | "view" | null>(null);
   const [showWebsiteDiagram, setShowWebsiteDiagram] = useState(false);
+
+  const searchParams = useSearchParams();
+  const hasOpenedProjectsRef = useRef(false);
+  useEffect(() => {
+    const open = searchParams.get("open");
+    if (open === "projects" && !hasOpenedProjectsRef.current) {
+      hasOpenedProjectsRef.current = true;
+      setOpenWindows((prev) => (prev.includes("projects") ? prev : [...prev, "projects"]));
+      setWindowOrder((prev) => [...prev.filter((w) => w !== "projects"), "projects"]);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     const tick = setInterval(() => setNow(new Date()), 1000);
@@ -707,6 +730,49 @@ function ExperiencesView({
   );
 }
 
+function ProjectsView({
+  summary,
+  entries,
+}: {
+  summary: string;
+  entries: FolderProjectsContent["entries"];
+}) {
+  return (
+    <div className="flex flex-col gap-6 font-sans text-base">
+      {summary && (
+        <p className="text-base text-zinc-400 leading-relaxed">
+          {summary}
+        </p>
+      )}
+      <div className="flex flex-col gap-2">
+        {entries.length === 0 ? (
+          <p className="text-base text-zinc-500">No projects yet.</p>
+        ) : (
+          entries.map((entry) => (
+            <Link
+              key={entry.id}
+              href={`/computer/projects/${entry.id}`}
+              className="w-full flex items-center justify-between gap-3 px-4 py-3 text-left rounded-lg border border-zinc-700/50 bg-white/5 hover:bg-white/10 transition-colors"
+            >
+              <div className="min-w-0 flex flex-col gap-1">
+                <span className="text-base font-medium text-zinc-200 truncate">
+                  {entry.name}
+                </span>
+                {entry.subtitle && (
+                  <span className="text-sm text-zinc-500 truncate">
+                    {entry.subtitle}
+                  </span>
+                )}
+              </div>
+              <ChevronDown className="w-4 h-4 shrink-0 text-zinc-500 rotate-[-90deg]" aria-hidden />
+            </Link>
+          ))
+        )}
+      </div>
+    </div>
+  );
+}
+
 function HackathonsView({
   entries,
 }: {
@@ -935,6 +1001,14 @@ function FolderContents({ content }: { content: FolderContent }) {
   }
   if (content.type === "hackathons") {
     return <HackathonsView entries={content.entries} />;
+  }
+  if (content.type === "projects") {
+    return (
+      <ProjectsView
+        summary={content.summary}
+        entries={content.entries}
+      />
+    );
   }
   if (content.type === "video") {
     return (

@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Pacifico&family=Lobster&family=Bangers&family=Righteous&family=Playfair+Display&family=Permanent+Marker&family=Rye&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
@@ -96,22 +97,22 @@
 
 }
 
-/* ---------- Dark: neutral dark ---------- */
+/* ---------- Dark: neutral dark, softer white text ---------- */
 .dark {
   --background: oklch(0.16 0 0); /* neutral dark (no blue) */
-  --foreground: oklch(0.97 0.01 95); /* soft warm white for text */
+  --foreground: oklch(0.88 0.015 95); /* softer warm white for text */
   --card: oklch(0.2 0 0);
-  --card-foreground: oklch(0.97 0.01 95);
+  --card-foreground: oklch(0.88 0.015 95);
   --popover: oklch(0.2 0 0);
-  --popover-foreground: oklch(0.97 0.01 95);
-  --primary: oklch(0.97 0.01 95);
+  --popover-foreground: oklch(0.88 0.015 95);
+  --primary: oklch(0.88 0.015 95);
   --primary-foreground: oklch(0.18 0 0);
   --secondary: oklch(0.24 0 0);
-  --secondary-foreground: oklch(0.97 0.01 95);
+  --secondary-foreground: oklch(0.88 0.015 95);
   --muted: oklch(0.24 0 0);
-  --muted-foreground: oklch(0.75 0.02 95);
+  --muted-foreground: oklch(0.68 0.02 95);
   --accent: oklch(0.24 0 0);
-  --accent-foreground: oklch(0.97 0.01 95);
+  --accent-foreground: oklch(0.88 0.015 95);
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(0.3 0 0 / 0.5);
   --input: oklch(0.3 0 0 / 0.6);
@@ -122,15 +123,15 @@
   --chart-4: oklch(0.627 0.265 303.9);
   --chart-5: oklch(0.645 0.246 16.439);
   --sidebar: oklch(0.2 0 0);
-  --sidebar-foreground: oklch(0.97 0.01 95);
+  --sidebar-foreground: oklch(0.88 0.015 95);
   --sidebar-primary: oklch(0.5 0 0);
-  --sidebar-primary-foreground: oklch(0.98 0.01 95);
+  --sidebar-primary-foreground: oklch(0.9 0.015 95);
   --sidebar-accent: oklch(0.24 0 0);
-  --sidebar-accent-foreground: oklch(0.97 0.01 95);
+  --sidebar-accent-foreground: oklch(0.88 0.015 95);
   --sidebar-border: oklch(0.3 0 0 / 0.5);
   --sidebar-ring: oklch(0.5 0 0);
-  /* Text: soft warm off-white on neutral dark */
-  --text-primary: #ede9e3;
+  /* Text: softer warm off-white on neutral dark */
+  --text-primary: #d8d3cc;
 
 }
 
@@ -145,6 +146,47 @@
 }
 .social-link:hover {
   text-decoration-color: var(--link-color);
+}
+
+/* Bio squiggly underline — only on hover, with text pop */
+.bio-squiggly {
+  display: inline-block;
+  text-decoration: underline wavy transparent;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+  text-decoration-skip-ink: none;
+  transition: text-decoration-color 0.2s ease, transform 0.2s ease;
+  cursor: default;
+}
+.bio-squiggly:hover {
+  transform: scale(1.05);
+}
+/* Light mode — no underline until hover */
+.bio-squiggly.sports { text-decoration-color: transparent; }
+.bio-squiggly.sports:hover { text-decoration-color: #2563eb !important; }
+.bio-squiggly.cinematography { text-decoration-color: transparent; }
+.bio-squiggly.cinematography:hover { text-decoration-color: #9333ea !important; }
+.bio-squiggly.noodles { text-decoration-color: transparent; }
+.bio-squiggly.noodles:hover { text-decoration-color: #dc2626 !important; }
+/* Dark mode — pastel, no underline until hover */
+.dark .bio-squiggly.sports { text-decoration-color: transparent; }
+.dark .bio-squiggly.sports:hover { text-decoration-color: #7dd3fc !important; }
+.dark .bio-squiggly.cinematography { text-decoration-color: transparent; }
+.dark .bio-squiggly.cinematography:hover { text-decoration-color: #d8b4fe !important; }
+.dark .bio-squiggly.noodles { text-decoration-color: transparent; }
+.dark .bio-squiggly.noodles:hover { text-decoration-color: #fca5a5 !important; }
+
+/* Bio website link — underline only */
+.bio-website-link {
+  display: inline-block;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 5px;
+  text-decoration-color: currentColor;
+  transition: text-decoration-thickness 0.2s ease;
+}
+.bio-website-link:hover {
+  text-decoration-thickness: 3px;
 }
 
 /* ---------- GLOBAL RULES (borders, body) ---------- */

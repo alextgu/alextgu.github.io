@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { Newsreader, Inter } from "next/font/google";
+import { BackToHome } from "@/components/custom/BackToHome";
+import { CornerOverlays } from "@/components/custom/CornerOverlays";
 import { ScrollToTop } from "@/components/custom/ScrollToTop";
+import { ToastProvider } from "@/components/custom/ToastMaster";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import "./globals.css";
 
 const newsreader = Newsreader({
@@ -26,8 +31,16 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${newsreader.variable} ${inter.variable}`}>
       <body className="antialiased">
-        <ScrollToTop />
-        {children}
+        <TooltipProvider>
+          <ToastProvider>
+            <CornerOverlays />
+            <Suspense fallback={null}>
+              <BackToHome />
+            </Suspense>
+            <ScrollToTop />
+            {children}
+          </ToastProvider>
+        </TooltipProvider>
       </body>
     </html>
   );

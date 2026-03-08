@@ -1,0 +1,46 @@
+{
+  "deskStates": {
+    "alex": {
+      "displayType": "HUD_CARD",
+      "subtitle": "Welcome to my personal website!",
+      "content": "This will be where I showcase my work and interests. I'm a student studying CS & Stats at the University of Toronto. I love playing sports, cinematography, eating noodles and building whatever I want. I never understood being simple so please don't get lost on my website."
+    },
+    "computer": {
+      "displayType": "HUD_CARD",
+      "subtitle": "Project",
+      "content": "A showcase of things I've built..."
+    },
+    "bucketlist": {
+      "displayType": "HUD_LIST",
+      "subtitle": "Bucket List",
+      "items": [
+        "Pitch on an MLB Field",
+        "Dunk a basketball",
+        "Meet Shohei Ohtani, Ryan Higa and Jeremy Lin",
+        "Publish a film",
+        "Raise 1 million dollars for something that matters to me",
+        "Be a fortnite skin"
+      ]
+    }
+  },
+  "billboard": [
+    {
+      "type": "blog",
+      "id": "intro-post",
+      "image": "",
+      "title": "Welcome to my desk"
+    },
+    {
+      "type": "video",
+      "id": "film-reel",
+      "image": "",
+      "title": "Latest Film Reel"
+    },
+    {
+      "type": "blog",
+      "id": "dev-log-1",
+      "image": "",
+      "title": "Dev Log #1"
+    }
+  ]
+}
