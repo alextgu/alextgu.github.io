@@ -1,6 +1,7 @@
 "use client";
 
-import React, { Suspense, useState, useEffect } from "react";
+import React, { Suspense, useState, useEffect, useRef, useCallback } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -23,6 +24,42 @@ const EMPHASIZED_PHRASES = [
   "building",
   "website",
 ];
+
+const WEBSITE_TYPEOUT = "[enter my website]";
+const WEBSITE_TYPEOUT_MS = 50;
+
+function WebsiteTypewriter() {
+  const toast = useToast();
+  const [hovered, setHovered] = useState(false);
+  const [typed, setTyped] = useState("");
+
+  useEffect(() => {
+    if (!hovered) {
+      setTyped("");
+      return;
+    }
+    if (typed.length >= WEBSITE_TYPEOUT.length) return;
+    const t = setTimeout(() => {
+      setTyped(WEBSITE_TYPEOUT.slice(0, typed.length + 1));
+    }, WEBSITE_TYPEOUT_MS);
+    return () => clearTimeout(t);
+  }, [hovered, typed]);
+
+  return (
+    <Link
+      href="/?explore=true"
+      scroll={false}
+      className="bio-website-link text-foreground font-medium cursor-pointer bg-transparent border-0 p-0 font-inherit text-inherit inline transition-opacity duration-150"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      onClick={() => toast.addToast("Alex's desk entered")}
+    >
+      <span className="inline-block min-w-[5.5em] text-left underline decoration-2 underline-offset-[5px] decoration-current">
+        {hovered ? typed : "website"}
+      </span>
+    </Link>
+  );
+}
 
 function splitByEmphasized(text: string): string[] {
   const escaped = EMPHASIZED_PHRASES.map((p) =>
@@ -55,6 +92,16 @@ function DeskHUD() {
   const [activeView, setActiveView] = useState<string | null>(null);
   const [isAlexHovered, setIsAlexHovered] = useState(false);
   const [showBucketListPopup, setShowBucketListPopup] = useState(false);
+  const [highlightSection, setHighlightSection] = useState<"sports" | "cinematography" | "noodles" | null>(null);
+
+  const desktopSlideRefs = useRef<(HTMLElement | null)[]>([]);
+  const mobileSlideRefs = useRef<(HTMLElement | null)[]>([]);
+
+  const scrollToSlide = useCallback((index: number, highlight?: "sports" | "cinematography" | "noodles") => {
+    setHighlightSection(highlight ?? null);
+    desktopSlideRefs.current[index]?.scrollIntoView({ behavior: "smooth", block: "start" });
+    mobileSlideRefs.current[index]?.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+  }, []);
 
   useEffect(() => {
     if (exploreParam === "true") {
@@ -364,14 +411,7 @@ function DeskHUD() {
                           (/^\s/.test(nextPart) || !/^[.,\s]/.test(nextPart));
                         if (isWebsite) {
                           return (
-                            <Link
-                              key={`${i}-${j}`}
-                              href="/?explore=true"
-                              scroll={false}
-                              className="bio-website-link text-foreground font-medium cursor-pointer bg-transparent border-0 p-0 font-inherit text-inherit"
-                            >
-                              {part}
-                            </Link>
+                            <WebsiteTypewriter key={`${i}-${j}`} />
                           );
                         }
                         if (emphasized) {
@@ -387,11 +427,11 @@ function DeskHUD() {
                                     : "";
                           const tooltip =
                             base.toLowerCase() === "building"
-                              ? "Check out my projects section!"
+                              ? "Check out my projects section on my desk!"
                               : base.toLowerCase() === "work"
                                 ? "Check out my experience section on my computer!"
                                 : base.toLowerCase() === "interests"
-                                  ? "Check out my hobbies section!"
+                                  ? "Check out my hobbies on my desk!"
                                   : undefined;
                           const isCSStats = base.toLowerCase() === "cs & stats";
                           const hasUnderline = isSquiggly || isCSStats;
@@ -405,6 +445,54 @@ function DeskHUD() {
                             </span>
                           );
                           const spaceAfter = needsSpaceAfter && hasUnderline ? " " : null;
+                          if (isCSStats) {
+                            return (
+                              <React.Fragment key={`${i}-${j}`}>
+                                <button
+                                  type="button"
+                                  onClick={() => scrollToSlide(1)}
+                                  className="inline-block underline decoration-2 underline-offset-2 decoration-transparent hover:decoration-yellow-500 dark:hover:decoration-yellow-400 transition-colors text-foreground font-medium py-0.5 cursor-pointer bg-transparent border-0 p-0 font-inherit text-inherit"
+                                >
+                                  {part}
+                                </button>
+                                {spaceAfter}
+                              </React.Fragment>
+                            );
+                          }
+                          if (base.toLowerCase() === "building") {
+                            return (
+                              <Tooltip key={`${i}-${j}`}>
+                                <TooltipTrigger asChild>
+                                  <button
+                                    type="button"
+                                    onClick={() => scrollToSlide(2)}
+                                    className="text-foreground font-medium py-0.5 cursor-pointer bg-transparent border-0 p-0 font-inherit text-inherit hover:opacity-90"
+                                  >
+                                    <span>{part}{spaceInside ? " " : null}</span>
+                                  </button>
+                                </TooltipTrigger>
+                                <TooltipContent side="top" align="center" sideOffset={6} className="max-w-[220px]">
+                                  {tooltip}
+                                </TooltipContent>
+                              </Tooltip>
+                            );
+                          }
+                          if (base.toLowerCase() === "sports" || base.toLowerCase() === "cinematography" || base.toLowerCase() === "noodles") {
+                            const section = base.toLowerCase() as "sports" | "cinematography" | "noodles";
+                            return (
+                              <React.Fragment key={`${i}-${j}`}>
+                                <button
+                                  type="button"
+                                  onClick={() => scrollToSlide(3, section)}
+                                  className={`text-foreground font-medium py-0.5 cursor-pointer bg-transparent border-0 p-0 font-inherit text-inherit ${squigglyClass}`.trim()}
+                                >
+                                  {part}
+                                  {spaceInside ? " " : null}
+                                </button>
+                                {spaceAfter}
+                              </React.Fragment>
+                            );
+                          }
                           if (tooltip) {
                             return (
                               <Tooltip key={`${i}-${j}`}>
@@ -449,26 +537,66 @@ function DeskHUD() {
           )}
         </motion.div>
 
-        {/* Mobile: horizontal slideshow with snap scroll sections */}
+        {/* Mobile: horizontal slideshow — 5 slides */}
         {isFocused && isHomeView && (
           <div className="md:hidden mt-8 -mx-6 overflow-x-auto overflow-y-hidden snap-x snap-mandatory hide-scrollbar">
             <div className="flex gap-4 px-6 pb-6">
-              <section className="flex-shrink-0 w-[calc(100vw-3rem)] min-w-[280px] snap-center snap-always rounded-lg border border-border bg-muted/20 p-6 text-foreground/80 text-sm">
+              <section ref={(el) => { mobileSlideRefs.current[0] = el; }} className="flex-shrink-0 w-[calc(100vw-3rem)] min-w-[280px] snap-center snap-always rounded-lg border border-border bg-muted/20 p-6 text-foreground/80 text-sm">
                 <h3 className="font-serif font-medium text-foreground text-base mb-2">Alex</h3>
                 <p className="leading-relaxed">
                   A bit about you—intro, background, or whatever you want in this first section.
                 </p>
               </section>
-              <section className="flex-shrink-0 w-[calc(100vw-3rem)] min-w-[280px] snap-center snap-always rounded-lg border border-border bg-muted/20 p-6 text-foreground/80 text-sm">
-                <h3 className="font-serif font-medium text-foreground text-base mb-2">School (major program)</h3>
+              <section ref={(el) => { mobileSlideRefs.current[1] = el; }} className="flex-shrink-0 w-[calc(100vw-3rem)] min-w-[280px] snap-center snap-always rounded-lg border border-border bg-muted/20 p-6 text-foreground/80 text-sm">
+                <h3 className="font-serif font-medium text-foreground text-base mb-2">Education</h3>
                 <p className="leading-relaxed">
                   Your program, degree, or what you&apos;re studying—e.g. CS &amp; Stats at U of T.
                 </p>
               </section>
-              <section className="flex-shrink-0 w-[calc(100vw-3rem)] min-w-[280px] snap-center snap-always rounded-lg border border-border bg-muted/20 p-6 text-foreground/80 text-sm">
-                <h3 className="font-serif font-medium text-foreground text-base mb-2">Sports, cinematography, noodles and building</h3>
-                <p className="leading-relaxed">
-                  The things you love—sports, cinematography, eating noodles, and building stuff. Add your own copy and media here.
+              <section ref={(el) => { mobileSlideRefs.current[2] = el; }} className="flex-shrink-0 w-[calc(100vw-3rem)] min-w-[280px] snap-center snap-always rounded-lg border border-border bg-muted/20 p-6 text-foreground/80 text-sm">
+                <h3 className="font-serif font-medium text-foreground text-base mb-2">A project I&apos;m proud of</h3>
+                <div className="flex gap-3 items-start">
+                  <div className="relative shrink-0 w-32 h-24 rounded-md overflow-hidden bg-muted">
+                    <Image src="/assets/home/StupidHacks.jpeg" alt="Stupid Hacks hackathon" fill className="object-cover" sizes="128px" />
+                  </div>
+                  <p className="leading-relaxed text-sm flex-1 min-w-0">
+                    Stupid Hacks — first place (stupidest). Add a project you&apos;re proud of here.
+                  </p>
+                </div>
+              </section>
+              <section ref={(el) => { mobileSlideRefs.current[3] = el; }} className="flex-shrink-0 w-[calc(100vw-3rem)] min-w-[280px] snap-center snap-always rounded-lg border border-border bg-muted/20 p-6 text-foreground/80 text-sm">
+                <h3 className="font-serif font-medium text-foreground text-base mb-2">Sports, cinematography &amp; noodles</h3>
+                <div className={`rounded-lg p-3 transition-colors ${highlightSection === "sports" ? "bg-foreground/10 ring-1 ring-foreground/20" : ""}`}>
+                  <h4 className="font-medium text-foreground text-sm mb-1">Sports</h4>
+                  <div className="flex gap-3 items-center">
+                    <div className="relative shrink-0 w-24 h-20 rounded-md overflow-hidden bg-muted">
+                      <Image src="/assets/home/baseball2.jpg" alt="Baseball" fill className="object-cover" sizes="96px" />
+                    </div>
+                    <p className="leading-relaxed text-sm flex-1 min-w-0">Playing sports, staying active.</p>
+                  </div>
+                </div>
+                <div className={`mt-3 rounded-lg p-3 transition-colors ${highlightSection === "cinematography" ? "bg-foreground/10 ring-1 ring-foreground/20" : ""}`}>
+                  <h4 className="font-medium text-foreground text-sm mb-1">Cinematography</h4>
+                  <div className="flex gap-3 items-center">
+                    <div className="relative shrink-0 w-24 h-20 rounded-md overflow-hidden bg-muted">
+                      <Image src="/assets/home/watermelon.JPG" alt="Cinematography" fill className="object-cover" sizes="96px" />
+                    </div>
+                    <p className="leading-relaxed text-sm flex-1 min-w-0">Film and video work.</p>
+                  </div>
+                </div>
+                <div className={`mt-3 rounded-lg p-3 transition-colors ${highlightSection === "noodles" ? "bg-foreground/10 ring-1 ring-foreground/20" : ""}`}>
+                  <h4 className="font-medium text-foreground text-sm mb-1">Noodles</h4>
+                  <div className="flex gap-3 items-center">
+                    <div className="relative shrink-0 w-24 h-20 rounded-md overflow-hidden bg-muted">
+                      <Image src="/assets/home/noodles.jpg" alt="Noodles" fill className="object-cover" sizes="96px" />
+                    </div>
+                    <p className="leading-relaxed text-sm flex-1 min-w-0">Eating noodles, ramen, etc.</p>
+                  </div>
+                </div>
+              </section>
+              <section ref={(el) => { mobileSlideRefs.current[4] = el; }} className="flex-shrink-0 w-[calc(100vw-3rem)] min-w-[280px] snap-center snap-always rounded-lg border border-border bg-muted/20 p-6 text-foreground/80 text-sm">
+                <p className="leading-relaxed font-medium text-foreground">
+                  Click on the underlined website on the left to explore my full website!
                 </p>
               </section>
             </div>
@@ -476,11 +604,11 @@ function DeskHUD() {
         )}
       </div>
 
-        {/* Right: scroll-by-page sections — hidden on mobile, show from md */}
+        {/* Right: slideshow — 5 slides, scroll snap */}
         <div className="hidden md:flex md:flex-col h-screen w-[45%] flex-shrink-0 overflow-y-auto overflow-x-hidden snap-y snap-mandatory">
-        {isFocused && (
+        {isFocused && isHomeView && (
           <>
-            <section className="min-h-[100dvh] w-full flex-shrink-0 snap-start flex flex-col justify-center p-8 pt-24 pb-12">
+            <section ref={(el) => { desktopSlideRefs.current[0] = el; }} className="min-h-[100dvh] w-full flex-shrink-0 snap-start flex flex-col justify-center p-8 pt-24 pb-12">
               <div className="w-full max-w-md mx-auto rounded-lg border border-border bg-muted/20 p-6 text-foreground/80 text-sm">
                 <h3 className="font-serif font-medium text-foreground text-base mb-2">Alex</h3>
                 <p className="leading-relaxed">
@@ -488,19 +616,63 @@ function DeskHUD() {
                 </p>
               </div>
             </section>
-            <section className="min-h-[100dvh] w-full flex-shrink-0 snap-start flex flex-col justify-center p-8 pt-24 pb-12">
+            <section ref={(el) => { desktopSlideRefs.current[1] = el; }} className="min-h-[100dvh] w-full flex-shrink-0 snap-start flex flex-col justify-center p-8 pt-24 pb-12">
               <div className="w-full max-w-md mx-auto rounded-lg border border-border bg-muted/20 p-6 text-foreground/80 text-sm">
-                <h3 className="font-serif font-medium text-foreground text-base mb-2">School (major program)</h3>
+                <h3 className="font-serif font-medium text-foreground text-base mb-2">Education</h3>
                 <p className="leading-relaxed">
-                  Your program, degree, or what you’re studying—e.g. CS &amp; Stats at U of T.
+                  Your program, degree, or what you&apos;re studying—e.g. CS &amp; Stats at U of T.
                 </p>
               </div>
             </section>
-            <section className="min-h-[100dvh] w-full flex-shrink-0 snap-start flex flex-col justify-center p-8 pt-24 pb-12">
+            <section ref={(el) => { desktopSlideRefs.current[2] = el; }} className="min-h-[100dvh] w-full flex-shrink-0 snap-start flex flex-col justify-center p-8 pt-24 pb-12">
               <div className="w-full max-w-md mx-auto rounded-lg border border-border bg-muted/20 p-6 text-foreground/80 text-sm">
-                <h3 className="font-serif font-medium text-foreground text-base mb-2">Sports, cinematography, noodles and building</h3>
-                <p className="leading-relaxed">
-                  The things you love—sports, cinematography, eating noodles, and building stuff. Add your own copy and media here.
+                <h3 className="font-serif font-medium text-foreground text-base mb-2">A project I&apos;m proud of</h3>
+                <div className="flex gap-4 items-start">
+                  <div className="relative shrink-0 w-40 h-28 rounded-md overflow-hidden bg-muted">
+                    <Image src="/assets/home/StupidHacks.jpeg" alt="Stupid Hacks hackathon" fill className="object-cover" sizes="160px" />
+                  </div>
+                  <p className="leading-relaxed flex-1 min-w-0">
+                    Stupid Hacks — first place (stupidest). Add a project you&apos;re proud of here.
+                  </p>
+                </div>
+              </div>
+            </section>
+            <section ref={(el) => { desktopSlideRefs.current[3] = el; }} className="min-h-[100dvh] w-full flex-shrink-0 snap-start flex flex-col justify-center p-8 pt-24 pb-12">
+              <div className="w-full max-w-md mx-auto rounded-lg border border-border bg-muted/20 p-6 text-foreground/80 text-sm space-y-4">
+                <h3 className="font-serif font-medium text-foreground text-base mb-2">Sports, cinematography &amp; noodles</h3>
+                <div className={`rounded-lg p-4 transition-colors duration-200 ${highlightSection === "sports" ? "bg-foreground/10 ring-1 ring-foreground/20" : ""}`}>
+                  <h4 className="font-medium text-foreground text-sm mb-1">Sports</h4>
+                  <div className="flex gap-4 items-center">
+                    <div className="relative shrink-0 w-32 h-24 rounded-md overflow-hidden bg-muted">
+                      <Image src="/assets/home/baseball2.jpg" alt="Baseball" fill className="object-cover" sizes="128px" />
+                    </div>
+                    <p className="leading-relaxed flex-1 min-w-0">Playing sports, staying active.</p>
+                  </div>
+                </div>
+                <div className={`rounded-lg p-4 transition-colors duration-200 ${highlightSection === "cinematography" ? "bg-foreground/10 ring-1 ring-foreground/20" : ""}`}>
+                  <h4 className="font-medium text-foreground text-sm mb-1">Cinematography</h4>
+                  <div className="flex gap-4 items-center">
+                    <div className="relative shrink-0 w-32 h-24 rounded-md overflow-hidden bg-muted">
+                      <Image src="/assets/home/watermelon.JPG" alt="Cinematography" fill className="object-cover" sizes="128px" />
+                    </div>
+                    <p className="leading-relaxed flex-1 min-w-0">Film and video work.</p>
+                  </div>
+                </div>
+                <div className={`rounded-lg p-4 transition-colors duration-200 ${highlightSection === "noodles" ? "bg-foreground/10 ring-1 ring-foreground/20" : ""}`}>
+                  <h4 className="font-medium text-foreground text-sm mb-1">Noodles</h4>
+                  <div className="flex gap-4 items-center">
+                    <div className="relative shrink-0 w-32 h-24 rounded-md overflow-hidden bg-muted">
+                      <Image src="/assets/home/noodles.jpg" alt="Noodles" fill className="object-cover" sizes="128px" />
+                    </div>
+                    <p className="leading-relaxed flex-1 min-w-0">Eating noodles, ramen, etc.</p>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <section ref={(el) => { desktopSlideRefs.current[4] = el; }} className="min-h-[100dvh] w-full flex-shrink-0 snap-start flex flex-col justify-center p-8 pt-24 pb-12">
+              <div className="w-full max-w-md mx-auto rounded-lg border border-border bg-muted/20 p-6 text-foreground/80 text-sm">
+                <p className="leading-relaxed font-medium text-foreground">
+                  Click on the underlined website on the left to explore my full website!
                 </p>
               </div>
             </section>

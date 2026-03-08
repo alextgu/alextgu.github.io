@@ -27,23 +27,19 @@ export function CornerOverlays() {
     if (cooldown) return;
     setCooldown(true);
     setTimeout(() => setCooldown(false), 600);
-    setIsDarkMode((prev) => {
-      const next = !prev;
-      document.documentElement.classList.toggle("dark", next);
-      toast.addToast(next ? "Switched to dark mode" : "Switched to light mode");
-      return next;
-    });
+    const next = !isDarkMode;
+    document.documentElement.classList.toggle("dark", next);
+    setIsDarkMode(next);
+    toast.addToast(next ? "Switched to dark mode" : "Switched to light mode");
   };
 
   const handleMusicClick = () => {
     if (cooldown) return;
     setCooldown(true);
     setTimeout(() => setCooldown(false), 600);
-    setIsMusicOn((prev) => {
-      const next = !prev;
-      toast.addToast(next ? "Music on" : "Music off");
-      return next;
-    });
+    const next = !isMusicOn;
+    setIsMusicOn(next);
+    toast.addToast(next ? "Music on" : "Music off");
   };
 
   return (

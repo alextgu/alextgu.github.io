@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { Newsreader, Inter } from "next/font/google";
 import { BackToHome } from "@/components/custom/BackToHome";
+import { CornerOverlays } from "@/components/custom/CornerOverlays";
 import { ScrollToTop } from "@/components/custom/ScrollToTop";
 import { ToastProvider } from "@/components/custom/ToastMaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -32,9 +33,10 @@ export default function RootLayout({
       <body className="antialiased">
         <TooltipProvider>
           <ToastProvider>
+            <CornerOverlays />
             <Suspense fallback={null}>
-            <BackToHome />
-          </Suspense>
+              <BackToHome />
+            </Suspense>
             <ScrollToTop />
             {children}
           </ToastProvider>
