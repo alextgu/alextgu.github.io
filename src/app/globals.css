@@ -168,6 +168,8 @@
 .bio-squiggly.cinematography:hover { text-decoration-color: #9333ea !important; }
 .bio-squiggly.noodles { text-decoration-color: transparent; }
 .bio-squiggly.noodles:hover { text-decoration-color: #dc2626 !important; }
+.bio-squiggly.building { text-decoration-color: transparent; }
+.bio-squiggly.building:hover { text-decoration-color: #16a34a !important; }
 /* Dark mode — pastel, no underline until hover */
 .dark .bio-squiggly.sports { text-decoration-color: transparent; }
 .dark .bio-squiggly.sports:hover { text-decoration-color: #7dd3fc !important; }
@@ -175,6 +177,8 @@
 .dark .bio-squiggly.cinematography:hover { text-decoration-color: #d8b4fe !important; }
 .dark .bio-squiggly.noodles { text-decoration-color: transparent; }
 .dark .bio-squiggly.noodles:hover { text-decoration-color: #fca5a5 !important; }
+.dark .bio-squiggly.building { text-decoration-color: transparent; }
+.dark .bio-squiggly.building:hover { text-decoration-color: #4ade80 !important; }
 
 /* Bio website link — underline only */
 .bio-website-link {

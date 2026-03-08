@@ -8,6 +8,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { AnimatedWords } from "@/components/custom/AnimatedWords";
 import { FontCyclingText } from "@/components/custom/FontCyclingText";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useToast } from "@/components/custom/ToastMaster";
 import { getContentByView, siteContent } from "@/lib/content";
 
@@ -93,14 +97,31 @@ function DeskHUD() {
   const [isAlexHovered, setIsAlexHovered] = useState(false);
   const [showBucketListPopup, setShowBucketListPopup] = useState(false);
   const [highlightSection, setHighlightSection] = useState<"sports" | "cinematography" | "noodles" | null>(null);
+  const [cardIndex, setCardIndex] = useState(0); // which card is on top (0–3)
+  const INTEREST_CARDS = [
+    { src: "/assets/home/majors.JPG", alt: "Majors", label: "Sports" },
+    { src: "/assets/home/watermelon.JPG", alt: "Cinematography", label: "Cinematography" },
+    { src: "/assets/home/noodles.jpg", alt: "Noodles", label: "Noodles" },
+    { src: "/assets/home/StupidHacks.jpeg", alt: "Stupid Hacks hackathon", label: "Building" },
+  ] as const;
 
   const desktopSlideRefs = useRef<(HTMLElement | null)[]>([]);
   const mobileSlideRefs = useRef<(HTMLElement | null)[]>([]);
 
   const scrollToSlide = useCallback((index: number, highlight?: "sports" | "cinematography" | "noodles") => {
-    setHighlightSection(highlight ?? null);
+    if (index === 2) {
+      if (highlight === "sports") setCardIndex(0);
+      else if (highlight === "cinematography") setCardIndex(1);
+      else if (highlight === "noodles") setCardIndex(2);
+      else setCardIndex(3); // building -> last card (project)
+      setHighlightSection(highlight ?? null);
+    }
     desktopSlideRefs.current[index]?.scrollIntoView({ behavior: "smooth", block: "start" });
     mobileSlideRefs.current[index]?.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+  }, []);
+
+  const handleDeckClick = useCallback(() => {
+    setCardIndex((i) => (i + 1) % INTEREST_CARDS.length);
   }, []);
 
   useEffect(() => {
@@ -400,7 +421,8 @@ function DeskHUD() {
                         const isSquiggly =
                           base.toLowerCase() === "sports" ||
                           base.toLowerCase() === "cinematography" ||
-                          base.toLowerCase() === "noodles";
+                          base.toLowerCase() === "noodles" ||
+                          base.toLowerCase() === "building";
                         const nextPart = parts[j + 1];
                         // Add space when: next part has leading space (AnimatedWords trims it) or starts with a word (needs separator).
                         // Don't add when next part starts with punctuation (e.g. ", " or ". ") to avoid double spacing.
@@ -422,7 +444,9 @@ function DeskHUD() {
                                 ? "bio-squiggly cinematography"
                                 : base.toLowerCase() === "noodles"
                                   ? "bio-squiggly noodles"
-                                  : base.toLowerCase() === "cs & stats"
+                                  : base.toLowerCase() === "building"
+                                    ? "bio-squiggly building"
+                                    : base.toLowerCase() === "cs & stats"
                                     ? "inline-block underline decoration-2 underline-offset-2 decoration-transparent hover:decoration-yellow-500 dark:hover:decoration-yellow-400 transition-colors"
                                     : "";
                           const tooltip =
@@ -461,20 +485,17 @@ function DeskHUD() {
                           }
                           if (base.toLowerCase() === "building") {
                             return (
-                              <Tooltip key={`${i}-${j}`}>
-                                <TooltipTrigger asChild>
-                                  <button
-                                    type="button"
-                                    onClick={() => scrollToSlide(2)}
-                                    className="text-foreground font-medium py-0.5 cursor-pointer bg-transparent border-0 p-0 font-inherit text-inherit hover:opacity-90"
-                                  >
-                                    <span>{part}{spaceInside ? " " : null}</span>
-                                  </button>
-                                </TooltipTrigger>
-                                <TooltipContent side="top" align="center" sideOffset={6} className="max-w-[220px]">
-                                  {tooltip}
-                                </TooltipContent>
-                              </Tooltip>
+                              <React.Fragment key={`${i}-${j}`}>
+                                <button
+                                  type="button"
+                                  onClick={() => scrollToSlide(2)}
+                                  className={`text-foreground font-medium py-0.5 cursor-pointer bg-transparent border-0 p-0 font-inherit text-inherit hover:opacity-90 ${squigglyClass}`.trim()}
+                                >
+                                  {part}
+                                  {spaceInside ? " " : null}
+                                </button>
+                                {spaceAfter}
+                              </React.Fragment>
                             );
                           }
                           if (base.toLowerCase() === "sports" || base.toLowerCase() === "cinematography" || base.toLowerCase() === "noodles") {
@@ -483,7 +504,7 @@ function DeskHUD() {
                               <React.Fragment key={`${i}-${j}`}>
                                 <button
                                   type="button"
-                                  onClick={() => scrollToSlide(3, section)}
+                                  onClick={() => scrollToSlide(2, section)}
                                   className={`text-foreground font-medium py-0.5 cursor-pointer bg-transparent border-0 p-0 font-inherit text-inherit ${squigglyClass}`.trim()}
                                 >
                                   {part}
@@ -537,143 +558,149 @@ function DeskHUD() {
           )}
         </motion.div>
 
-        {/* Mobile: horizontal slideshow — 5 slides */}
+        {/* Mobile: horizontal slideshow — 4 slides, smaller so scroll fits */}
         {isFocused && isHomeView && (
-          <div className="md:hidden mt-8 -mx-6 overflow-x-auto overflow-y-hidden snap-x snap-mandatory hide-scrollbar">
-            <div className="flex gap-4 px-6 pb-6">
-              <section ref={(el) => { mobileSlideRefs.current[0] = el; }} className="flex-shrink-0 w-[calc(100vw-3rem)] min-w-[280px] snap-center snap-always rounded-lg border border-border bg-muted/20 p-6 text-foreground/80 text-sm">
-                <h3 className="font-serif font-medium text-foreground text-base mb-2">Alex</h3>
-                <p className="leading-relaxed">
-                  A bit about you—intro, background, or whatever you want in this first section.
-                </p>
+          <div className="md:hidden mt-4 -mx-4 overflow-x-auto overflow-y-hidden snap-x snap-mandatory hide-scrollbar">
+            <div className="flex gap-5 px-4 pb-4">
+              <section ref={(el) => { mobileSlideRefs.current[0] = el; }} className="flex-shrink-0 w-[calc(100vw-2.5rem)] min-w-[240px] max-w-[320px] snap-center snap-always">
+                <Card className="text-foreground/80 text-xs [&>div]:!p-4 [&>div:last-child]:!pt-0">
+                  <CardHeader className="flex flex-col items-center gap-2 pb-1 text-center">
+                    <Avatar className="h-20 w-20">
+                      <AvatarImage src="/assets/home/avatar.jpg" alt="Alex" />
+                      <AvatarFallback className="text-xs">A</AvatarFallback>
+                    </Avatar>
+                    <CardTitle className="font-serif text-sm mt-0">Alex</CardTitle>
+                  </CardHeader>
+                  <CardContent className="pt-0">
+                    <p className="leading-relaxed text-xs">A bit about you—intro, background, or whatever you want in this first section.</p>
+                  </CardContent>
+                </Card>
               </section>
-              <section ref={(el) => { mobileSlideRefs.current[1] = el; }} className="flex-shrink-0 w-[calc(100vw-3rem)] min-w-[280px] snap-center snap-always rounded-lg border border-border bg-muted/20 p-6 text-foreground/80 text-sm">
-                <h3 className="font-serif font-medium text-foreground text-base mb-2">Education</h3>
-                <p className="leading-relaxed">
-                  Your program, degree, or what you&apos;re studying—e.g. CS &amp; Stats at U of T.
-                </p>
-              </section>
-              <section ref={(el) => { mobileSlideRefs.current[2] = el; }} className="flex-shrink-0 w-[calc(100vw-3rem)] min-w-[280px] snap-center snap-always rounded-lg border border-border bg-muted/20 p-6 text-foreground/80 text-sm">
-                <h3 className="font-serif font-medium text-foreground text-base mb-2">A project I&apos;m proud of</h3>
-                <div className="flex gap-3 items-start">
-                  <div className="relative shrink-0 w-32 h-24 rounded-md overflow-hidden bg-muted">
-                    <Image src="/assets/home/StupidHacks.jpeg" alt="Stupid Hacks hackathon" fill className="object-cover" sizes="128px" />
-                  </div>
-                  <p className="leading-relaxed text-sm flex-1 min-w-0">
-                    Stupid Hacks — first place (stupidest). Add a project you&apos;re proud of here.
-                  </p>
-                </div>
-              </section>
-              <section ref={(el) => { mobileSlideRefs.current[3] = el; }} className="flex-shrink-0 w-[calc(100vw-3rem)] min-w-[280px] snap-center snap-always rounded-lg border border-border bg-muted/20 p-6 text-foreground/80 text-sm">
-                <h3 className="font-serif font-medium text-foreground text-base mb-2">Sports, cinematography &amp; noodles</h3>
-                <div className={`rounded-lg p-3 transition-colors ${highlightSection === "sports" ? "bg-foreground/10 ring-1 ring-foreground/20" : ""}`}>
-                  <h4 className="font-medium text-foreground text-sm mb-1">Sports</h4>
-                  <div className="flex gap-3 items-center">
-                    <div className="relative shrink-0 w-24 h-20 rounded-md overflow-hidden bg-muted">
-                      <Image src="/assets/home/baseball2.jpg" alt="Baseball" fill className="object-cover" sizes="96px" />
+              <section ref={(el) => { mobileSlideRefs.current[1] = el; }} className="flex-shrink-0 w-[calc(100vw-2.5rem)] min-w-[240px] max-w-[320px] snap-center snap-always">
+                <Card className="text-foreground/80 text-xs [&>div]:!p-4 [&>div:last-child]:!pt-0">
+                  <CardHeader className="pb-1">
+                    <CardTitle className="font-serif text-sm">Education</CardTitle>
+                    <div className="flex flex-wrap gap-1 mt-0.5">
+                      <Badge variant="secondary" className="text-[10px] px-1.5 py-0">UofT</Badge>
+                      <Badge variant="secondary" className="text-[10px] px-1.5 py-0">CS & Stats</Badge>
                     </div>
-                    <p className="leading-relaxed text-sm flex-1 min-w-0">Playing sports, staying active.</p>
-                  </div>
-                </div>
-                <div className={`mt-3 rounded-lg p-3 transition-colors ${highlightSection === "cinematography" ? "bg-foreground/10 ring-1 ring-foreground/20" : ""}`}>
-                  <h4 className="font-medium text-foreground text-sm mb-1">Cinematography</h4>
-                  <div className="flex gap-3 items-center">
-                    <div className="relative shrink-0 w-24 h-20 rounded-md overflow-hidden bg-muted">
-                      <Image src="/assets/home/watermelon.JPG" alt="Cinematography" fill className="object-cover" sizes="96px" />
-                    </div>
-                    <p className="leading-relaxed text-sm flex-1 min-w-0">Film and video work.</p>
-                  </div>
-                </div>
-                <div className={`mt-3 rounded-lg p-3 transition-colors ${highlightSection === "noodles" ? "bg-foreground/10 ring-1 ring-foreground/20" : ""}`}>
-                  <h4 className="font-medium text-foreground text-sm mb-1">Noodles</h4>
-                  <div className="flex gap-3 items-center">
-                    <div className="relative shrink-0 w-24 h-20 rounded-md overflow-hidden bg-muted">
-                      <Image src="/assets/home/noodles.jpg" alt="Noodles" fill className="object-cover" sizes="96px" />
-                    </div>
-                    <p className="leading-relaxed text-sm flex-1 min-w-0">Eating noodles, ramen, etc.</p>
-                  </div>
-                </div>
+                  </CardHeader>
+                  <CardContent className="pt-0">
+                    <p className="leading-relaxed text-xs">Your program, degree, or what you&apos;re studying—e.g. CS &amp; Stats at U of T.</p>
+                  </CardContent>
+                </Card>
               </section>
-              <section ref={(el) => { mobileSlideRefs.current[4] = el; }} className="flex-shrink-0 w-[calc(100vw-3rem)] min-w-[280px] snap-center snap-always rounded-lg border border-border bg-muted/20 p-6 text-foreground/80 text-sm">
-                <p className="leading-relaxed font-medium text-foreground">
-                  Click on the underlined website on the left to explore my full website!
-                </p>
+              <section ref={(el) => { mobileSlideRefs.current[2] = el; }} className="flex-shrink-0 w-[calc(100vw-2.5rem)] min-w-[240px] max-w-[320px] snap-center snap-always">
+                <p className="text-foreground/50 text-[10px] mb-2">{cardIndex + 1} / {INTEREST_CARDS.length}</p>
+                <button
+                  type="button"
+                  onClick={handleDeckClick}
+                  className="relative w-full aspect-[4/3] max-h-[32vh] overflow-hidden rounded-lg block cursor-pointer border-0 p-0 bg-transparent text-left"
+                  aria-label="Cycle to next card"
+                >
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={cardIndex}
+                      initial={{ scale: 0.94, y: 16, opacity: 0.7 }}
+                      animate={{ scale: 1, y: 0, opacity: 1 }}
+                      exit={{ scale: 0.94, y: 24, opacity: 0.5 }}
+                      transition={{ duration: 0.25, ease: "easeInOut" }}
+                      className="absolute inset-0 rounded-lg overflow-hidden shadow-md border border-border bg-card"
+                    >
+                      <div className="relative w-full h-full">
+                        <Image src={INTEREST_CARDS[cardIndex].src} alt={INTEREST_CARDS[cardIndex].alt} fill className={INTEREST_CARDS[cardIndex].src.includes("noodles") ? "object-cover object-[center_75%]" : "object-cover"} sizes="320px" />
+                      </div>
+                      <div className="absolute bottom-0 left-0 right-0 py-1.5 px-2 bg-background/90 backdrop-blur-sm">
+                        <p className="font-serif text-xs font-medium text-foreground truncate">{INTEREST_CARDS[cardIndex].label}</p>
+                      </div>
+                    </motion.div>
+                  </AnimatePresence>
+                </button>
+              </section>
+              <section ref={(el) => { mobileSlideRefs.current[3] = el; }} className="flex-shrink-0 w-[calc(100vw-2.5rem)] min-w-[240px] max-w-[320px] snap-center snap-always">
+                <Card className="text-foreground/80 text-xs [&>div]:!p-4 [&>div:last-child]:!pt-0">
+                  <CardContent className="pt-4">
+                    <p className="leading-relaxed text-xs font-medium text-foreground">Click on the underlined &quot;website&quot; on the left to explore my full site.</p>
+                  </CardContent>
+                </Card>
               </section>
             </div>
           </div>
         )}
       </div>
 
-        {/* Right: slideshow — 5 slides, scroll snap */}
+        {/* Right: slideshow — 5 slides, photo + text only */}
         <div className="hidden md:flex md:flex-col h-screen w-[45%] flex-shrink-0 overflow-y-auto overflow-x-hidden snap-y snap-mandatory">
         {isFocused && isHomeView && (
           <>
             <section ref={(el) => { desktopSlideRefs.current[0] = el; }} className="min-h-[100dvh] w-full flex-shrink-0 snap-start flex flex-col justify-center p-8 pt-24 pb-12">
-              <div className="w-full max-w-md mx-auto rounded-lg border border-border bg-muted/20 p-6 text-foreground/80 text-sm">
-                <h3 className="font-serif font-medium text-foreground text-base mb-2">Alex</h3>
-                <p className="leading-relaxed">
-                  A bit about you—intro, background, or whatever you want in this first section.
-                </p>
+              <div className="w-full max-w-lg mx-auto">
+                <Card className="text-foreground/80 text-sm">
+                  <CardHeader className="flex flex-col items-center gap-4 pb-2 text-center">
+                    <Avatar className="h-28 w-28">
+                      <AvatarImage src="/assets/home/avatar.jpg" alt="Alex" />
+                      <AvatarFallback className="text-base">A</AvatarFallback>
+                    </Avatar>
+                    <CardTitle className="font-serif text-base mt-1">Alex</CardTitle>
+                  </CardHeader>
+                  <CardContent className="pt-0">
+                    <p className="leading-relaxed">A bit about you—intro, background, or whatever you want in this first section.</p>
+                  </CardContent>
+                </Card>
               </div>
             </section>
             <section ref={(el) => { desktopSlideRefs.current[1] = el; }} className="min-h-[100dvh] w-full flex-shrink-0 snap-start flex flex-col justify-center p-8 pt-24 pb-12">
-              <div className="w-full max-w-md mx-auto rounded-lg border border-border bg-muted/20 p-6 text-foreground/80 text-sm">
-                <h3 className="font-serif font-medium text-foreground text-base mb-2">Education</h3>
-                <p className="leading-relaxed">
-                  Your program, degree, or what you&apos;re studying—e.g. CS &amp; Stats at U of T.
-                </p>
+              <div className="w-full max-w-lg mx-auto">
+                <Card className="text-foreground/80 text-sm">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="font-serif text-base">Education</CardTitle>
+                    <div className="flex flex-wrap gap-1.5 mt-1">
+                      <Badge variant="secondary">UofT</Badge>
+                      <Badge variant="secondary">CS & Stats</Badge>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="pt-0">
+                    <p className="leading-relaxed">Your program, degree, or what you&apos;re studying—e.g. CS &amp; Stats at U of T.</p>
+                  </CardContent>
+                </Card>
               </div>
             </section>
             <section ref={(el) => { desktopSlideRefs.current[2] = el; }} className="min-h-[100dvh] w-full flex-shrink-0 snap-start flex flex-col justify-center p-8 pt-24 pb-12">
-              <div className="w-full max-w-md mx-auto rounded-lg border border-border bg-muted/20 p-6 text-foreground/80 text-sm">
-                <h3 className="font-serif font-medium text-foreground text-base mb-2">A project I&apos;m proud of</h3>
-                <div className="flex gap-4 items-start">
-                  <div className="relative shrink-0 w-40 h-28 rounded-md overflow-hidden bg-muted">
-                    <Image src="/assets/home/StupidHacks.jpeg" alt="Stupid Hacks hackathon" fill className="object-cover" sizes="160px" />
-                  </div>
-                  <p className="leading-relaxed flex-1 min-w-0">
-                    Stupid Hacks — first place (stupidest). Add a project you&apos;re proud of here.
-                  </p>
-                </div>
+              <div className="w-full max-w-lg mx-auto flex flex-col items-center">
+                <p className="text-foreground/50 text-sm mb-4">{cardIndex + 1} / {INTEREST_CARDS.length}</p>
+                <button
+                  type="button"
+                  onClick={handleDeckClick}
+                  className="relative w-full aspect-[4/3] overflow-hidden rounded-xl block cursor-pointer border-0 p-0 bg-transparent text-left max-w-full"
+                  aria-label="Cycle to next card"
+                >
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={cardIndex}
+                      initial={{ scale: 0.94, y: 16, opacity: 0.7 }}
+                      animate={{ scale: 1, y: 0, opacity: 1 }}
+                      exit={{ scale: 0.94, y: 24, opacity: 0.5 }}
+                      transition={{ duration: 0.25, ease: "easeInOut" }}
+                      className="absolute inset-0 rounded-xl overflow-hidden shadow-lg border border-border bg-card"
+                    >
+                      <div className="relative w-full h-full">
+                        <Image src={INTEREST_CARDS[cardIndex].src} alt={INTEREST_CARDS[cardIndex].alt} fill className={INTEREST_CARDS[cardIndex].src.includes("noodles") ? "object-cover object-[center_75%]" : "object-cover"} sizes="512px" />
+                      </div>
+                      <div className="absolute bottom-0 left-0 right-0 py-2 px-3 bg-background/90 backdrop-blur-sm">
+                        <p className="font-serif text-sm font-medium text-foreground truncate">{INTEREST_CARDS[cardIndex].label}</p>
+                      </div>
+                    </motion.div>
+                  </AnimatePresence>
+                </button>
               </div>
             </section>
             <section ref={(el) => { desktopSlideRefs.current[3] = el; }} className="min-h-[100dvh] w-full flex-shrink-0 snap-start flex flex-col justify-center p-8 pt-24 pb-12">
-              <div className="w-full max-w-md mx-auto rounded-lg border border-border bg-muted/20 p-6 text-foreground/80 text-sm space-y-4">
-                <h3 className="font-serif font-medium text-foreground text-base mb-2">Sports, cinematography &amp; noodles</h3>
-                <div className={`rounded-lg p-4 transition-colors duration-200 ${highlightSection === "sports" ? "bg-foreground/10 ring-1 ring-foreground/20" : ""}`}>
-                  <h4 className="font-medium text-foreground text-sm mb-1">Sports</h4>
-                  <div className="flex gap-4 items-center">
-                    <div className="relative shrink-0 w-32 h-24 rounded-md overflow-hidden bg-muted">
-                      <Image src="/assets/home/baseball2.jpg" alt="Baseball" fill className="object-cover" sizes="128px" />
-                    </div>
-                    <p className="leading-relaxed flex-1 min-w-0">Playing sports, staying active.</p>
-                  </div>
-                </div>
-                <div className={`rounded-lg p-4 transition-colors duration-200 ${highlightSection === "cinematography" ? "bg-foreground/10 ring-1 ring-foreground/20" : ""}`}>
-                  <h4 className="font-medium text-foreground text-sm mb-1">Cinematography</h4>
-                  <div className="flex gap-4 items-center">
-                    <div className="relative shrink-0 w-32 h-24 rounded-md overflow-hidden bg-muted">
-                      <Image src="/assets/home/watermelon.JPG" alt="Cinematography" fill className="object-cover" sizes="128px" />
-                    </div>
-                    <p className="leading-relaxed flex-1 min-w-0">Film and video work.</p>
-                  </div>
-                </div>
-                <div className={`rounded-lg p-4 transition-colors duration-200 ${highlightSection === "noodles" ? "bg-foreground/10 ring-1 ring-foreground/20" : ""}`}>
-                  <h4 className="font-medium text-foreground text-sm mb-1">Noodles</h4>
-                  <div className="flex gap-4 items-center">
-                    <div className="relative shrink-0 w-32 h-24 rounded-md overflow-hidden bg-muted">
-                      <Image src="/assets/home/noodles.jpg" alt="Noodles" fill className="object-cover" sizes="128px" />
-                    </div>
-                    <p className="leading-relaxed flex-1 min-w-0">Eating noodles, ramen, etc.</p>
-                  </div>
-                </div>
-              </div>
-            </section>
-            <section ref={(el) => { desktopSlideRefs.current[4] = el; }} className="min-h-[100dvh] w-full flex-shrink-0 snap-start flex flex-col justify-center p-8 pt-24 pb-12">
-              <div className="w-full max-w-md mx-auto rounded-lg border border-border bg-muted/20 p-6 text-foreground/80 text-sm">
-                <p className="leading-relaxed font-medium text-foreground">
-                  Click on the underlined website on the left to explore my full website!
-                </p>
+              <div className="w-full max-w-lg mx-auto">
+                <Card className="text-foreground/80 text-sm">
+                  <CardContent className="pt-6">
+                    <p className="leading-relaxed font-medium text-foreground">Click on the underlined &quot;website&quot; on the left to explore my full site.</p>
+                  </CardContent>
+                </Card>
               </div>
             </section>
           </>

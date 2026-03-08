@@ -55,7 +55,7 @@ function ToastMaster({
 }) {
   return (
     <div
-      className="fixed top-6 right-6 z-[100] flex flex-col gap-2 pointer-events-none max-w-[min(320px,90vw)]"
+      className="fixed top-6 right-0 pr-4 z-[100] flex flex-col gap-2 pointer-events-none w-[220px] min-w-[220px] max-w-[min(320px,90vw)] items-end"
       aria-live="polite"
       aria-label="Notifications"
     >
@@ -99,7 +99,7 @@ function ToastItem({
       animate={{ opacity: isFading ? 0.5 : 1, x: 0 }}
       exit={{ opacity: 0, x: 24, transition: { duration: 0.25 } }}
       transition={{ duration: 0.3 }}
-      className="px-1 py-0.5 text-sm text-foreground"
+      className="w-full min-w-0 px-1 py-0.5 text-sm text-foreground text-right"
     >
       {toast.message}
     </motion.div>

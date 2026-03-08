@@ -68,9 +68,7 @@
       "icon": "film",
       "content": {
         "type": "folder",
-        "items": [
-          { "type": "image", "name": "majors.jpg", "src": "/assets/computer/alex/majors.JPG" }
-        ]
+        "items": []
       }
     },
     {
