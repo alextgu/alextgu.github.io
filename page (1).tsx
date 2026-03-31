@@ -406,7 +406,7 @@ export default function Home() {
           transform: `translateX(${textX})`,
           opacity: textOpacity,
           transition: p === 31
-            ? 'transform 12s cubic-bezier(0.22,1,0.36,1), opacity 0.6s ease'
+            ? 'transform 0.5s cubic-bezier(0.22,1,0.36,1), opacity 0.4s ease'
             : 'none',
         }}>
           {CONTENT[active]}
